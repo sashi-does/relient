@@ -4,7 +4,6 @@ import {
     Trash2,
     Eye,
     Users,
-    Activity,
   } from "lucide-react";
   import clsx from "clsx";
   
@@ -87,7 +86,7 @@ import {
       );
     }
   
-    // Update card (dashboard-type)
+
     return (
       <div className="rounded-xl p-4 bg-[#0c0c12] text-white shadow-md w-64">
         <div className="flex justify-between items-center">

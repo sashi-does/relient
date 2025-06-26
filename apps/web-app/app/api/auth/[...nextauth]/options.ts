@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth"
-import prisma from "@repo/db/prisma"
+import { prisma } from "@repo/db/prisma"
 
 const options: NextAuthOptions = {
     providers: [
