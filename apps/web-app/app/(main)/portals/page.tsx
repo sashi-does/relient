@@ -1,3 +1,4 @@
+import PortalPlaceholder from "@/components/blocks/portal-placeholder";
 import Card from "@/components/ui/card";
 
 export default function Portals() {
@@ -15,8 +16,8 @@ export default function Portals() {
   ];
 
   return (
-    <div className="space-y-4 p-4">
-      {portals.map((p) => (
+    <div className="space-y-4 p-4 flex justify-center items-center h-[100vh] text-white">
+      {/* {portals.map((p) => (
         <Card
           key={p.id}
           type="portal"
@@ -28,7 +29,8 @@ export default function Portals() {
           members={p.members}
           messages={p.messages}
         />
-      ))}
+      ))} */}
+      <PortalPlaceholder />
     </div>
   );
 }
