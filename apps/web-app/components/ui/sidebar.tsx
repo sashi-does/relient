@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   LayoutDashboard,
@@ -8,17 +8,18 @@ import {
   CreditCard,
   Menu,
   X,
-} from "lucide-react"
+} from "lucide-react";
 
-import { useRef } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { useState } from "react"
-import { usePathname } from "next/navigation"
-import clsx from "clsx"
-import SubscriptionCard from "./subscription-card"
-import Input from "@repo/ui/input"
-import { Textarea } from "@repo/ui/text-area"
+import { useRef } from "react";
+import { Command } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import SubscriptionCard from "./subscription-card";
+import Input from "@repo/ui/input";
+import { Textarea } from "@repo/ui/text-area";
 import {
   Dialog,
   DialogContent,
@@ -26,11 +27,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import axios from "axios"
-import { Button } from "@repo/ui/button"
-
-
+} from "@/components/ui/dialog";
+import axios from "axios";
+import { Button } from "@repo/ui/button";
 
 const menuItems = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
@@ -38,11 +37,15 @@ const menuItems = [
   { name: "Portals", icon: FolderKanban, href: "/portals" },
   { name: "Settings", icon: Settings, href: "/settings" },
   { name: "Payments", icon: CreditCard, href: "/payments" },
-]
+];
 
 async function createPortal(name: string, mail: string, description: string) {
   try {
-    const res = await axios.post("/api/portal/create", { name, mail, description });
+    const res = await axios.post("/api/portal/create", {
+      name,
+      mail,
+      description,
+    });
     // toast("Portal Created Successfully");
     console.log(res.data);
   } catch (error) {
@@ -52,11 +55,11 @@ async function createPortal(name: string, mail: string, description: string) {
 }
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const mailRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLInputElement>(null);
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <>
@@ -64,9 +67,12 @@ export default function Sidebar() {
         className="md:hidden fixed top-4 left-4 z-[100] bg-zinc-900 p-2 rounded hover:bg-zinc-800 transition"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
+        {isOpen ? (
+          <X className="w-5 h-5 text-white" />
+        ) : (
+          <Menu className="w-5 h-5 text-white" />
+        )}
       </button>
-
 
       <div
         className={clsx(
@@ -79,59 +85,76 @@ export default function Sidebar() {
         )}
       >
         <div>
-
           <div className="flex items-center justify-center space-x-2 mb-6 mt-2">
-          <Image
-            src="/relient.png"
-            alt="Relient Logo"
-            width={28}
-            height={28}
-            className="brightness-0 mt-1 invert mix-blend-screen opacity-80"
-          />
-          <span className="font-extrabold text-2xl logo">Relient</span>
-        </div>
-        
-        <Dialog>
-          <DialogTrigger className="w-full bg-white cursor-pointer text-black py-1 hover:bg-[#ffffffc9] rounded-md mb-4">Create Portal +</DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create Client Portal</DialogTitle>
-              <DialogDescription></DialogDescription>
-              <div className="flex flex-col gap-y-5">
-                <div className="flex flex-col gap-y-3 w-[100%]">
-                  <span>Client Name</span>
-                  <Input className="py-2" ref={nameRef} placeholder="e.g: Cal.com" />
-                </div>
-                <div className="flex flex-col gap-y-3 w-[100%]">
-                  <span>Client Email</span>
-                  <Input className="py-2" ref={mailRef} placeholder="e.g: hello@cal.com" />
-                </div>
+            <Image
+              src="/relient.png"
+              alt="Relient Logo"
+              width={28}
+              height={28}
+              className="brightness-0 mt-1 invert mix-blend-screen opacity-80"
+            />
+            <span className="font-extrabold text-2xl logo">Relient</span>
+          </div>
 
-                <div className="w-[100%] gap-y-3 flex flex-col justify-center">
-                  <span>Project Description</span>
-                  <Textarea className="py-2" ref={descRef} placeholder="e.g: Plan strategy" />
+          <Dialog>
+            <DialogTrigger className="group cursor-pointer flex items-center justify-between w-full px-4 py-2 rounded-lg bg-[#023734af] hover:bg-[#4A4A4D] text-white font-medium transition-all duration-200 shadow-md mb-6">
+              <span className="text-sm">Create Portal</span>
+              <span className="flex items-center gap-1 px-2 py-1 text-xs font-mono text-[#D1D1D1] bg-[#1C1C1E] rounded-md group-hover:bg-[#2A2A2C]">
+                <Command className="h-3 w-3" />p
+              </span>
+            </DialogTrigger>
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create Client Portal</DialogTitle>
+                <DialogDescription></DialogDescription>
+                <div className="flex flex-col gap-y-5">
+                  <div className="flex flex-col gap-y-3 w-[100%]">
+                    <span>Client Name</span>
+                    <Input
+                      className="py-2"
+                      ref={nameRef}
+                      placeholder="e.g: Cal.com"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-y-3 w-[100%]">
+                    <span>Client Email</span>
+                    <Input
+                      className="py-2"
+                      ref={mailRef}
+                      placeholder="e.g: hello@cal.com"
+                    />
+                  </div>
+
+                  <div className="w-[100%] gap-y-3 flex flex-col justify-center">
+                    <span>Project Description</span>
+                    <Textarea
+                      className="py-2"
+                      ref={descRef}
+                      placeholder="e.g: Plan strategy"
+                    />
+                  </div>
+                  <Button
+                    className="bg-white text-black cursor-pointer hover:bg-[#ffffffc9]"
+                    onClick={() =>
+                      createPortal(
+                        nameRef.current?.value as string,
+                        mailRef.current?.value as string,
+                        descRef.current?.value as string
+                      )
+                    }
+                  >
+                    Create
+                  </Button>
                 </div>
-                <Button
-                  className="bg-white text-black cursor-pointer hover:bg-[#ffffffc9]"
-                  onClick={() =>
-                    createPortal(
-                      nameRef.current?.value as string,
-                      mailRef.current?.value as string,
-                      descRef.current?.value as string
-                    )
-                  }
-                >
-                  Create
-                </Button>
-              </div>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
 
           {/* Menu Items */}
           <ul className="space-y-1">
             {menuItems.map((item, idx) => {
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href;
 
               return (
                 <li key={idx}>
@@ -151,18 +174,19 @@ export default function Sidebar() {
                       <span className="text-[15px]">{item.name}</span>
                     </div>
                     {item.count !== undefined && (
-                      <span className="text-sm text-zinc-400">{item.count}</span>
+                      <span className="text-sm text-zinc-400">
+                        {item.count}
+                      </span>
                     )}
                   </Link>
                 </li>
-              )
+              );
             })}
           </ul>
         </div>
 
-
         <SubscriptionCard />
       </div>
     </>
-  )
+  );
 }
