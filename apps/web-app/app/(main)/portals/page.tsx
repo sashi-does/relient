@@ -17,7 +17,7 @@ export default function Portals() {
 
   return (
     <div className="space-y-4 p-4 flex justify-center items-center h-[90vh] text-white">
-      {/* {portals.map((p) => (
+      {portals.map((p) => (
         <Card
           key={p.id}
           type="portal"
@@ -29,8 +29,8 @@ export default function Portals() {
           members={p.members}
           messages={p.messages}
         />
-      ))} */}
-      <PortalPlaceholder />
+      ))}
+      {/* <PortalPlaceholder /> */}
     </div>
   );
 }

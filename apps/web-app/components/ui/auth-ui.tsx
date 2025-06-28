@@ -186,7 +186,7 @@ function AuthFormContainer() {
         </span>
       </div>
       <Button
-        className="cursor-pointer"
+        className="cursor-pointer flex justify-center items-center"
         variant="outline"
         type="button"
         onClick={() => signIn("google", { callbackUrl: "/dashboard" })}

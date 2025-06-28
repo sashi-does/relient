@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports": {
-    "./prisma": "./postgres/index.ts"
+    "./prisma": "./postgres/index.ts",
+    "./mongoose": "./mongo/index.ts"
   },
   "keywords": [],
   "author": "",

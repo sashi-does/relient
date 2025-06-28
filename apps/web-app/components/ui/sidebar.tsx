@@ -15,7 +15,7 @@ import { Command } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import clsx from "clsx";
 import SubscriptionCard from "./subscription-card";
 import Input from "@repo/ui/input";
@@ -30,6 +30,9 @@ import {
 } from "@/components/ui/dialog";
 import axios from "axios";
 import { Button } from "@repo/ui/button";
+import Loader from "@repo/ui/loader";
+
+
 
 const menuItems = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
@@ -39,26 +42,32 @@ const menuItems = [
   { name: "Payments", icon: CreditCard, href: "/payments" },
 ];
 
-async function createPortal(name: string, mail: string, description: string) {
-  try {
-    const res = await axios.post("/api/portal/create", {
-      name,
-      mail,
-      description,
-    });
-    // toast("Portal Created Successfully");
-    console.log(res.data);
-  } catch (error) {
-    console.error("Error creating portal:", error);
-    // toast("Failed to create portal");
-  }
-}
+
 
 export default function Sidebar() {
+
+  async function createPortal(name: string, mail: string, description: string) {
+    isLoading(true)
+    try {
+      const res = await axios.post("/api/portal", {
+        name,
+        mail,
+        description,
+      });
+      // toast("Portal Created Successfully");
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error creating portal:", error);
+      // toast("Failed to create portal");
+    }
+    isLoading(false)
+  }
   const [isOpen, setIsOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
-  const mailRef = useRef<HTMLInputElement>(null);
-  const descRef = useRef<HTMLInputElement>(null);
+const mailRef = useRef<HTMLInputElement>(null);
+const descRef = useRef<HTMLTextAreaElement>(null);
+const [loading, isLoading] = useState(false)
+
   const pathname = usePathname();
 
   return (
@@ -144,7 +153,7 @@ export default function Sidebar() {
                       )
                     }
                   >
-                    Create
+                    {loading ? <Loader /> : "Create" }
                   </Button>
                 </div>
               </DialogHeader>

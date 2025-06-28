@@ -6,11 +6,11 @@ import { BentoGridDemo } from "@/components/blocks/bento-grid";
 
 export default function Home() {
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
+    <div className=" w-full min-h-screen overflow-hidden">
       {/* Background Animation */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* <div className="absolute inset-0 z-0 pointer-events-none"> */}
         <Slicers />
-      </div>
+      {/* </div> */}
 
       {/* Foreground Content */}
       <div className="relative z-10">
