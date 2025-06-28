@@ -38,7 +38,8 @@ export default async function Portals() {
   }
 
   return (
-    <div className="space-y-4 p-4 flex justify-center items-center h-[90vh] text-white">
+    <div className="h-[100vh] text-white">
+      <h1 className="text-2xl font-bold">Portal Section</h1>
       {portals.map((p) => (
         <Card
           key={p._id}
