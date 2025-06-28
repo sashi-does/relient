@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb, mongoose } from "@repo/db/mongoose"
 import { PortalModel, PortalSchema } from "@repo/types/mongo-types";
-import options from "../auth/[...nextauth]/options";
+import options from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { prisma } from "@repo/db/prisma";
-import { Model } from "mongoose";
+
 
 
 const Portal = mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
     try {
         const session = await getServerSession(options)
+        console.log("GET: portals" + JSON.stringify(session?.user))
         if (!session) {
             return NextResponse.json({
                 success: false,
