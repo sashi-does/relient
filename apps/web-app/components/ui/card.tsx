@@ -49,7 +49,8 @@ import {
                 </div>
               </div>
               <div className="flex items-center gap-2 mt-2 text-sm">
-                <div className="bg-green-700 text-xs px-2 py-0.5 rounded-full">
+                <div className={`${status === "Active" ? "bg-green-700" : "bg-red-800"} text-xs px-2 py-0.5 rounded-full`}
+                >
                   {status}
                 </div>
                 <div className="opacity-60">Last activity: {lastActivity}</div>
