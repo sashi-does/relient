@@ -43,6 +43,7 @@ export default async function Portals() {
       {portals.map((p) => (
         <Card
           key={p._id}
+          portalId={p._id}
           type="portal"
           heading={p.portalName}
           subheading={p.clientName}
