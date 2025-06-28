@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb, mongoose } from "@repo/db/mongoose"
-import { PortalSchema } from "@repo/types/mongo-types";
+import { PortalModel, PortalSchema } from "@repo/types/mongo-types";
 import options from "../auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { prisma } from "@repo/db/prisma";
+import { Model } from "mongoose";
 
 
 const Portal = mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const { name, mail, description } = await req.json();
+        const { portalName, name, mail, description } = await req.json();
         console.log("📨 Request received:", { name, mail, description });
 
 
@@ -39,6 +40,7 @@ export async function POST(req: NextRequest) {
 
 
         const portal = await (Portal as any).insertOne({
+            portalName,
             clientName: name,
             clientEmail: mail,
             projectDescription: description,
@@ -64,22 +66,20 @@ export async function GET(req: NextRequest) {
                 message: "Unauthenticated user"
             })
         }
-        const portalId = await prisma.
-
+        
+        const userId = session.user?.id
 
         await connectDb();
 
 
-        const portal = await (Portal as any).insertOne({
-            clientName: name,
-            clientEmail: mail,
-            projectDescription: description,
-            createdAt: Date.now()
+        const portals = await (PortalModel as any).find({
+            userId
         })
 
-        console.log("Portal created:", portal);
 
-        return NextResponse.json({ success: true, portal: portal }, { status: 201 });
+
+
+        return NextResponse.json({ success: true, portals }, { status: 200 });
     } catch (error) {
         console.error("Error creating portal:", error);
         return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });

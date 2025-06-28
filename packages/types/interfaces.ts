@@ -24,12 +24,13 @@ export interface OverviewModule {
   }
   
   export interface Portal {
+    portalName: string
     clientName: string;
     clientEmail: string;
     projectDescription: string;
     progress: number,
     inbox: number,
-    status: number,
+    status: string,
     createdAt: Date,
     lastVisited: Date,
     userId: string,

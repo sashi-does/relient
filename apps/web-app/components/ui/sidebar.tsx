@@ -31,8 +31,8 @@ import {
 import axios from "axios";
 import { Button } from "@repo/ui/button";
 import Loader from "@repo/ui/loader";
-
-
+import { toast } from "sonner";
+import { Toaster } from "@repo/ui/sonner";
 
 const menuItems = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
@@ -42,36 +42,43 @@ const menuItems = [
   { name: "Payments", icon: CreditCard, href: "/payments" },
 ];
 
-
-
 export default function Sidebar() {
+  const [isOpen, setIsOpen] = useState(false); // Controls sidebar visibility
+  const [dialogOpen, setDialogOpen] = useState(false); // Controls Dialog visibility
+  const portalNameRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const mailRef = useRef<HTMLInputElement>(null);
+  const descRef = useRef<HTMLTextAreaElement>(null);
+  const [loading, isLoading] = useState(false);
 
-  async function createPortal(name: string, mail: string, description: string) {
-    isLoading(true)
+  const pathname = usePathname();
+
+  async function createPortal(
+    portalName: string,
+    name: string,
+    mail: string,
+    description: string
+  ) {
+    isLoading(true);
     try {
       const res = await axios.post("/api/portal", {
+        portalName,
         name,
         mail,
         description,
       });
-      // toast("Portal Created Successfully");
       console.log(res.data);
+      setDialogOpen(false); // Close the Dialog after success
+      toast("Portal Created Successfully");
     } catch (error) {
       console.error("Error creating portal:", error);
-      // toast("Failed to create portal");
     }
-    isLoading(false)
+    isLoading(false);
   }
-  const [isOpen, setIsOpen] = useState(false);
-  const nameRef = useRef<HTMLInputElement>(null);
-const mailRef = useRef<HTMLInputElement>(null);
-const descRef = useRef<HTMLTextAreaElement>(null);
-const [loading, isLoading] = useState(false)
-
-  const pathname = usePathname();
 
   return (
     <>
+      <Toaster />
       <button
         className="md:hidden fixed top-4 left-4 z-[100] bg-zinc-900 p-2 rounded hover:bg-zinc-800 transition"
         onClick={() => setIsOpen(!isOpen)}
@@ -105,7 +112,7 @@ const [loading, isLoading] = useState(false)
             <span className="font-extrabold text-2xl logo">Relient</span>
           </div>
 
-          <Dialog>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger className="group cursor-pointer flex items-center justify-between w-full px-4 py-2 rounded-lg bg-[#023734af] hover:bg-[#4A4A4D] text-white font-medium transition-all duration-200 shadow-md mb-6">
               <span className="text-sm">Create Portal</span>
               <span className="flex items-center gap-1 px-2 py-1 text-xs font-mono text-[#D1D1D1] bg-[#1C1C1E] rounded-md group-hover:bg-[#2A2A2C]">
@@ -118,6 +125,14 @@ const [loading, isLoading] = useState(false)
                 <DialogTitle>Create Client Portal</DialogTitle>
                 <DialogDescription></DialogDescription>
                 <div className="flex flex-col gap-y-5">
+                  <div className="flex flex-col gap-y-3 w-[100%]">
+                    <span>Portal Name</span>
+                    <Input
+                      className="py-2"
+                      ref={portalNameRef}
+                      placeholder="e.g: Project Alpha"
+                    />
+                  </div>
                   <div className="flex flex-col gap-y-3 w-[100%]">
                     <span>Client Name</span>
                     <Input
@@ -134,7 +149,6 @@ const [loading, isLoading] = useState(false)
                       placeholder="e.g: hello@cal.com"
                     />
                   </div>
-
                   <div className="w-[100%] gap-y-3 flex flex-col justify-center">
                     <span>Project Description</span>
                     <Textarea
@@ -147,13 +161,14 @@ const [loading, isLoading] = useState(false)
                     className="bg-white text-black cursor-pointer hover:bg-[#ffffffc9]"
                     onClick={() =>
                       createPortal(
+                        portalNameRef.current?.value as string,
                         nameRef.current?.value as string,
                         mailRef.current?.value as string,
                         descRef.current?.value as string
                       )
                     }
                   >
-                    {loading ? <Loader /> : "Create" }
+                    {loading ? <Loader /> : "Create"}
                   </Button>
                 </div>
               </DialogHeader>

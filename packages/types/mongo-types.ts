@@ -29,13 +29,14 @@ export const LeadModuleSchema = new Schema<LeadModule>({
 });
 
 export const PortalSchema = new Schema<Portal>({
+    portalName: String,
     clientName: String,
     clientEmail: String,
     projectDescription: String,
     progress: Number,
     userId: String,
     inbox: { type: Number, default: 0 },
-    status: { type: Number, default: 0 },
+    status: { type: String, default: "Inactive" },
     createdAt: { type: Date, default: Date.now },
     lastVisited: { type: Date, default: null },
     modules: {
