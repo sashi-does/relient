@@ -9,6 +9,52 @@ import { prisma } from "@repo/db/prisma";
 
 const Portal = mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
 
+export async function GET(req: NextRequest, { params }: { params: { portalId: string } }) {
+    try {
+      const session = await getServerSession(options);
+      if (!session) {
+        return NextResponse.json({
+          success: false,
+          message: "Unauthenticated user",
+        }, { status: 401 });
+      }
+  
+      const user = await prisma.user.findFirst({
+        where: {
+          email: session.user?.email as string,
+        },
+      });
+  
+      if (!user) {
+        return NextResponse.json({
+          success: false,
+          message: "Invalid user",
+        }, { status: 403 });
+      }
+  
+      await connectDb();
+  
+      const portal = await Portal.findOne({ _id: params.portalId, userId: user.id });
+      if (!portal) {
+        return NextResponse.json({
+          success: false,
+          message: "Portal not found or user not authorized",
+        }, { status: 404 });
+      }
+  
+      return NextResponse.json({
+        success: true,
+        portal,
+      }, { status: 200 });
+    } catch (error) {
+      console.error("Error fetching portal:", error);
+      return NextResponse.json({
+        success: false,
+        error: "Internal Server Error",
+      }, { status: 500 });
+    }
+  }
+
 export async function POST(req: NextRequest) {
     try {
         const session = await getServerSession(options)

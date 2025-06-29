@@ -43,7 +43,7 @@ export default function Card({
           <div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-blue-600 rounded-md grid place-items-center font-bold">
-                {heading[0]}
+                { heading && heading[0]}
               </div>
               <div>
                 <div className="font-semibold">{heading}</div>
