@@ -20,6 +20,7 @@ import clsx from "clsx";
 import SubscriptionCard from "./subscription-card";
 import Input from "@repo/ui/input";
 import { Textarea } from "@repo/ui/text-area";
+import { LiquidButton } from "./liquid-glass-button";
 import {
   Dialog,
   DialogContent,
@@ -43,8 +44,8 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false); // Controls sidebar visibility
-  const [dialogOpen, setDialogOpen] = useState(false); // Controls Dialog visibility
+  const [isOpen, setIsOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const portalNameRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const mailRef = useRef<HTMLInputElement>(null);
@@ -113,65 +114,75 @@ export default function Sidebar() {
           </div>
 
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger className="group cursor-pointer flex items-center justify-between w-full px-4 py-2 rounded-lg bg-[#023734af] hover:bg-[#4A4A4D] text-white font-medium transition-all duration-200 shadow-md mb-6">
-              <span className="text-sm">Create Portal</span>
-              <span className="flex items-center gap-1 px-2 py-1 text-xs font-mono text-[#D1D1D1] bg-[#1C1C1E] rounded-md group-hover:bg-[#2A2A2C]">
-                <Command className="h-3 w-3" />p
-              </span>
+            <DialogTrigger asChild>
+              <div className="group cursor-pointer flex items-center justify-between w-full px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-md mb-6 border-0">
+                <LiquidButton className="flex flex-row items-center justify-between w-full">
+                  <span>Create Portal</span>
+                  <span className="flex items-center gap-1 px-2 py-1 text-xs font-mono text-[#D1D1D1] bg-[#1C1C1E] rounded-md group-hover:bg-[#2A2A2C]">
+                    <Command className="h-3 w-3" />p
+                  </span>
+                </LiquidButton>
+              </div>
             </DialogTrigger>
 
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Create Client Portal</DialogTitle>
-                <DialogDescription></DialogDescription>
-                <div className="flex flex-col gap-y-5">
-                  <div className="flex flex-col gap-y-3 w-[100%]">
-                    <span>Portal Name</span>
-                    <Input
-                      className="py-2"
-                      ref={portalNameRef}
-                      placeholder="e.g: Project Alpha"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-y-3 w-[100%]">
-                    <span>Client Name</span>
-                    <Input
-                      className="py-2"
-                      ref={nameRef}
-                      placeholder="e.g: Cal.com"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-y-3 w-[100%]">
-                    <span>Client Email</span>
-                    <Input
-                      className="py-2"
-                      ref={mailRef}
-                      placeholder="e.g: hello@cal.com"
-                    />
-                  </div>
-                  <div className="w-[100%] gap-y-3 flex flex-col justify-center">
-                    <span>Project Description</span>
-                    <Textarea
-                      className="py-2"
-                      ref={descRef}
-                      placeholder="e.g: Plan strategy"
-                    />
-                  </div>
-                  <Button
-                    className="bg-white text-black cursor-pointer hover:bg-[#ffffffc9]"
-                    onClick={() =>
-                      createPortal(
-                        portalNameRef.current?.value as string,
-                        nameRef.current?.value as string,
-                        mailRef.current?.value as string,
-                        descRef.current?.value as string
-                      )
-                    }
-                  >
-                    {loading ? <Loader /> : "Create"}
-                  </Button>
-                </div>
+                <DialogDescription />
               </DialogHeader>
+
+              <div className="flex flex-col gap-y-5">
+                <div className="flex flex-col gap-y-3 w-full">
+                  <span>Portal Name</span>
+                  <Input
+                    className="py-2"
+                    ref={portalNameRef}
+                    placeholder="e.g: Project Alpha"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-y-3 w-full">
+                  <span>Client Name</span>
+                  <Input
+                    className="py-2"
+                    ref={nameRef}
+                    placeholder="e.g: Cal.com"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-y-3 w-full">
+                  <span>Client Email</span>
+                  <Input
+                    className="py-2"
+                    ref={mailRef}
+                    placeholder="e.g: hello@cal.com"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-y-3 w-full">
+                  <span>Project Description</span>
+                  <Textarea
+                    className="py-2"
+                    ref={descRef}
+                    placeholder="e.g: Plan strategy"
+                  />
+                </div>
+
+                <Button
+                  className="bg-white text-black hover:bg-[#ffffffc9]"
+                  onClick={() =>
+                    createPortal(
+                      portalNameRef.current?.value ?? "",
+                      nameRef.current?.value ?? "",
+                      mailRef.current?.value ?? "",
+                      descRef.current?.value ?? ""
+                    )
+                  }
+                  disabled={loading}
+                >
+                  {loading ? <Loader /> : "Create"}
+                </Button>
+              </div>
             </DialogContent>
           </Dialog>
 

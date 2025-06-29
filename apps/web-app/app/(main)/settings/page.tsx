@@ -6,6 +6,7 @@ import Input from "@repo/ui/input";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Textarea } from "@repo/ui/text-area";
 import { Button } from "@repo/ui/button";
+import { Trash2Icon } from "lucide-react";
 
 export default function Settings() {
   return (
@@ -108,11 +109,11 @@ function Page() {
             <label className="block text-sm font-medium mb-1 text-gray-400">Email</label>
             <div className="flex items-center gap-2">
               <Input
-                className="py-2"
+                className="py-2 cursor-not-allowed disabled"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={true}
+                disabled
               />
               
             </div>
@@ -129,13 +130,14 @@ function Page() {
 
           <Button >Update</Button>
 
-          <div className="mt-6 p-4 bg-gray-900 border border-gray-800 rounded">
+          <div className="mt-6 p-4 flex flex-col items-start border border-gray rounded-md">
             <h2 className="text-red-400 font-semibold mb-2">Danger zone</h2>
             <p className="text-sm text-gray-500">Be careful! Account deletion cannot be undone.</p>
             <Button
-              className="mt-2 bg-[#6c1818] px-4 py-2 rounded text-white hover:bg-red-700"
+              className="mb-3 flex items-center justify-between gap-x-1 self-end mt-5 border-1 border-[#ffffff50] bg-transparent px-3 py-[5px] roudnded text-white hover:bg-[#6c1818] hover:text-white"
               onClick={handleDeleteAccount}
             >
+              <Trash2Icon height={15} width={15} />
               Delete account
             </Button>
           </div>
