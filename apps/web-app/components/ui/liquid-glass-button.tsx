@@ -23,10 +23,12 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        default: "h-9 px-3 py-1 has-[>svg]:px-2",
+        sm: "h-8 text-xs gap-1 px-3 has-[>svg]:px-3",
+        lg: "h-10 rounded-md px-4 has-[>svg]:px-3",
+        xl: "h-12 rounded-md px-6 has-[>svg]:px-4",
+        xxl: "h-14 rounded-md px-8 has-[>svg]:px-6",
+        icon: "size-9",
       },
     },
     defaultVariants: {
@@ -63,7 +65,7 @@ const liquidbuttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-transparent hover:scale-105 duration-300 transition text-primary",
+        default: "bg-transparent duration-300 transition text-primary",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:
@@ -74,11 +76,11 @@ const liquidbuttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 text-xs gap-1.5 px-4 has-[>svg]:px-4",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        xl: "h-12 rounded-md px-8 has-[>svg]:px-6",
-        xxl: "h-14 rounded-md px-10 has-[>svg]:px-8",
+        default: "h-9 px-2 py-2 has-[>svg]:px-2",
+        sm: "h-8 text-xs gap-1.5 px-2 has-[>svg]:px-2",
+        lg: "h-10 rounded-md px-3 has-[>svg]:px-3",
+        xl: "h-12 rounded-md px-4 has-[>svg]:px-3",
+        xxl: "h-14 rounded-md px-5 has-[>svg]:px-4",
         icon: "size-9",
       },
     },
@@ -110,9 +112,9 @@ function LiquidButton({
           "relative",
           liquidbuttonVariants({ variant, size, className })
         )}
-        {...props}
+        {...props }
       >
-        <div className="absolute top-0 left-0 z-0 h-full w-full rounded-full 
+        <div className="absolute top- Severe left-0 z-0 h-full w-full rounded-full 
             shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)] 
         transition-all 
         dark:shadow-[0_0_8px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3.5px_rgba(255,255,255,0.09),inset_-3px_-3px_0.5px_-3.5px_rgba(255,255,255,0.85),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.6),inset_0_0_6px_6px_rgba(255,255,255,0.12),inset_0_0_2px_2px_rgba(255,255,255,0.06),0_0_12px_rgba(0,0,0,0.15)]" />
@@ -121,7 +123,7 @@ function LiquidButton({
           style={{ backdropFilter: 'url("#container-glass")' }}
         />
 
-        <div className="pointer-events-none z-10 ">
+        <div className="pointer-events-none z-10">
           {children}
         </div>
         <GlassFilter />
@@ -129,7 +131,6 @@ function LiquidButton({
     </>
   )
 }
-
 
 function GlassFilter() {
   return (
@@ -139,11 +140,10 @@ function GlassFilter() {
           id="container-glass"
           x="0%"
           y="0%"
-          width="100%"
-          height="100%"
+          width="50%"
+          height="50%"
           colorInterpolationFilters="sRGB"
         >
-          {/* Generate turbulent noise for distortion */}
           <feTurbulence
             type="fractalNoise"
             baseFrequency="0.05 0.05"
@@ -151,11 +151,7 @@ function GlassFilter() {
             seed="1"
             result="turbulence"
           />
-
-          {/* Blur the turbulence pattern slightly */}
           <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise" />
-
-          {/* Displace the source graphic with the noise */}
           <feDisplacementMap
             in="SourceGraphic"
             in2="blurredNoise"
@@ -164,11 +160,7 @@ function GlassFilter() {
             yChannelSelector="B"
             result="displaced"
           />
-
-          {/* Apply overall blur on the final result */}
           <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur" />
-
-          {/* Output the result */}
           <feComposite in="finalBlur" in2="finalBlur" operator="over" />
         </filter>
       </defs>
@@ -183,12 +175,12 @@ type ColorVariant =
   | "error"
   | "gold"
   | "bronze";
- 
+
 interface MetalButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ColorVariant;
 }
- 
+
 const colorVariants: Record<
   ColorVariant,
   {
@@ -242,7 +234,7 @@ const colorVariants: Record<
     textShadow: "[text-shadow:_0_-1px_0_rgb(124_45_18_/_100%)]",
   },
 };
- 
+
 const metalButtonVariants = (
   variant: ColorVariant = "default",
   isPressed: boolean,
@@ -251,10 +243,10 @@ const metalButtonVariants = (
 ) => {
   const colors = colorVariants[variant];
   const transitionStyle = "all 250ms cubic-bezier(0.1, 0.4, 0.2, 1)";
- 
+
   return {
     wrapper: cn(
-      "relative inline-flex transform-gpu rounded-md p-[1.25px] will-change-transform",
+      "relative inline-flex transform-gpu rounded-md p-[1.25px] will-change encrypts",
       colors.outer,
     ),
     wrapperStyle: {
@@ -294,7 +286,7 @@ const metalButtonVariants = (
     },
   };
 };
- 
+
 const ShineEffect = ({ isPressed }: { isPressed: boolean }) => {
   return (
     <div
@@ -307,7 +299,7 @@ const ShineEffect = ({ isPressed }: { isPressed: boolean }) => {
     </div>
   );
 };
- 
+
 export const MetalButton = React.forwardRef<
   HTMLButtonElement,
   MetalButtonProps
@@ -315,11 +307,11 @@ export const MetalButton = React.forwardRef<
   const [isPressed, setIsPressed] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
   const [isTouchDevice, setIsTouchDevice] = React.useState(false);
- 
+
   React.useEffect(() => {
     setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
   }, []);
- 
+
   const buttonText = children || "Button";
   const variants = metalButtonVariants(
     variant,
@@ -327,7 +319,7 @@ export const MetalButton = React.forwardRef<
     isHovered,
     isTouchDevice,
   );
- 
+
   const handleInternalMouseDown = () => {
     setIsPressed(true);
   };
@@ -352,7 +344,7 @@ export const MetalButton = React.forwardRef<
   const handleInternalTouchCancel = () => {
     setIsPressed(false);
   };
- 
+
   return (
     <div className={variants.wrapper} style={variants.wrapperStyle}>
       <div className={variants.inner} style={variants.innerStyle}></div>
@@ -378,5 +370,5 @@ export const MetalButton = React.forwardRef<
     </div>
   );
 });
- 
+
 MetalButton.displayName = "MetalButton";
