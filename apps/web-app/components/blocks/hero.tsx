@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, Menu, X } from "lucide-react";
 import { Button } from "@repo/ui/button";
-import { AnimatedGroup } from "@/components/ui/animated-group";
+import { AnimatedGroup } from "@repo/ui/animated-group";
 import { cn } from "@repo/ui/utils";
 import Image from "next/image";
 
@@ -70,13 +70,7 @@ export function HeroSection() {
               }}
               className="absolute inset-0 -z-20"
             >
-              <img
-                src="https://ik.imagekit.io/lrigu76hy/tailark/night-background.jpg?updatedAt=1745733451120"
-                alt="background"
-                className="absolute inset-x-0 top-56 -z-20 hidden lg:top-32 dark:block"
-                width="3276"
-                height="4095"
-              />
+             
             </AnimatedGroup>
             <div
               aria-hidden

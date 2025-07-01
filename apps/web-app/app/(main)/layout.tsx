@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       />
 
       <div
-        className={`flex-1 overflow-y-auto text-white p-4 transition-all duration-300 ${
+        className={`flex-1 overflow-y-auto text-white pl-[40px] pt-[25px] transition-all duration-300 ${
           isCollapsed ? "ml-[64px]" : "ml-[260px]"
         }`}
       >

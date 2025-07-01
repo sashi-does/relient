@@ -11,7 +11,7 @@ import React, {
 import * as THREE from 'three';
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';
-
+import { degToRad } from 'three/src/math/MathUtils.js';
 
 type MaterialConfig = {
   header?: string;
@@ -322,7 +322,7 @@ const component = ({
 
   return (
     <CanvasWrapper>
-      <group rotation={[0, 0, THREE.MathUtils.degToRad(rotation)]}>
+      <group rotation={[0, 0, degToRad(rotation)]}>
         <NoisePlanes
           material={beamMaterial}
           count={validBeamNumber}

@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import options from "@/app/api/auth/[...nextauth]/options";
 import { connectDb, mongoose } from "@repo/db/mongoose";
 import { PortalSchema } from "@repo/types/mongo-types";
+import { GlassTabs } from "@/components/blocks/portal-tabs";
 
 const Portal =
   mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
@@ -39,25 +40,9 @@ export default async function Portals() {
 
   return (
     <div className="h-[100vh] text-white">
-      <h1 className="text-2xl font-bold">Portal Section</h1>
-      {portals.map((p) => (
-        <Card
-          key={p._id}
-          portalId={p._id}
-          type="portal"
-          heading={p.portalName}
-          subheading={p.clientName}
-          status={p.status}
-          progress={0}
-          lastActivity={
-            p.lastVisited
-              ? `Last visited: ${new Date(p.lastVisited).toLocaleString()}`
-              : "Never"
-          }
-          members={0}
-          messages={p.inbox || 0}
-        />
-      ))}
+      <h1 className="text-xl font-bold">Portals</h1>
+      <GlassTabs portals={portals} />
+      
     </div>
   );
 }

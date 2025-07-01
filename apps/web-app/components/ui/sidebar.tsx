@@ -27,7 +27,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@repo/ui/dialog";
 import axios from "axios";
 import { Button } from "@repo/ui/button";
 import Loader from "@repo/ui/loader";
@@ -115,7 +115,7 @@ export default function Sidebar({
       setDialogOpen(false);
       toast("Portal Created Successfully");
       redirect('/portals')
-      window.refresh()
+
 
       
     } catch (error) {
