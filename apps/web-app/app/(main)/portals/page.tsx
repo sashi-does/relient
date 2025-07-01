@@ -40,7 +40,7 @@ export default async function Portals() {
 
   return (
     <div className="h-[100vh] text-white">
-      <h1 className="text-xl font-bold">Portals</h1>
+      <h1 className="text-xl font-bold mb-5">Portals</h1>
       <GlassTabs portals={portals} />
       
     </div>

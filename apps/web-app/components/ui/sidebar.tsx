@@ -56,14 +56,13 @@ export default function Sidebar({
   const mailRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const dialogTriggerRef = useRef<HTMLButtonElement>(null);
-  const [loading, isLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const pathname = usePathname();
 
-  // Automatically collapse sidebar on small devices and handle Cmd + B, Cmd + P, and Cmd + K shortcuts
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) { // md breakpoint
+      if (window.innerWidth < 768) {
         setIsCollapsed(true);
         setIsOpen(false);
       } else {
@@ -73,10 +72,9 @@ export default function Sidebar({
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.metaKey || event.ctrlKey) {
+      if (event.metaKey) {
         if (event.key === "b" || event.key === "B") {
           event.preventDefault();
-          console.log("Cmd + B triggered");
           if (window.innerWidth < 768) {
             setIsOpen((prev) => !prev);
           } else {
@@ -84,11 +82,7 @@ export default function Sidebar({
           }
         } else if (event.key === "p" || event.key === "P") {
           event.preventDefault();
-          console.log(`Cmd + ${event.key.toUpperCase()} triggered`);
           setDialogOpen(true);
-          if (dialogTriggerRef.current) {
-            dialogTriggerRef.current.click(); 
-          }
         }
       }
     };
@@ -104,7 +98,7 @@ export default function Sidebar({
   }, [setIsCollapsed]);
 
   async function createPortal(portalName: string, name: string, mail: string, description: string) {
-    isLoading(true);
+    setLoading(true);
     try {
       const res = await axios.post("/api/portal", {
         portalName,
@@ -114,14 +108,11 @@ export default function Sidebar({
       });
       setDialogOpen(false);
       toast("Portal Created Successfully");
-      redirect('/portals')
-
-
-      
+      redirect('/portals');
     } catch (error) {
       console.error("Error creating portal:", error);
     }
-    isLoading(false);
+    setLoading(false);
   }
 
   return (
@@ -147,7 +138,7 @@ export default function Sidebar({
 
       <div
         className={clsx(
-          "fixed top-0 mt-5 mb-5 left-0 h-screen text-white border-r border-zinc-800 px-3 z-50 transition-all duration-300 ease-in-out bg-black flex flex-col justify-between",
+          "fixed top-0 left-0 h-screen text-white border-r border-zinc-800 px-3 z-50 transition-all duration-300 ease-in-out bg-black flex flex-col justify-between",
           {
             "w-[260px]": !isCollapsed,
             "w-[64px]": isCollapsed,
@@ -183,30 +174,29 @@ export default function Sidebar({
                 </LiquidButton>
               </div>
             </DialogTrigger>
-
-            <DialogContent>
+            <DialogContent className="bg-gray-900 border-gray-800">
               <DialogHeader>
-                <DialogTitle>Create Client Portal</DialogTitle>
+                <DialogTitle className="text-white">Create Client Portal</DialogTitle>
               </DialogHeader>
               <div className="flex flex-col gap-y-5">
                 <div className="flex flex-col gap-y-3 w-full">
-                  <span>Portal Name</span>
-                  <Input className="py-2" ref={portalNameRef} placeholder="e.g: Project Alpha" />
+                  <span className="text-gray-400">Portal Name</span>
+                  <Input className="bg-gray-800 text-white border-gray-700 py-2" ref={portalNameRef} placeholder="e.g: Project Alpha" />
                 </div>
                 <div className="flex flex-col gap-y-3 w-full">
-                  <span>Client Name</span>
-                  <Input className="py-2" ref={nameRef} placeholder="e.g: Cal.com" />
+                  <span className="text-gray-400">Client Name</span>
+                  <Input className="bg-gray-800 text-white border-gray-700 py-2" ref={nameRef} placeholder="e.g: Cal.com" />
                 </div>
                 <div className="flex flex-col gap-y-3 w-full">
-                  <span>Client Email</span>
-                  <Input className="py-2" ref={mailRef} placeholder="e.g: hello@cal.com" />
+                  <span className="text-gray-400">Client Email</span>
+                  <Input className="bg-gray-800 text-white border-gray-700 py-2" ref={mailRef} placeholder="e.g: hello@cal.com" />
                 </div>
                 <div className="flex flex-col gap-y-3 w-full">
-                  <span>Project Description</span>
-                  <Textarea className="py-2" ref={descRef} placeholder="e.g: Plan strategy" />
+                  <span className="text-gray-400">Project Description</span>
+                  <Textarea className="bg-gray-800 text-white border-gray-700 py-2" ref={descRef} placeholder="e.g: Plan strategy" />
                 </div>
                 <Button
-                  className="bg-white text-black hover:bg-[#ffffffc9]"
+                  className="bg-teal-500 text-black hover:bg-teal-600"
                   onClick={() =>
                     createPortal(
                       portalNameRef.current?.value ?? "",
