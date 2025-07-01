@@ -3,7 +3,7 @@ import { HeroSection } from "@/components/blocks/hero";
 import Footer from "@/components/footer";
 import { Features } from "@/components/blocks/features";
 import { BentoGridDemo } from "@/components/blocks/bento-grid";
-import Slicers from '@repo/ui/beams';
+import Slicers from '@repo/ui/slicers';
 
 export default function Home() {
   return (

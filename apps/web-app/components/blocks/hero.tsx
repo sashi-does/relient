@@ -371,7 +371,7 @@ const HeroHeader = () => {
                   asChild
                   variant="outline"
                   size="sm"
-                  className={`py-2 px-3 rounded font-medium ${cn(isScrolled && "lg:hidden")}`}
+                  className={`py-2 px-3 rounded-md font-medium ${cn(isScrolled && "lg:hidden")}`}
                 >
                   <Link href="#">
                     <span>Login</span>
@@ -380,7 +380,7 @@ const HeroHeader = () => {
                 <Button
                   asChild
                   size="sm"
-                  className={`py-2 px-3 rounded ${cn(isScrolled && "lg:hidden")}`}
+                  className={`py-2 px-3 rounded-md ${cn(isScrolled && "lg:hidden")}`}
                 >
                   <Link href="#">
                     <span>Sign Up</span>
@@ -389,7 +389,7 @@ const HeroHeader = () => {
                 <Button
                   asChild
                   size="sm"
-                  className={`py-2 font-medium rounded ${cn(isScrolled ? "lg:inline-flex" : "hidden")}`}
+                  className={`py-2 font-medium rounded-md ${cn(isScrolled ? "lg:inline-flex" : "hidden")}`}
                 >
                   <Link href="#">
                     <span>Get Started</span>
