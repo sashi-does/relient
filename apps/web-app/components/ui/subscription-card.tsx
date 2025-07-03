@@ -45,7 +45,7 @@ function AnimatedContainer({ className, delay = 0.1, children }: ViewAnimationPr
   whileInView={{ filter: 'blur(0px)', translateY: 0, opacity: 1 }}
   viewport={{ once: true }}
   transition={{ delay, duration: 0.8 }}
-  className={`${className} bg-gradient-to-b rounded-md from-[#4848485b] to-[#000000]`}
+  className={`${className} bg-gradient-to-b border-0 rounded-md from-[#171717] to-[#171717]`}
 >
   {children}
 </motion.div>

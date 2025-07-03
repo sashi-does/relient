@@ -8,6 +8,7 @@ import {
   CreditCard,
   Plus,
   Command,
+  Copyright,
 } from "lucide-react";
 
 import { useRef, useState, useEffect } from "react";
@@ -125,9 +126,9 @@ export default function Sidebar({
 
       <div
         className={clsx(
-          "fixed top-0 left-0 h-screen text-white bg-[#171717] border-r border-zinc-800 px-3 z-50 transition-all duration-300 ease-in-out flex flex-col justify-between overflow-y-auto",
+          "fixed top-0 left-0 h-[100vh] text-white bg-[#171717] border-r border-zinc-800 px-3 z-50 transition-all duration-300 ease-in-out flex flex-col justify-between overflow-y-auto",
           {
-            "w-[260px]": !isCollapsed,
+            "w-[245px]": !isCollapsed,
             "w-[64px]": isCollapsed,
             "translate-x-0": isOpen || !isCollapsed,
             "-translate-x-full md:translate-x-0": !isOpen,
@@ -135,7 +136,7 @@ export default function Sidebar({
         )}
       >
         <div>
-          <div className="flex items-center justify-center mt-4 mb-6">
+          <div className="flex items-center justify-center mt-4">
             <Image
               src="/relient.png"
               alt="Relient Logo"
@@ -144,13 +145,13 @@ export default function Sidebar({
               className="invert brightness-0 opacity-80"
             />
             {!isCollapsed && (
-              <span className="font-extrabold text-2xl ml-2 logo">Relient</span>
+                <span className="font-extrabold text-2xl ml-2 logo">Relient</span>
             )}
           </div>
-
+            { !isCollapsed && <span className="text-[10px] text-[#757474] flex justify-center items-center"><Copyright className="mr-1" height={10} width={10} /> 2025 relient.in, Inc beta</span> }
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <div className="group cursor-pointer flex items-center justify-center w-full px-2 mb-6">
+              <div className="group cursor-pointer flex items-center justify-center w-full px-2 mb-6 mt-6">
                 <LiquidButton
                   ref={dialogTriggerRef}
                   variant="default"
@@ -265,7 +266,7 @@ export default function Sidebar({
         </div>
 
         {!isCollapsed && <SubscriptionCard />}
-
+        
         <button
           className={clsx(
             "mb-4 p-2 rounded-md cursor-pointer hover:bg-[#40404080] transition self-end",

@@ -40,7 +40,8 @@ export default async function Portals() {
 
   return (
     <div className="h-[100vh] text-white">
-      <h1 className="text-xl font-bold mb-5">Portals</h1>
+      <h1 className="text-[22px] font-bold mb-[0] p-0">Portals</h1>
+      <p className="mb-3 mt-[0px] text-[#D4D4D4] p-0 text-[14px]">Create manage and host your portals</p>
       <GlassTabs portals={portals} />
       
     </div>

@@ -23,7 +23,7 @@ export default function Stats({ type, count }: { type: keyof typeof detailConfig
 
 
   return (
-    <div className="md:w-[20vw] w-[80vw] my-5 p-6 pb-10 hover:border-[#ffffff44] hover:cursor-pointer rounded-2xl border border-muted bg-background shadow-sm hover:shadow-md transition-all duration-200">
+  <div className="md:w-[32vw] w-[80vw] my-5 p-6 pb-10 hover:border-[#ffffff44] hover:cursor-pointer rounded-2xl border border-muted bg-[#121212] shadow-sm hover:shadow-md transition-all duration-200">
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-sm text-muted-foreground">{detailConfig[type].title}</p>

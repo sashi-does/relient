@@ -28,8 +28,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       />
 
       <div
-        className={`flex-1 overflow-y-auto text-white pl-[40px] pt-[25px] pr-[20px] transition-all duration-300 ${
-          isCollapsed ? "ml-[64px]" : "ml-[260px]"
+        className={`flex-1 bg-[#0F0F0F] overflow-y-auto text-white pl-[40px] pt-[25px] pr-[20px] transition-all duration-300 ${
+          isCollapsed ? "ml-[64px]" : "ml-[240px]"
         }`}
       >
         {children}

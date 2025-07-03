@@ -42,7 +42,7 @@ export default function Card({
         {/* Top Section */}
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-blue-600 rounded-md grid place-items-center text-white font-bold text-sm">
+            <div className="w-9 h-9 bg-gradient-to-b from-[#605b5b] to-[#202020] rounded-md grid place-items-center text-white font-bold text-sm">
               {heading?.[0]}
             </div>
             <div>
