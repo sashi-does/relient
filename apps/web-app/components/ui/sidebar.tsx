@@ -6,10 +6,8 @@ import {
   FolderKanban,
   Settings,
   CreditCard,
-  X,
   Plus,
   Command,
-  ChevronRight,
 } from "lucide-react";
 
 import { useRef, useState, useEffect } from "react";
@@ -108,6 +106,7 @@ export default function Sidebar({
       });
       setDialogOpen(false);
       toast("Portal Created Successfully");
+      location.reload();
       redirect('/portals');
     } catch (error) {
       console.error("Error creating portal:", error);
@@ -119,26 +118,9 @@ export default function Sidebar({
     <>
       <Toaster />
 
-      <button
-        className="md:hidden fixed top-4 left-4 z-[100] bg-zinc-900 p-2 rounded hover:bg-zinc-800 transition"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {isOpen ? <X className="w-5 h-5 text-white" /> : <ChevronRight className="w-5 h-5 text-white" />}
-      </button>
-
-      <button
-        className={clsx(
-          "hidden md:block fixed top-5 z-[60] bg-zinc-900 p-1 rounded hover:bg-zinc-800 transition",
-          isCollapsed ? "left-[64px]" : "left-[260px]"
-        )}
-        onClick={() => setIsCollapsed(!isCollapsed)}
-      >
-        {isCollapsed ? <ChevronRight size={16} /> : <X size={16} />}
-      </button>
-
       <div
         className={clsx(
-          "fixed top-0 left-0 h-screen text-white border-r border-zinc-800 px-3 z-50 transition-all duration-300 ease-in-out bg-black flex flex-col justify-between",
+          "fixed top-0 left-0 h-screen text-white border-r border-zinc-800 px-3 z-50 transition-all duration-300 ease-in-out bg-black flex flex-col justify-between overflow-y-auto",
           {
             "w-[260px]": !isCollapsed,
             "w-[64px]": isCollapsed,
@@ -174,29 +156,28 @@ export default function Sidebar({
                 </LiquidButton>
               </div>
             </DialogTrigger>
-            <DialogContent className="bg-gray-900 border-gray-800">
+            <DialogContent>
               <DialogHeader>
                 <DialogTitle className="text-white">Create Client Portal</DialogTitle>
               </DialogHeader>
               <div className="flex flex-col gap-y-5">
                 <div className="flex flex-col gap-y-3 w-full">
                   <span className="text-gray-400">Portal Name</span>
-                  <Input className="bg-gray-800 text-white border-gray-700 py-2" ref={portalNameRef} placeholder="e.g: Project Alpha" />
+                  <Input className="text-white py-2" ref={portalNameRef} placeholder="e.g: Project Alpha" />
                 </div>
                 <div className="flex flex-col gap-y-3 w-full">
                   <span className="text-gray-400">Client Name</span>
-                  <Input className="bg-gray-800 text-white border-gray-700 py-2" ref={nameRef} placeholder="e.g: Cal.com" />
+                  <Input className="text-white py-2" ref={nameRef} placeholder="e.g: Cal.com" />
                 </div>
                 <div className="flex flex-col gap-y-3 w-full">
                   <span className="text-gray-400">Client Email</span>
-                  <Input className="bg-gray-800 text-white border-gray-700 py-2" ref={mailRef} placeholder="e.g: hello@cal.com" />
+                  <Input className="text-white py-2" ref={mailRef} placeholder="e.g: hello@cal.com" />
                 </div>
                 <div className="flex flex-col gap-y-3 w-full">
                   <span className="text-gray-400">Project Description</span>
-                  <Textarea className="bg-gray-800 text-white border-gray-700 py-2" ref={descRef} placeholder="e.g: Plan strategy" />
+                  <Textarea className="text-white py-2" ref={descRef} placeholder="e.g: Plan strategy" />
                 </div>
                 <Button
-                  className="bg-teal-500 text-black hover:bg-teal-600"
                   onClick={() =>
                     createPortal(
                       portalNameRef.current?.value ?? "",
@@ -248,6 +229,15 @@ export default function Sidebar({
         </div>
 
         {!isCollapsed && <SubscriptionCard />}
+
+        <button
+          className={clsx(
+            "mb-4 p-2 rounded-md cursor-pointer hover:bg-[#18181B] transition self-end",3
+          )}
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <Image className={`invert brightness-50 ${isCollapsed ? 'rotate-180' : 'rotate-0'}`} src="/collapse.png" height={20} width={20} alt="collapse" />
+        </button>
       </div>
     </>
   );

@@ -57,6 +57,7 @@ export async function GET(req: NextRequest, { params }: { params: { portalId: st
 
 export async function POST(req: NextRequest) {
     try {
+        console.log("POST: portal create")
         const session = await getServerSession(options)
         console.log("POST: Portal" + JSON.stringify(session))
         if (!session) {
@@ -149,17 +150,16 @@ export async function PATCH(req: NextRequest) {
             }, { status: 404 });
         }
 
-        // Prepare modules update
+
         const modulesUpdate: any = {
             overview: portal.modules?.overview || { title: "Overview", summary: `Portal overview for ${portal.portalName}` },
             tasks: portal.modules?.tasks || { tasks: [] },
             leads: portal.modules?.leads || { leads: [] }
         };
 
-        // Update enabled modules based on the request
         modules.forEach((module: { id: string; enabled: boolean }) => {
             if (module.id === "overview") {
-                // Overview is always enabled
+
                 modulesUpdate.overview = {
                     title: "Overview",
                     summary: `Portal overview for ${portal.portalName}`
@@ -186,7 +186,6 @@ export async function PATCH(req: NextRequest) {
             }
         });
 
-        // Update portal with new modules data
         const updatedPortal = await Portal.findByIdAndUpdate(
             portalId,
             {

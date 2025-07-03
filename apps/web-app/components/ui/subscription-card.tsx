@@ -14,7 +14,7 @@ const features = [
 
 export default function SubscriptionCard() {
 	return (
-		<section className="py-16 w-[100%] md:py-32">
+		<section className="py-16 w-[100%]">
 			<div className="mx-auto space-y-8 px-4">
 				
 				<AnimatedContainer
