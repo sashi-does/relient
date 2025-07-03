@@ -5,6 +5,12 @@
   font-family: "HeroLight", sans-serif;
 }
 
+::selection {
+  background: #FAFAFA;
+  color: black;
+}
+
+
 @font-face {
   font-family: "HeroLight";
   src: url("/fonts/hero/HeroLight-Bold.otf") format("opentype");

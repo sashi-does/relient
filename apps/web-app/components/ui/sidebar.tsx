@@ -243,13 +243,13 @@ export default function Sidebar({
                       }
                     )}
                   >
-                    <item.icon className="w-[15px] h-[15px]" />
+                    <item.icon className="!w-[16px] !h-[16px]" />
                     {!isCollapsed && (
                       <span className="text-[15px]">{item.name}</span>
                     )}
                     {isCollapsed && (
                       <span className="absolute left-[70px] bg-zinc-900 px-2 py-1 rounded shadow text-xs opacity-0 group-hover:opacity-100 text-[red] transition whitespace-nowrap z-10">
-                        {item.name}sasas
+                        {item.name}
                       </span>
                     )}
                     {!isCollapsed && item.count !== undefined && (

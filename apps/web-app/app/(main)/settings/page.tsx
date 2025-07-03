@@ -56,12 +56,12 @@ function Page() {
 
   return (
     <div className="text-gray-300 p-6">
-      <div className="mx-auto px-[30px] py-[30px] border-1 w-fit rounded-xl flex flex-col justify-center items-center">
-        <h1 className="text-xl self-start font-bold mb-6 text-white">Profile</h1>
+      <div className="mx-auto px-[30px] py-[30px] border-1 w-[50vw] rounded-xl flex flex-col justify-center items-center">
+        <h1 className="text-xl self-start font-bold mb-3 text-white">Profile</h1>
+        <p className="text-sm mb-6 w-fit self-start text-gray-200">Manage profile settings</p>
 
-        <div className="max-w-md">
+        <div className="w-full">
           <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-2 text-gray-200">Profile Picture</h2>
             <div className="flex items-center gap-4">
               <Image
                 src={profilePic}
@@ -71,7 +71,10 @@ function Page() {
                 className="rounded-full border border-gray-700"
                 unoptimized
               />
-              <div>
+            
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold mb-2 text-gray-200">Profile Picture</span>
+                <div>
                 <label className="bg-transparent cursor-pointer border border-[#ffffff50] px-[8px] py-[5px] text-[14px] rounded-md">
                   Upload Avatar
                   <input
@@ -87,6 +90,7 @@ function Page() {
                 >
                   Remove
                 </button>
+                </div>
               </div>
             </div>
           </div>
