@@ -41,13 +41,13 @@ function AnimatedContainer({ className, delay = 0.1, children }: ViewAnimationPr
 
 	return (
 		<motion.div
-			initial={{ filter: 'blur(4px)', translateY: -8, opacity: 0 }}
-			whileInView={{ filter: 'blur(0px)', translateY: 0, opacity: 1 }}
-			viewport={{ once: true }}
-			transition={{ delay, duration: 0.8 }}
-			className={className}
-		>
-			{children}
-		</motion.div>
+  initial={{ filter: 'blur(4px)', translateY: -8, opacity: 0 }}
+  whileInView={{ filter: 'blur(0px)', translateY: 0, opacity: 1 }}
+  viewport={{ once: true }}
+  transition={{ delay, duration: 0.8 }}
+  className={`${className} bg-gradient-to-b rounded-md from-[#4848485b] to-[#000000]`}
+>
+  {children}
+</motion.div>
 	);
 }

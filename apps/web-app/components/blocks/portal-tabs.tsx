@@ -37,13 +37,14 @@ export function GlassTabs({ portals }: { params: { portals: Portal } }) {
         </div>
 
         <TabsContent value="overview" className="text-center text-muted-foreground mt-4">
-          <div className="flex flex-col md:flex-row justify-center space-x-[20px]">
+          <div className="flex flex-col md:flex-row justify-between space-x-[20px]">
             <Stats count={portals.length} type="portals" />
             <Stats count={portals.filter(p => p.status === "Active").length} count={portals.length} type="activeStatus" />
             <Stats type="progress" />
+            
           </div>
         </TabsContent>
-        <TabsContent value="portals" className="text-center text-muted-foreground mt-4">
+        <TabsContent value="portals" className={`text-center flex flex-wrap gap-x-5 text-muted-foreground mt-4`}>
         {portals.map((p) => (
         <Card
           key={p._id}

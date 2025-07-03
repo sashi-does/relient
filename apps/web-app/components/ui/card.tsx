@@ -38,58 +38,75 @@ export default function Card({
 }: CardProps) {
   if (type === "portal") {
     return (
-      <div className="rounded-xl p-4 bg-[#0c0c12] text-white shadow-md w-full max-w-md">
-        <div className="flex justify-between items-start">
-          <div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-md grid place-items-center font-bold">
-                { heading && heading[0]}
-              </div>
-              <div>
-                <div className="font-semibold">{heading}</div>
-                {subheading && <div className="text-sm opacity-70">{subheading}</div>}
-              </div>
+      <div className="rounded-2xl p-4 bg-[#17171750] text-white shadow hover:shadow-lg transition-all w-[400px] mb-5 max-w-md border border-[#2b2b2b]">
+        {/* Top Section */}
+        <div className="flex justify-between items-start mb-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-blue-600 rounded-md grid place-items-center text-white font-bold text-sm">
+              {heading?.[0]}
             </div>
-            <div className="flex items-center gap-2 mt-2 text-sm">
-              <div className={`${status === "Active" ? "bg-green-700" : "bg-red-800"} text-xs px-2 py-0.5 rounded-full`}
-              >
-                {status}
-              </div>
-              <div className="opacity-60">Last activity: {lastActivity}</div>
+            <div>
+              <div className="text-base font-semibold">{heading}</div>
+              {subheading && (
+                <div className="text-sm text-[#aaa] leading-none">{subheading}</div>
+              )}
             </div>
           </div>
-          <div className="flex gap-2 mt-1">
+          <div className="flex gap-2 text-white/70">
             <Eye size={16} />
-            <Link target="_blank" href={`/portal/edit/${portalId}`}><Pencil size={16} /></Link>
+            <Link target="_blank" href={`/portal/edit/${portalId}`}>
+              <Pencil size={16} />
+            </Link>
             <Share2 size={16} />
-            <Trash2 size={16} />
+            <Trash2 size={16} className="text-red-500" />
           </div>
         </div>
 
+        {/* Status & Activity */}
+        <div className="flex items-center gap-2 text-sm mb-3 text-[#b9b9b9]">
+          <div
+            className={`px-2 py-0.5 rounded-full text-xs ${
+              status === "Active"
+                ? "bg-[#1f891f30] text-green-400"
+                : "bg-[#891f1f30] text-red-400"
+            }`}
+          >
+            {status}
+          </div>
+          <div className="opacity-70">
+            Last activity:{" "}
+            <span className="text-white/80">{lastActivity || "Never"}</span>
+          </div>
+        </div>
+
+        {/* Progress */}
         {progress !== undefined && (
-          <div className="mt-4">
-            <div className="text-sm mb-1">Progress</div>
-            <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+          <div className="mt-2">
+            <div className="text-sm mb-1 text-[#b9b9b9]">Progress</div>
+            <div className="w-full h-2 bg-[#2e2e2e] rounded-full overflow-hidden">
               <div
-                className="h-full bg-blue-500 rounded-full"
+                className="h-full bg-blue-500 transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <div className="text-right text-xs mt-1">{progress}%</div>
+            <div className="text-right text-xs text-[#999] mt-1">
+              {progress}%
+            </div>
           </div>
         )}
 
-        <div className="flex justify-between text-sm opacity-80 mt-3">
+        {/* Footer */}
+        <div className="flex justify-between text-sm text-[#aaa] mt-4">
           <div className="flex items-center gap-1">
-            <Users size={14} /> {members} members
+            <Users size={14} /> {members ?? 0} members
           </div>
-          <div>{messages} messages</div>
+          <div>{messages ?? 0} messages</div>
         </div>
       </div>
     );
   }
 
-
+  // fallback to "update" card
   return (
     <div className="rounded-xl p-4 bg-[#0c0c12] text-white shadow-md w-64">
       <div className="flex justify-between items-center">
