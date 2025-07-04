@@ -7,6 +7,8 @@ import { Button } from "@repo/ui/button";
 import { AnimatedGroup } from "@repo/ui/animated-group";
 import { cn } from "@repo/ui/utils";
 import Image from "next/image";
+import { SessionProvider, useSession } from "next-auth/react";
+import options from "@/app/api/auth/[...nextauth]/options";
 
 const transitionVariants = {
   item: {
@@ -29,6 +31,15 @@ const transitionVariants = {
 };
 
 export function HeroSection() {
+  return <>
+    <SessionProvider>
+      <Hero />
+    </SessionProvider>
+  </>
+}
+
+function Hero() {
+  const session = useSession()
   return (
     <>
       <HeroHeader />
@@ -132,12 +143,12 @@ export function HeroSection() {
                       size="lg"
                       className="rounded-xl px-5 py-3 text-base"
                     >
-                      <Link href="#link">
+                      <Link href={`${session.data?.user ? "/dashboard" : "/auth/signin"}`}>
                         <span className="text-nowrap">Start Building</span>
                       </Link>
                     </Button>
                   </div>
-                  <Button
+                  {!session.data?.user && <Button
                     key={2}
                     asChild
                     size="lg"
@@ -147,7 +158,7 @@ export function HeroSection() {
                     <Link href="#link">
                       <span className="text-nowrap">Request a demo</span>
                     </Link>
-                  </Button>
+                  </Button>}
                 </AnimatedGroup>
               </div>
             </div>
@@ -295,6 +306,7 @@ const menuItems = [
 const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const session = useSession()
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -373,17 +385,17 @@ const HeroHeader = () => {
                   size="sm"
                   className={`py-2 px-3 rounded-md font-medium ${cn(isScrolled && "lg:hidden")}`}
                 >
-                  <Link href="#">
+                  {!session.data?.user && <Link href="/auth/signin">
                     <span>Login</span>
-                  </Link>
+                  </Link>}
                 </Button>
                 <Button
                   asChild
                   size="sm"
                   className={`py-2 px-3 rounded-md ${cn(isScrolled && "lg:hidden")}`}
                 >
-                  <Link href="#">
-                    <span>Sign Up</span>
+                  <Link href={`${session.data?.user ? "/dashboard" : "/auth/signin"}`}>
+                  <span>{session.data?.user ? "Go to app" : "Sign Up"}</span>
                   </Link>
                 </Button>
                 <Button
@@ -391,8 +403,8 @@ const HeroHeader = () => {
                   size="sm"
                   className={`py-2 font-medium rounded-md ${cn(isScrolled ? "lg:inline-flex" : "hidden")}`}
                 >
-                  <Link href="#">
-                    <span>Get Started</span>
+                  <Link href={`${session.data?.user ? "/dashboard" : "/auth/signin"}`}>
+                    <span>{session.data?.user ? "Go to app" : "Get Started"}</span>
                   </Link>
                 </Button>
               </div>

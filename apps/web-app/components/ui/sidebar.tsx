@@ -156,7 +156,7 @@ export default function Sidebar({
             { !isCollapsed && <span className="text-[10px] text-[#757474] flex justify-center items-center"><Copyright className="mr-1" height={10} width={10} /> 2025 relient.in, Inc beta</span> }
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <div className="group cursor-pointer flex items-center justify-center w-full px-2 mb-6 mt-6">
+              <div className="hover:bg-[#4f4f4f23] transistion-all duration-200 rounded-4xl flex items-center justify-center w-full mb-6 mt-6">
                 <LiquidButton
                   ref={dialogTriggerRef}
                   variant="default"

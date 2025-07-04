@@ -4,6 +4,8 @@ import options from "@/app/api/auth/[...nextauth]/options";
 import { connectDb, mongoose } from "@repo/db/mongoose";
 import { PortalSchema } from "@repo/types/mongo-types";
 import { GlassTabs } from "@/components/blocks/portal-tabs";
+import { redirect } from "next/navigation";
+
 
 
 declare module "next-auth" {
@@ -27,7 +29,7 @@ export default async function Portals() {
   const session = await getServerSession(options);
 
   if (!session?.user?.id) {
-    return <div className="p-4 text-white">Not logged in</div>;
+    redirect("/dashboard")
   }
 
   const portals = await getPortals(session.user.id);

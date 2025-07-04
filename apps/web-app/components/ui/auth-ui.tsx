@@ -192,6 +192,8 @@ function AuthFormContainer() {
         <Image
           src="https://www.svgrepo.com/show/475656/google-color.svg"
           alt="Google"
+          height={40}
+          width={40}
           className="mr-2 h-4 w-4"
         />
         Continue with Google

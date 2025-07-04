@@ -8,6 +8,7 @@ import { Textarea } from "@repo/ui/text-area";
 import { Button } from "@repo/ui/button";
 import { Trash2Icon } from "lucide-react";
 
+
 export default function Settings() {
   return (
     <SessionProvider>
@@ -23,6 +24,11 @@ function Page() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [about, setAbout] = useState("");
+
+
+  if(!session?.user) {
+    // router.replace("/")
+  }
 
   useEffect(() => {
     setIsMounted(true);
