@@ -6,7 +6,13 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import Radar from "@repo/ui/radar"
+import Radar from "@repo/ui/radar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type CardProps = {
   type?: "portal" | "update";
@@ -53,14 +59,46 @@ export default function Card({
               )}
             </div>
           </div>
-          <div className="flex gap-2 text-white/70">
-            <Eye size={16} />
-            <Link target="_blank" href={`/portal/edit/${portalId}`}>
-              <Pencil size={16} />
-            </Link>
-            <Share2 size={16} />
-            <Trash2 size={16} className="text-red-500" />
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="text-white/70 hover:text-white transition-colors hover:cursor-pointer focus:outline-none">
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6h.01M12 12h.01M12 18h.01"
+                  />
+                </svg>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-[#2e2e2e]">
+              <DropdownMenuItem>
+                <Eye className="mr-2 h-4 w-4" />
+                <span>View</span>
+              </DropdownMenuItem>
+              <Link target="_blank" href={`/portal/edit/${portalId}`}>
+                <DropdownMenuItem className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-white/70 hover:text-white focus:text-white">
+                  <Pencil className="mr-2 h-4 w-4" />
+                  <span>Edit</span>
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-white/70 hover:text-white focus:text-white">
+                <Share2 className="mr-2 h-4 w-4" />
+                <span>Share</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-red-500 hover:text-red-400 focus:text-red-400">
+                <Trash2 className="mr-2 h-4 w-4" />
+                <span>Delete</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Status & Activity */}

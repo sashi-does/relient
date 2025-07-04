@@ -8,7 +8,7 @@ import { AnimatedGroup } from "@repo/ui/animated-group";
 import { cn } from "@repo/ui/utils";
 import Image from "next/image";
 import { SessionProvider, useSession } from "next-auth/react";
-import options from "@/app/api/auth/[...nextauth]/options";
+
 
 const transitionVariants = {
   item: {
