@@ -4,8 +4,6 @@ import * as React from "react";
 import { useState, useId } from "react";
 import { signIn } from "next-auth/react";
 import { Eye, EyeOff } from "lucide-react";
-import * as LabelPrimitive from "@radix-ui/react-label";
-import { cva, type VariantProps } from "class-variance-authority";
 import Image from "next/image";
 import axios from "axios";
 import { Button } from "@repo/ui/button";
@@ -191,7 +189,7 @@ function AuthFormContainer() {
         type="button"
         onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
       >
-        <img
+        <Image
           src="https://www.svgrepo.com/show/475656/google-color.svg"
           alt="Google"
           className="mr-2 h-4 w-4"

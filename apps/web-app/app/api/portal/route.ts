@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb, mongoose } from "@repo/db/mongoose"
-import { PortalModel, PortalSchema } from "@repo/types/mongo-types";
+import { PortalSchema } from "@repo/types/mongo-types";
 import options from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { prisma } from "@repo/db/prisma";

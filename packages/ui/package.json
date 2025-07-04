@@ -11,7 +11,7 @@
   "exports": {
     "./styles.css": "./dist/index.css",
     "./*": "./src/*.tsx",
-    "./utils": "./lib/utils.ts"
+    "./utils": "./src/lib/utils.ts"
   },
   "license": "MIT",
   "scripts": {

@@ -1,6 +1,5 @@
 import { Globe, Users, IndentIncrease } from "lucide-react";
-import axios from "axios";
-import { useEffect, useState } from "react";
+
 
 const detailConfig = {
   portals: {

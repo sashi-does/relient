@@ -13,7 +13,7 @@ export default function GridPattern({
 	return (
 		<svg aria-hidden="true" {...props}>
 			<defs>
-				<pattern id={patternId} width={width} height={height} patternUnits="userSpaceOnUse" x={x} y={y}>
+				<pattern id={patternId} width={width} height={height} patternUnits="userSpaceOnUse" x={x ?? 0} y={y ?? 0}>
 					<path d={`M.5 ${height}V.5H${width}`} fill="none" />
 				</pattern>
 			</defs>
@@ -21,7 +21,7 @@ export default function GridPattern({
 			{squares && (
 				<svg x={x} y={y} className="overflow-visible">
 					{squares.map(([x, y], index) => (
-						<rect strokeWidth="0" key={index} width={width + 1} height={height + 1} x={x * width} y={y * height} />
+						<rect strokeWidth="0" key={index} width={width + 1} height={height + 1} x={x ?? 0 * width} y={y ?? 0 * height} />
 					))}
 				</svg>
 			)}

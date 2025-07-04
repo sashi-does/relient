@@ -110,10 +110,15 @@ export default function Sidebar({
         mail,
         description,
       });
-      setDialogOpen(false);
-      toast("Portal Created Successfully");
-      location.reload();
-      redirect("/portals");
+      if(res.data.success) {
+        setDialogOpen(false);
+        toast("Portal Created Successfully");
+        location.reload();
+        redirect("/portals");
+      }
+      else {
+        throw new Error(res.data)
+      }
     } catch (error) {
       console.error("Error creating portal:", error);
     }

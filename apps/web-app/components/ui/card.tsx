@@ -6,6 +6,7 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import Radar from "@repo/ui/radar"
 
 type CardProps = {
   type?: "portal" | "update";
@@ -71,6 +72,7 @@ export default function Card({
                 : "bg-[#891f1f30] text-red-400"
             }`}
           >
+            <Radar />
             {status}
           </div>
           <div className="opacity-70">

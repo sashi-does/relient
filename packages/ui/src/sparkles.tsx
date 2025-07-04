@@ -3,9 +3,10 @@
 import { useEffect, useId, useState } from "react"
 import Particles, { initParticlesEngine } from "@tsparticles/react"
 import { loadSlim } from "@tsparticles/slim"
+import type { IOptions, RecursivePartial } from "@tsparticles/engine";
 
 export function Sparkles({
-  className,
+  className = "",
   size = 1,
   minSize = null,
   density = 800,
@@ -78,5 +79,11 @@ export function Sparkles({
     detectRetina: true,
   }
 
-  return isReady && <Particles id={id} options={{ ...defaultOptions, ...options }} className={className} />
+  return isReady && (
+    <Particles
+      id={id}
+      options={{ ...defaultOptions, ...options } as RecursivePartial<IOptions>}
+      className={className}
+    />
+  );
 }

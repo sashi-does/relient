@@ -1,8 +1,9 @@
 'use client';
-import { ReactNode } from 'react';
-import { motion, Variants } from 'framer-motion';
-import { cn } from '@repo/ui/utils';
+import type { ReactNode } from "react";
+import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import React from 'react';
+import { cn } from './lib/utils';
 
 type PresetType =
   | 'fade'
@@ -32,7 +33,7 @@ const defaultContainerVariants: Variants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
-    },
+    } as any,
   },
 };
 
@@ -87,7 +88,7 @@ const presetVariants: Record<
       visible: {
         opacity: 1,
         scale: 1,
-        transition: { type: 'spring', stiffness: 300, damping: 20 },
+        transition: { type: "spring", stiffness: 300, damping: 20 } as any
       },
     },
   },
@@ -98,7 +99,7 @@ const presetVariants: Record<
       visible: {
         opacity: 1,
         rotateX: 0,
-        transition: { type: 'spring', stiffness: 300, damping: 20 },
+        transition: { type: "spring", stiffness: 300, damping: 20 } as any
       },
     },
   },
@@ -109,7 +110,7 @@ const presetVariants: Record<
       visible: {
         opacity: 1,
         y: 0,
-        transition: { type: 'spring', stiffness: 400, damping: 10 },
+        transition: { type: 'spring', stiffness: 400, damping: 10 } as any,
       },
     },
   },
@@ -120,7 +121,7 @@ const presetVariants: Record<
       visible: {
         opacity: 1,
         rotate: 0,
-        transition: { type: 'spring', stiffness: 200, damping: 15 },
+        transition: { type: 'spring', stiffness: 200, damping: 15 } as any,
       },
     },
   },
@@ -131,7 +132,7 @@ const presetVariants: Record<
       visible: {
         opacity: 1,
         rotate: 0,
-        transition: { type: 'spring', stiffness: 300, damping: 8 },
+        transition: { type: 'spring', stiffness: 300, damping: 8 } as any,
       },
     },
   },

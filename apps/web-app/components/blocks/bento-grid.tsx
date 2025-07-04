@@ -3,8 +3,6 @@ import BentoGrid from "@repo/ui/bento"
 import { BentoItem } from "@repo/types/ui-types"
 import {
     CheckCircle,
-    Clock,
-    Star,
     TrendingUp,
     Video,
     Globe,

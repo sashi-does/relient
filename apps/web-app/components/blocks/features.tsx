@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader } from '@repo/ui/card'
 import { cn } from '@repo/ui/utils'
 import { Calendar, LucideIcon, MapIcon } from 'lucide-react'
+import Image from 'next/image'
 import { ReactNode } from 'react'
 
 export function Features() {
@@ -138,14 +139,14 @@ interface DualModeImageProps {
 
 const DualModeImage = ({ darkSrc, lightSrc, alt, width, height, className }: DualModeImageProps) => (
     <>
-        <img
+        <Image
             src={darkSrc}
             className={cn('hidden dark:block', className)}
             alt={`${alt} dark`}
             width={width}
             height={height}
         />
-        <img
+        <Image
             src={lightSrc}
             className={cn('shadow dark:hidden', className)}
             alt={`${alt} light`}

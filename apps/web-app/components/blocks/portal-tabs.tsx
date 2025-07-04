@@ -1,24 +1,10 @@
-'use client';
-
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Portal } from "@repo/types/interfaces";
 import Card from "../ui/card";
 import Stats from "./stats"
-import { useEffect, useState } from "react";
-import axios from "axios";
 
-export function GlassTabs({ portals }: { params: { portals: Portal } }) {
-  const [portalCount, setPortalCount] = useState(0)
-  useEffect(() => {
-    async function getPortals() {
-      const response = await axios.get('/api/get-portals')
-      setPortalCount(response.data.portals.length)
-      
-    }
-    getPortals()
-
-  }, [])
-  
+export function GlassTabs({ portals }: { portals: Portal[] }) {
+ 
   return (
     <div>
       <Tabs defaultValue="overview" className="">
@@ -45,7 +31,7 @@ export function GlassTabs({ portals }: { params: { portals: Portal } }) {
           </div>
         </TabsContent>
         <TabsContent value="portals" className={`text-center flex flex-wrap gap-x-5 text-muted-foreground mt-4`}>
-        {portals.map((p) => (
+        {portals.map((p: any) => (
         <Card
           key={p._id}
           portalId={p._id}

@@ -1,17 +1,25 @@
 import PortalPlaceholder from "@/components/blocks/portal-placeholder";
-import Card from "@/components/ui/card";
 import { getServerSession } from "next-auth";
 import options from "@/app/api/auth/[...nextauth]/options";
 import { connectDb, mongoose } from "@repo/db/mongoose";
 import { PortalSchema } from "@repo/types/mongo-types";
 import { GlassTabs } from "@/components/blocks/portal-tabs";
 
+
+declare module "next-auth" {
+  interface Session {
+    user?: {
+      id?: string;
+    }
+  }
+}
+
 const Portal =
   mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
 
 async function getPortals(userId: string) {
   await connectDb();
-  const portals = await Portal.find({ userId }).lean();
+  const portals = await (Portal as mongoose.Model<any>).find({ userId }).lean();
   return JSON.parse(JSON.stringify(portals));
 }
 

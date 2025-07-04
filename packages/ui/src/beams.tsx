@@ -6,10 +6,11 @@ import React, {
   useEffect,
   useRef,
   useMemo,
-  ReactNode,
 } from 'react';
+import type { ReactNode } from 'react';
 import * as THREE from 'three';
-import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
+import type { ThreeElements } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';
 import { degToRad } from 'three/src/math/MathUtils.js';
 
@@ -93,15 +94,15 @@ const extendMaterial = (
     fragmentShader: baseFrag,
     uniforms: baseUniforms,
   } = physical;
-  const baseDefines = physical.defines ?? {};
+  const baseDefines =  (physical as any).defines ?? {};
   const uniforms = THREE.UniformsUtils.clone(baseUniforms);
   const defaults = new BaseMaterial(cfg.material || {});
 
-  if (defaults.color) uniforms.diffuse.value = defaults.color;
-  if ('roughness' in defaults) uniforms.roughness.value = defaults.roughness;
-  if ('metalness' in defaults) uniforms.metalness.value = defaults.metalness;
-  if ('envMap' in defaults) uniforms.envMap.value = defaults.envMap;
-  if ('envMapIntensity' in defaults)
+  if (defaults.color && uniforms.diffuse) uniforms.diffuse.value = defaults.color;
+  if ('roughness' in defaults && uniforms.roughness) uniforms.roughness.value = defaults.roughness;
+  if ('metalness' in defaults && uniforms.metalness) uniforms.metalness.value = defaults.metalness;
+  if ('envMap' in defaults && uniforms.envMap) uniforms.envMap.value = defaults.envMap;
+  if ('envMapIntensity' in defaults && uniforms.envMapIntensity)
     uniforms.envMapIntensity.value = defaults.envMapIntensity;
 
   Object.entries(cfg.uniforms ?? {}).forEach(([key, u]) => {

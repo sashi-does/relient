@@ -13,7 +13,6 @@ const options: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         const email = credentials?.email;
-        const password = credentials?.password;
         const user = await prisma.user.findFirst({
           where: {
             email,
