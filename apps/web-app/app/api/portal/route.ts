@@ -224,9 +224,11 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        const portalId = await req.json()
+        const { portalId } = await req.json()
+        await connectDb()
+        console.log(portalId)
         await PortalModel.deleteOne({
-            portalId
+            _id: portalId
         })
         return NextResponse.json({
             success: true,

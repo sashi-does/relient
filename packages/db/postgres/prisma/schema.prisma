@@ -14,9 +14,16 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  username  String    @default("")
-  email     String    @unique
-  password  String?
-  image     String?
+  id          String    @id @default(uuid())
+  username    String    @default("")
+  email       String    @unique
+  password    String?
+  image       String?
+  onboarded   Boolean   @default(false)
+}
+
+model Agency {
+  id          String    @id @default(uuid())
+  website     String?
+  logo        String?
 }

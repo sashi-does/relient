@@ -144,7 +144,7 @@ function Page() {
             <h2 className="text-red-400 font-semibold mb-2">Danger zone</h2>
             <p className="text-sm text-gray-500">Be careful! Account deletion cannot be undone.</p>
             <Button
-              className="mb-3 flex items-center justify-between gap-x-1 self-end mt-5 border-1 border-[#ffffff50] bg-transparent px-3 py-[5px] roudnded text-white hover:bg-[#6c1818] hover:text-white"
+              className="mb-3 flex items-center justify-between gap-x-1 self-end mt-5 border-1 border-[#ffffff50] bg-transparent px-3 py-[3px] roudnded text-white hover:bg-[#6c1818] hover:border-[#6c1818] hover:text-white"
               onClick={handleDeleteAccount}
             >
               <Trash2Icon height={15} width={15} />

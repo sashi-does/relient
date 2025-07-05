@@ -9,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PortalModel } from "@repo/types/mongo-types";
 import { toast } from "sonner";
 import axios from "axios";
 
@@ -30,6 +29,7 @@ type CardProps = {
 
 async function deletePortal(portalId: string) {
   try {
+
     const response = await axios.delete('/api/portal', { data : { portalId } })
     if(response.data.status == 204) {
       toast("Portal removed successfully")
