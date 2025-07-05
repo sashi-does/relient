@@ -1,10 +1,6 @@
-import {
-  Share2,
-  Pencil,
-  Trash2,
-  Eye,
-  Users,
-} from "lucide-react";
+'use client'
+
+import { Share2, Pencil, Trash2, Eye, Users } from "lucide-react";
 import Link from "next/link";
 import Radar from "@repo/ui/radar";
 import {
@@ -13,6 +9,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PortalModel } from "@repo/types/mongo-types";
+import { toast } from "sonner";
+import axios from "axios";
 
 type CardProps = {
   type?: "portal" | "update";
@@ -28,6 +27,20 @@ type CardProps = {
   icon?: React.ReactNode;
   growth?: string;
 };
+
+async function deletePortal(portalId: string) {
+  try {
+    const response = await axios.delete('/api/portal', { data : { portalId } })
+    if(response.data.status == 204) {
+      toast("Portal removed successfully")
+    }
+    else {
+      toast(response.data.message)
+    }
+  } catch (error) {
+    toast((error as Error).message);
+  }
+}
 
 export default function Card({
   type = "update",
@@ -55,7 +68,9 @@ export default function Card({
             <div>
               <div className="text-base font-semibold">{heading}</div>
               {subheading && (
-                <div className="text-sm text-[#aaa] leading-none">{subheading}</div>
+                <div className="text-sm text-[#aaa] leading-none">
+                  {subheading}
+                </div>
               )}
             </div>
           </div>
@@ -93,7 +108,10 @@ export default function Card({
                 <Share2 className="mr-2 h-4 w-4" />
                 <span>Share</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-red-500 hover:text-red-400 focus:text-red-400">
+              <DropdownMenuItem
+                onClick={() => deletePortal(portalId)}
+                className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-red-500 hover:text-red-400 focus:text-red-400"
+              >
                 <Trash2 className="mr-2 h-4 w-4" />
                 <span>Delete</span>
               </DropdownMenuItem>
@@ -153,7 +171,9 @@ export default function Card({
         <div>
           <div className="text-sm opacity-60">{heading}</div>
           <div className="text-2xl font-semibold">{count}</div>
-          {growth && <div className="text-green-400 text-xs mt-1">{growth}</div>}
+          {growth && (
+            <div className="text-green-400 text-xs mt-1">{growth}</div>
+          )}
         </div>
         {icon && <div className="text-blue-400">{icon}</div>}
       </div>

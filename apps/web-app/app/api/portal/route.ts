@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb, mongoose } from "@repo/db/mongoose"
-import { PortalSchema } from "@repo/types/mongo-types";
+import { PortalModel, PortalSchema } from "@repo/types/mongo-types";
 import options from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { prisma } from "@repo/db/prisma";
@@ -218,5 +218,24 @@ export async function PATCH(req: NextRequest) {
             success: false,
             error: "Internal Server Error"
         }, { status: 500 });
+    }
+}
+
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const portalId = await req.json()
+        await PortalModel.deleteOne({
+            portalId
+        })
+        return NextResponse.json({
+            success: true,
+            message: "Portal Deleted successfully"
+        })
+    } catch (error) {
+        return NextResponse.json({
+            success: false,
+            message: (error as Error).message
+        })
     }
 }
