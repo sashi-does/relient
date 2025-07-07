@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import { X } from "lucide-react"
-import { cn } from "@repo/ui/utils"
+import { cn } from "./lib/utils"
+
 
 interface ToastProps {
   title?: string

@@ -9,7 +9,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "@repo/ui/dropdown-menu";
 import { Button } from "@repo/ui/button";
 import { Filter } from "lucide-react";
 

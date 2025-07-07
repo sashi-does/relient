@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/card';
 
@@ -8,7 +10,7 @@ import { Calendar as CalendarComponent } from '@repo/ui/calender';
 import { TimePicker } from '@repo/ui/time-picker';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import { Appointment } from '../Dashboard';
+import { Appointment } from '../dashboard';
 import { Button } from '@repo/ui/button';
 import Input from '@repo/ui/input';
 import { Badge } from '@repo/ui/badge';
