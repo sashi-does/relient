@@ -32,6 +32,11 @@ import { Button } from "@repo/ui/button";
 import Loader from "@repo/ui/loader";
 import { toast } from "sonner";
 import { Toaster } from "@repo/ui/sonner";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@repo/ui/tooltip";
 
 const menuItems = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
@@ -110,14 +115,13 @@ export default function Sidebar({
         mail,
         description,
       });
-      if(res.data.success) {
+      if (res.data.success) {
         setDialogOpen(false);
         toast("Portal Created Successfully");
         location.reload();
         redirect("/portals");
-      }
-      else {
-        throw new Error(res.data)
+      } else {
+        throw new Error(res.data);
       }
     } catch (error) {
       console.error("Error creating portal:", error);
@@ -150,10 +154,15 @@ export default function Sidebar({
               className="invert brightness-0 opacity-80"
             />
             {!isCollapsed && (
-                <span className="font-extrabold text-2xl ml-2 logo">Relient</span>
+              <span className="font-extrabold text-2xl ml-2 logo">Relient</span>
             )}
           </div>
-            { !isCollapsed && <span className="text-[10px] text-[#757474] flex justify-center items-center"><Copyright className="mr-1" height={10} width={10} /> 2025 relient.in, Inc beta</span> }
+          {!isCollapsed && (
+            <span className="text-[10px] text-[#757474] flex justify-center items-center">
+              <Copyright className="mr-1" height={10} width={10} /> 2025
+              relient.in, Inc beta
+            </span>
+          )}
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <div className="hover:bg-[#4f4f4f23] transistion-all duration-200 rounded-4xl flex items-center justify-center w-full mb-6 mt-6">
@@ -249,9 +258,22 @@ export default function Sidebar({
                       }
                     )}
                   >
-                    <item.icon className="!w-[16px] !h-[16px]" />
+                    {isCollapsed && (
+                      <Tooltip>
+                        <TooltipTrigger className="cursor-pointer">
+                          <item.icon className="!w-[16px] !h-[16px]" />
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                          <span className="text-[15px]">{item.name}</span>
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
+
                     {!isCollapsed && (
-                      <span className="text-[15px]">{item.name}</span>
+                      <>
+                        <item.icon className="!w-[16px] !h-[16px]" />
+                        <span className="text-[15px]">{item.name}</span>
+                      </>
                     )}
                     {isCollapsed && (
                       <span className="absolute left-[70px] bg-zinc-900 px-2 py-1 rounded shadow text-xs opacity-0 group-hover:opacity-100 text-[red] transition whitespace-nowrap z-10">
@@ -271,7 +293,7 @@ export default function Sidebar({
         </div>
 
         {!isCollapsed && <SubscriptionCard />}
-        
+
         <button
           className={clsx(
             "mb-4 p-2 rounded-md cursor-pointer hover:bg-[#40404080] transition self-end",

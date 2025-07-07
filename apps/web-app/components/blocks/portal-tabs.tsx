@@ -12,6 +12,8 @@ import {
 } from "@repo/ui/dropdown-menu";
 import { Button } from "@repo/ui/button";
 import { Filter } from "lucide-react";
+import Image from "next/image";
+import GenericPlaceholder from "./generic-placeholder";
 
 export function GlassTabs({ portals }: { portals: Portal[] }) {
   return (
@@ -121,9 +123,10 @@ export function GlassTabs({ portals }: { portals: Portal[] }) {
         </TabsContent>
         <TabsContent
           value="templates"
-          className="text-center text-muted-foreground mt-4"
+          className="h-[95vh] flex justify-center items-center mt-4"
         >
-          {/* Template placeholder */}
+          
+          <GenericPlaceholder heading="Portal Templates" paragraph="Coming soon!!" image="/template.png" />
         </TabsContent>
       </Tabs>
     </div>
