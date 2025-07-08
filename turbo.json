@@ -4,36 +4,31 @@
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
     "NEXTAUTH_SECRET",
-    "NEXTAUTH_URL"
+    "NEXTAUTH_URL",
+    "DATABASE_URL"
   ],
-  "postinstall": {
-    "outputs": []
-  },
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "@repo/db#build": {
+      "outputs": ["postgres/node_modules/@prisma/client/**"],
+      "cache": true
+    },
+    "web-app#build": {
+      "dependsOn": ["@repo/db#build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "cache": true
     },
     "lint": {
-      "dependsOn": [
-        "^lint"
-      ]
+      "dependsOn": ["^lint"]
     },
     "check-types": {
-      "dependsOn": [
-        "^check-types"
-      ]
+      "dependsOn": ["^check-types"]
     },
     "dev": {
       "cache": false,

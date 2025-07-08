@@ -1,18 +1,18 @@
 {
   "name": "@repo/db",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "prisma generate --schema=./postgres/schema.prisma"
-    
+    "prisma:generate": "prisma generate --schema=postgres/prisma/schema.prisma",
+    "build": "prisma generate --schema=postgres/prisma/schema.prisma"
   },
   "exports": {
     "./prisma": "./postgres/index.ts",
     "./mongoose": "./mongo/index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "@prisma/client": "6.10.1"
+  },
+  "devDependencies": {
+    "prisma": "6.10.1"
+  }
 }
