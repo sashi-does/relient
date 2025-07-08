@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export interface BentoItem {
     title: string;
     description: string;

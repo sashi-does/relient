@@ -15,13 +15,13 @@ import axios from "axios";
 type CardProps = {
   type?: "portal" | "update";
   heading: string;
-  count: string | number;
+  count?: string | number;
   subheading?: string;
   status?: string;
   progress?: number;
   lastActivity?: string;
   members?: number;
-  portalId: string;
+  portalId?: string;
   messages?: number;
   icon?: React.ReactNode;
   growth?: string;
@@ -109,7 +109,7 @@ export default function Card({
                 <span>Share</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => deletePortal(portalId)}
+                onClick={() => deletePortal((portalId as string))}
                 className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-red-500 hover:text-red-400 focus:text-red-400"
               >
                 <Trash2 className="mr-2 h-4 w-4" />

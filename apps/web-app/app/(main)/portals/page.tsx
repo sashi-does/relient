@@ -3,9 +3,12 @@ import { getServerSession } from "next-auth";
 import options from "@/app/api/auth/[...nextauth]/options";
 import { connectDb, mongoose } from "@repo/db/mongoose";
 import { PortalSchema } from "@repo/types/mongo-types";
-import { GlassTabs } from "@/components/blocks/portal-tabs";
 import { redirect } from "next/navigation";
+import { GlassTabs } from "@/components/blocks/portal-tabs";
+import { Portal } from "@repo/types/interfaces";
 
+
+const PortalModel = mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
 
 
 declare module "next-auth" {
@@ -16,12 +19,10 @@ declare module "next-auth" {
   }
 }
 
-const Portal =
-  mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
 
 async function getPortals(userId: string) {
   await connectDb();
-  const portals = await (Portal as mongoose.Model<any>).find({ userId }).lean();
+  const portals = await (PortalModel as mongoose.Model<Portal>).find({ userId })
   return JSON.parse(JSON.stringify(portals));
 }
 

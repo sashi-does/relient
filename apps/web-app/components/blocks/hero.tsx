@@ -10,6 +10,7 @@ import Image from "next/image";
 import { SessionProvider, useSession } from "next-auth/react";
 
 
+
 const transitionVariants = {
   item: {
     hidden: {
@@ -22,7 +23,7 @@ const transitionVariants = {
       filter: "blur(0px)",
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         bounce: 0.3,
         duration: 1.5,
       },
@@ -72,7 +73,7 @@ function Hero() {
                     opacity: 1,
                     y: 0,
                     transition: {
-                      type: "spring",
+                      type: "spring" as const,
                       bounce: 0.3,
                       duration: 2,
                     },
@@ -81,7 +82,7 @@ function Hero() {
               }}
               className="absolute inset-0 -z-20"
             >
-             
+              <></>
             </AnimatedGroup>
             <div
               aria-hidden
@@ -416,7 +417,7 @@ const HeroHeader = () => {
   );
 };
 
-const Logo = ({ className }: { className?: string }) => {
+const Logo = () => {
   return (
     <div className="flex items-center justify-center gap-x-3">
       <Image src={"/relient.png"} alt="logo" height={30} width={30} />

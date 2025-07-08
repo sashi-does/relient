@@ -12,7 +12,7 @@ export default async function Dashboard() {
 
   return (
     <div className="space-y-4 p-4">
-      <Greeting name={user?.name as string} />
+      <Greeting name={(user as {name: string}).name as string} />
       <Card
         type="update"
         heading="Total Clients"

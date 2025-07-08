@@ -8,7 +8,7 @@ import { Label } from '@repo/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@repo/ui/table';
 import { Lead } from '../dashboard';
-// import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 import { Button } from '@repo/ui/button';
 import Input from '@repo/ui/input';
 import { Badge } from '@repo/ui/badge';
@@ -40,11 +40,7 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
 
   const handleAddLead = () => {
     if (!newLead.name.trim() || !newLead.email.trim()) {
-      toast({
-        title: "Error",
-        description: "Name and email are required",
-        variant: "destructive",
-      });
+      toast.error("Name and email are required");
       return;
     }
 
@@ -69,10 +65,7 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
     });
     setNewLeadOpen(false);
 
-    toast({
-      title: "Lead Added",
-      description: "New lead has been added successfully",
-    });
+    toast.success("New lead has been added successfully");
   };
 
   const handleEditLead = (lead: Lead) => {
@@ -90,11 +83,7 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
 
   const handleUpdateLead = () => {
     if (!newLead.name.trim() || !newLead.email.trim() || !editingLead) {
-      toast({
-        title: "Error",
-        description: "Name and email are required",
-        variant: "destructive",
-      });
+      toast.error("Name and email are required");
       return;
     }
 
@@ -121,18 +110,12 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
     setEditLeadOpen(false);
     setEditingLead(null);
 
-    toast({
-      title: "Lead Updated",
-      description: "Lead has been updated successfully",
-    });
+    toast.success("Lead has been updated successfully");
   };
 
   const handleClearAll = () => {
     setLeads([]);
-    toast({
-      title: "Leads Cleared",
-      description: "All leads have been cleared",
-    });
+    toast.success("All leads have been cleared");
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,10 +128,18 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
+        if (!sheetName) {
+          toast.error("No sheets found in the Excel file.");
+          return;
+        }
         const worksheet = workbook.Sheets[sheetName];
+        if (!worksheet) {
+          toast.error("No worksheet found in the Excel file.");
+          return;
+        }
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-        const newLeads: Lead[] = jsonData.map((row: any, index) => ({
+        const newLeads: Lead[] = (jsonData as any[]).map((row, index) => ({
           id: `imported-${Date.now()}-${index}`,
           name: row.Name || row.name || '',
           email: row.Email || row.email || '',
@@ -156,20 +147,14 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
           status: 'new' as Lead['status'],
           value: Number(row.Value || row.value || 0),
           source: row.Source || row.source || 'Import',
-        })).filter(lead => lead.name && lead.email);
+        })).filter((lead: Lead) => lead.name && lead.email);
 
         setLeads(prev => [...prev, ...newLeads]);
         
-        toast({
-          title: "Import Successful",
-          description: `${newLeads.length} leads imported from Excel file`,
-        });
+        toast.success(`${newLeads.length} leads imported from Excel file`);
       } catch (error) {
-        toast({
-          title: "Import Failed",
-          description: "Failed to read Excel file. Please check the format.",
-          variant: "destructive",
-        });
+        toast.error("Failed to read Excel file. Please check the format.");
+        console.log(error)
       }
     };
     reader.readAsArrayBuffer(file);
@@ -190,7 +175,7 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
     }
   };
 
-  const filteredLeads = leads.filter(lead =>
+  const filteredLeads = leads.filter((lead: Lead) =>
     lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     lead.email.toLowerCase().includes(searchTerm.toLowerCase())
   );

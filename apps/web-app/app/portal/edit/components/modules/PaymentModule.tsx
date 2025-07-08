@@ -7,16 +7,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@repo/ui/table';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/popover';
-import { Calendar as CalendarComponent } from '@repo/ui/calender';
+import { Calendar as CalendarComponent } from '@repo/ui/calendar';
 import { format } from 'date-fns';
 import { Payment } from '../dashboard';
-// import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
 import Input from '@repo/ui/input';
 import { Button } from '@repo/ui/button';
 import { Badge } from '@repo/ui/badge';
 import { toast } from 'sonner';
 import { cn } from '@repo/ui/utils';
 import { Label } from '@repo/ui/label';
+
+type PaymentRow = {
+  [key: string]: string | number | undefined;
+};
 
 interface PaymentsModuleProps {
   payments: Payment[];
@@ -42,11 +46,7 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
 
   const handleAddPayment = () => {
     if (!newPayment.client.trim() || newPayment.amount <= 0 || !newPayment.dueDate) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
+      toast.error("Please fill in all required fields");
       return;
     }
 
@@ -69,10 +69,7 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
     setSelectedDueDate(undefined);
     setNewPaymentOpen(false);
 
-    toast({
-      title: "Payment Added",
-      description: "New payment record has been created successfully",
-    });
+    toast.success("New payment record has been created successfully");
   };
 
   const handleEditPayment = (payment: Payment) => {
@@ -85,11 +82,7 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
     if (!editingPayment) return;
 
     if (!editingPayment.client.trim() || editingPayment.amount <= 0 || !editingPayment.dueDate) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
+      toast.error( "Please fill in all required fields");
       return;
     }
 
@@ -103,26 +96,17 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
     setEditingPayment(null);
     setEditSelectedDueDate(undefined);
 
-    toast({
-      title: "Payment Updated",
-      description: "Payment has been updated successfully",
-    });
+    toast("Payment has been updated successfully");
   };
 
   const handleDeletePayment = (paymentId: string) => {
     setPayments(prev => prev.filter(payment => payment.id !== paymentId));
-    toast({
-      title: "Payment Deleted",
-      description: "Payment has been removed successfully",
-    });
+    toast.success("Payment has been removed successfully");
   };
 
   const handleClearAll = () => {
     setPayments([]);
-    toast({
-      title: "All Payments Cleared",
-      description: "All payment records have been removed",
-    });
+    toast.success("All payment records have been removed");
   };
 
   const handleFileImport = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,17 +119,25 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
+        if (!sheetName) {
+          toast.error("No sheets found in the Excel file.");
+          return;
+        }
         const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+        if (!worksheet) {
+          toast.error("No worksheet found in the Excel file.");
+          return;
+        }
+        const jsonData = XLSX.utils.sheet_to_json(worksheet) as PaymentRow[];
 
         const importedPayments: Payment[] = [];
         
-        jsonData.forEach((row: any, index: number) => {
+        jsonData.forEach((row: PaymentRow, index: number) => {
           try {
             const paymentFor = row['Payment For'] || row['payment for'] || row['Client'] || row['client'] || '';
-            const amount = parseFloat(row['Amount'] || row['amount'] || '0');
+            const amount = parseFloat(String(row['Amount'] || row['amount'] || '0'));
             const dueDate = row['Due Date'] || row['due date'] || row['DueDate'] || '';
-            const status = (row['Status'] || row['status'] || 'pending').toLowerCase();
+            const status = ((row['Status'] || row['status'] || 'pending') as string).toLowerCase();
 
             if (paymentFor && amount > 0 && dueDate) {
               // Try to parse different date formats
@@ -164,7 +156,7 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
 
               const payment: Payment = {
                 id: `import-${Date.now()}-${index}`,
-                client: paymentFor,
+                client: String(paymentFor),
                 amount: amount,
                 status: ['pending', 'paid', 'overdue'].includes(status) ? status as Payment['status'] : 'pending',
                 dueDate: formattedDate,
@@ -180,23 +172,13 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
 
         if (importedPayments.length > 0) {
           setPayments(prev => [...prev, ...importedPayments]);
-          toast({
-            title: "Import Successful",
-            description: `Successfully imported ${importedPayments.length} payment records`,
-          });
+          toast.success(`Successfully imported ${importedPayments.length} payment records`);
         } else {
-          toast({
-            title: "Import Failed",
-            description: "No valid payment records found in the file",
-            variant: "destructive",
-          });
+          toast("No valid payment records found in the file");
         }
       } catch (error) {
-        toast({
-          title: "Import Error",
-          description: "Failed to process the Excel file. Please check the format.",
-          variant: "destructive",
-        });
+        toast( "Failed to process the Excel file. Please check the format.");
+        console.log(error)
       }
     };
     reader.readAsArrayBuffer(file);
@@ -210,10 +192,7 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
       )
     );
 
-    toast({
-      title: "Payment Updated",
-      description: `Payment status changed to ${newStatus}`,
-    });
+    toast(`Payment status changed to ${newStatus}`);
   };
 
   const getStatusColor = (status: Payment['status']) => {

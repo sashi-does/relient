@@ -183,10 +183,7 @@ export const Dashboard: React.FC = () => {
       )
     );
 
-    toast({
-      title: "Task Updated",
-      description: `Task moved to ${newStatus.replace('-', ' ')}`,
-    });
+    toast.success(`Task moved to ${newStatus.replace('-', ' ')}`);
   };
 
   const handleModuleToggle = (module: keyof ModuleSettings) => {
@@ -197,17 +194,11 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleSave = () => {
-    toast({
-      title: "Portal Saved",
-      description: "Your portal configuration has been saved successfully.",
-    });
+    toast.success("Your portal configuration has been saved successfully.");
   };
 
   const handlePreview = () => {
-    toast({
-      title: "Live Preview",
-      description: "Opening live preview in a new window...",
-    });
+    toast.success("Opening live preview in a new window...");
     // In a real app, this would open a new window with the client portal
   };
 
@@ -216,10 +207,7 @@ export const Dashboard: React.FC = () => {
     setLeads([]);
     setAppointments([]);
     setPayments([]);
-    toast({
-      title: "All Data Reset",
-      description: "All tasks, leads, appointments, and payments have been cleared",
-    });
+    toast.success( "All tasks, leads, appointments, and payments have been cleared");
   };
 
   const renderActiveModule = () => {

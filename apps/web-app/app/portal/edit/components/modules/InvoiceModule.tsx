@@ -6,12 +6,15 @@ import { Label } from '@repo/ui/label';
 import { Textarea } from '@repo/ui/text-area';
 import { Plus, Trash2, FileText, Download, CalendarIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/popover';
-import { Calendar as CalendarComponent } from '@repo/ui/calender';
+import { Calendar as CalendarComponent } from '@repo/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@repo/ui/utils';
-import { toast } from 'sonner';
+
+
 import Input from '@repo/ui/input';
 import { Button } from '@repo/ui/button';
+import { toast } from 'sonner';
+
 
 interface InvoiceItem {
   id: string;
@@ -76,36 +79,22 @@ export const InvoiceModule: React.FC = () => {
 
   const generateInvoice = () => {
     if (!invoiceData.clientName || !invoiceData.clientEmail || !invoiceData.dueDate || !invoiceData.paymentFor) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required client information and payment description",
-        variant: "destructive",
-      });
+      toast.error("Please fill in all required client information and payment description");
       return;
     }
 
     if (items.some(item => !item.description || item.rate <= 0)) {
-      toast({
-        title: "Error",
-        description: "Please fill in all item details",
-        variant: "destructive",
-      });
+      toast.error("Please fill in all item details");
       return;
     }
 
     // In a real app, this would generate a PDF or send to backend
-    toast({
-      title: "Invoice Generated",
-      description: `Invoice ${invoiceData.invoiceNumber} has been created successfully`,
-    });
+    toast.success(`Invoice ${invoiceData.invoiceNumber} has been created successfully`);
   };
 
   const downloadInvoice = () => {
     // In a real app, this would trigger PDF download
-    toast({
-      title: "Download Started",
-      description: "Invoice PDF download will begin shortly",
-    });
+    toast.success("Invoice PDF download will begin shortly");
   };
 
   return (
@@ -289,7 +278,7 @@ export const InvoiceModule: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {items.map((item, index) => (
+                {items.map((item) => (
                   <div key={item.id} className="grid grid-cols-12 gap-2 items-end">
                     <div className="col-span-12 md:col-span-5">
                       <Label>Description</Label>

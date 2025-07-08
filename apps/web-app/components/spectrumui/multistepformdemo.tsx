@@ -94,7 +94,7 @@ const OnboardingForm = () => {
 
       setIsSubmitting(false)
     } catch (error) {
-      toast.error("Failed to complete profile")
+      toast(error instanceof Error)
       setIsSubmitting(false)
     }
   }
@@ -112,9 +112,7 @@ const OnboardingForm = () => {
   }
 
 
-  const preventDefault = (e: React.MouseEvent) => {
-    e.preventDefault()
-  }
+  
 
   return (
     <div className="w-full max-w-lg mx-auto py-8">

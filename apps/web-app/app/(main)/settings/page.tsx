@@ -32,9 +32,10 @@ function Page() {
 
   useEffect(() => {
     setIsMounted(true);
-    if (session?.user?.image) setProfilePic(session.user.image);
-    if (session?.user?.name) setUsername(session.user.name);
-    if (session?.user?.email) setEmail(session.user.email);
+    const user = session?.user as { image?: string; name?: string; email?: string };
+    if (user?.image) setProfilePic(user.image);
+    if (user?.name) setUsername(user.name);
+    if (user?.email) setEmail(user.email);
   }, [session]);
 
   const handleProfilePicUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,7 +112,7 @@ function Page() {
               placeholder="cal.com/ sashi-giffo"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Tip: You can add a "+" between usernames: cal.com/anna+brian to make a dynamic group meeting
+              Tip: You can add a `+` between usernames: cal.com/anna+brian to make a dynamic group meeting
             </p>
           </div>
 

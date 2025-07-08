@@ -25,7 +25,14 @@ export function FeatureCard({ feature, className, ...props }: FeatureCardProps) 
 				</div>
 			</div>
 			<div className='flex flex-col items-center'>
-				<Image alt="logo" src={feature.icon} height={30} width={30} className="text-foreground/75 size-6" strokeWidth={1} aria-hidden />
+				<Image
+					alt="logo"
+					src={feature.icon}
+					height={30}
+					width={30}
+					className="text-foreground/75 size-6"
+					aria-hidden
+				/>
 				<h3 className="mt-10 text-sm md:text-base">{feature.title}</h3>
 				<p className="text-muted-foreground relative z-20 mt-2 text-xs font-light">{feature.description}</p>
 				<Button className='m-auto my-5 mx-auto bg-white text-black cursor-pointer text-center'>See plans</Button>

@@ -182,7 +182,7 @@ export function TextEffect({
   const stagger = defaultStaggerTimes[per];
 
   const delayedContainerVariants: Variants = {
-    hidden: containerVariants.hidden,
+    hidden: containerVariants.hidden || {},
     visible: {
       ...containerVariants.visible,
       transition: {
@@ -193,7 +193,7 @@ export function TextEffect({
         delayChildren: delay,
       },
     },
-    exit: containerVariants.exit,
+    exit: containerVariants.exit || {},
   };
 
   return (

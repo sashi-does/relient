@@ -25,13 +25,13 @@ export function TimePicker({ value, onValueChange, placeholder = "Select time", 
     if (value) {
       const [time, period] = value.split(' ')
       if (time && period) {
-        const [hour, minute] = time.split(':')
+        const [hour = "", minute = ""] = time.split(':')
         setSelectedHour(hour)
         setSelectedMinute(minute)
         setSelectedPeriod(period)
       } else {
         // Handle 24-hour format
-        const [hour, minute] = value.split(':')
+        const [hour = "", minute = ""] = value.split(':')
         const hourNum = parseInt(hour)
         const displayHour = hourNum === 0 ? 12 : hourNum > 12 ? hourNum - 12 : hourNum
         const period = hourNum >= 12 ? 'PM' : 'AM'
@@ -165,7 +165,8 @@ export function TimePicker({ value, onValueChange, placeholder = "Select time", 
                   className="text-xs px-2 py-1 rounded border hover:bg-accent hover:text-accent-foreground transition-colors"
                   onClick={() => {
                     const [timeStr, period] = time.split(' ')
-                    const [hour, minute] = timeStr.split(':')
+                    if (!timeStr || !period) return
+                    const [hour = "", minute = ""] = timeStr.split(':')
                     setSelectedHour(hour)
                     setSelectedMinute(minute)
                     setSelectedPeriod(period)

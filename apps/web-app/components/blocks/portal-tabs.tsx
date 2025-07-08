@@ -12,10 +12,11 @@ import {
 } from "@repo/ui/dropdown-menu";
 import { Button } from "@repo/ui/button";
 import { Filter } from "lucide-react";
-import Image from "next/image";
 import GenericPlaceholder from "./generic-placeholder";
 
-export function GlassTabs({ portals }: { portals: Portal[] }) {
+type PortalWithId = Portal & { _id: string };
+
+export function GlassTabs({ portals }: { portals: PortalWithId[] }) {
   return (
     <div>
       <Tabs defaultValue="overview" className="">
@@ -37,7 +38,7 @@ export function GlassTabs({ portals }: { portals: Portal[] }) {
           <div className="flex flex-col md:flex-row justify-between space-x-[20px]">
             <Stats count={portals.length} type="portals" />
             <Stats
-              count={portals.filter((p) => p.status === "Active").length}
+              // count={portals.filter((p) => p.status === "Active").length}
               count={portals.length}
               type="activeStatus"
             />
@@ -53,8 +54,8 @@ export function GlassTabs({ portals }: { portals: Portal[] }) {
                 .filter((p) => p.lastVisited)
                 .sort(
                   (a, b) =>
-                    new Date(b.lastVisited).getTime() -
-                    new Date(a.lastVisited).getTime()
+                    new Date(a.lastVisited ? a.lastVisited.toString() : 0).getTime() -
+                    new Date(b.lastVisited ? b.lastVisited.toString() : 0).getTime()
                 )
                 .slice(0, 3)
                 .map((p) => (
@@ -66,7 +67,7 @@ export function GlassTabs({ portals }: { portals: Portal[] }) {
                     subheading={p.clientName}
                     status={p.status}
                     progress={0}
-                    lastActivity={`Last visited: ${new Date(p.lastVisited).toLocaleString()}`}
+                    lastActivity={p.lastVisited ? `Last visited: ${p.lastVisited.toLocaleString()}` : "Never"}
                     members={0}
                     messages={p.inbox || 0}
                   />
@@ -99,8 +100,8 @@ export function GlassTabs({ portals }: { portals: Portal[] }) {
             </DropdownMenu>
           </div>
           <ul className="flex flex-wrap gap-x-5 text-muted-foreground mt-4">
-            {portals.map((p: any) => (
-              <li>
+            {portals.map((p) => (
+              <li key={p._id}>
                 <Card
                   key={p._id}
                   portalId={p._id}
@@ -109,11 +110,7 @@ export function GlassTabs({ portals }: { portals: Portal[] }) {
                   subheading={p.clientName}
                   status={p.status}
                   progress={0}
-                  lastActivity={
-                    p.lastVisited
-                      ? `Last visited: ${new Date(p.lastVisited).toLocaleString()}`
-                      : "Never"
-                  }
+                  lastActivity={p.lastVisited ? `Last visited: ${p.lastVisited.toLocaleString()}` : "Never"}
                   members={0}
                   messages={p.inbox || 0}
                 />

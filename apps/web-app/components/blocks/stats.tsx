@@ -16,7 +16,7 @@ const detailConfig = {
   },
 };
 
-export default function Stats({ type, count }: { type: keyof typeof detailConfig }) {
+export default function Stats({ type, count }: { type: keyof typeof detailConfig, count?: number}) {
 
   const Icon = detailConfig[type].icon;
 

@@ -10,9 +10,9 @@ import {
   TrendingUp,
   Clock,
   Target,
-  Badge
 } from 'lucide-react';
 import { Task, Lead, Appointment, Payment } from '../dashboard';
+import { Badge } from '@repo/ui/badge';
 
 interface OverviewProps {
   tasks: Task[];

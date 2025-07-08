@@ -82,7 +82,7 @@ export default function Sidebar({
           if (window.innerWidth < 768) {
             setIsOpen((prev) => !prev);
           } else {
-            setIsCollapsed((prev) => !prev);
+            setIsCollapsed(!isCollapsed);
           }
         } else if (event.key === "p" || event.key === "P") {
           event.preventDefault();

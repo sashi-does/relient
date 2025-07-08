@@ -42,7 +42,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   moduleSettings,
   onModuleToggle,
 }) => {
-  const [showSettings, setShowSettings] = React.useState(false);
 
   // Filter menu items to only show enabled modules
   const enabledMenuItems = menuItems.filter(item => {

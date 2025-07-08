@@ -119,7 +119,7 @@ function SignUpForm() {
       } else {
         alert("Signup failed: " + res.data.message);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Signup error:", error);
       alert("An error occurred during signup.");
     }

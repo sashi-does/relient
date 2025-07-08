@@ -11,14 +11,14 @@ const options: NextAuthOptions = {
         email: { label: "Email", type: "email", placeholder: "Email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const email = credentials?.email;
         const user = await prisma.user.findFirst({
           where: {
             email,
           },
         });
-        if (user && user.password) { // Only allow if password matches (add your password verification logic)
+        if (user && user.password) { 
           return user;
         } else {
           return null;
@@ -36,7 +36,7 @@ const options: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (account.provider === "google") {
+      if (account && account.provider === "google") {
         console.log("Google Sign-In Attempt:", { user, account, profile });
         try {
           let dbUser = await prisma.user.findUnique({
@@ -49,7 +49,7 @@ const options: NextAuthOptions = {
               data: {
                 email: user.email!,
                 username: user.name || profile?.name || "",
-                image: user.image || profile?.picture || null,
+                image: user.image || (typeof profile === "object" && profile && "picture" in profile ? (profile as { picture?: string }).picture : null) || null,
                 password: null,
               },
             });
@@ -59,7 +59,7 @@ const options: NextAuthOptions = {
               where: { email: user.email! },
               data: {
                 username: user.name || profile?.name || dbUser.username,
-                image: user.image || profile?.picture || dbUser.image,
+                image: user.image || (typeof profile === "object" && profile && "picture" in profile ? (profile as { picture?: string }).picture : null) || dbUser.image,
               },
             });
             console.log("Updated User:", dbUser);
@@ -71,10 +71,11 @@ const options: NextAuthOptions = {
       }
       return true;
     },
-    async session({ session, user, token }) {
+    async session({ session }) {
       if (session.user) {
+        const user = session.user as { email: string };
         const dbUser = await prisma.user.findUnique({
-          where: { email: session.user.email! },
+          where: { email: user.email },
         });
         session.user.id = dbUser?.id; // Add user ID to session
       }

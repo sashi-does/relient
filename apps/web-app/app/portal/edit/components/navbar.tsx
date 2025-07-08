@@ -1,5 +1,5 @@
 import React from 'react';
-import { Moon, Sun, User, Settings, LogOut } from 'lucide-react';
+import { User, Settings, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/avatar';
 import {
   DropdownMenu,

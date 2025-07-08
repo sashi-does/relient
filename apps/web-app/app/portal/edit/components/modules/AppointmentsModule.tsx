@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/card';
 import { Plus, Calendar, User, Link, Clock, Edit, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/popover';
-import { Calendar as CalendarComponent } from '@repo/ui/calender';
+import { Calendar as CalendarComponent } from '@repo/ui/calendar';
 import { TimePicker } from '@repo/ui/time-picker';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
@@ -45,11 +45,7 @@ export const AppointmentsModule: React.FC<AppointmentsModuleProps> = ({
 
   const handleAddAppointment = () => {
     if (!newAppointment.title.trim() || !newAppointment.client.trim() || !newAppointment.date || !newAppointment.time) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
+      toast.error("Please fill in all required fields");
       return;
     }
 
@@ -77,10 +73,7 @@ export const AppointmentsModule: React.FC<AppointmentsModuleProps> = ({
     setSelectedDate(undefined);
     setNewAppointmentOpen(false);
 
-    toast({
-      title: "Appointment Scheduled",
-      description: "New appointment has been added successfully",
-    });
+    toast.success("New appointment has been added successfully");
   };
 
   const handleEditAppointment = (appointment: Appointment) => {
@@ -100,11 +93,7 @@ export const AppointmentsModule: React.FC<AppointmentsModuleProps> = ({
 
   const handleUpdateAppointment = () => {
     if (!newAppointment.title.trim() || !newAppointment.client.trim() || !newAppointment.date || !newAppointment.time || !editingAppointment) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
+      toast.error("Please fill in all required fields");
       return;
     }
 
@@ -134,18 +123,12 @@ export const AppointmentsModule: React.FC<AppointmentsModuleProps> = ({
     setEditAppointmentOpen(false);
     setEditingAppointment(null);
 
-    toast({
-      title: "Appointment Updated",
-      description: "Appointment has been updated successfully",
-    });
+    toast.success("Appointment has been updated successfully");
   };
 
   const handleClearAll = () => {
     setAppointments([]);
-    toast({
-      title: "Appointments Cleared",
-      description: "All appointments have been cleared",
-    });
+    toast.success("All appointments have been cleared");
   };
 
   const getStatusColor = (status: Appointment['status']) => {

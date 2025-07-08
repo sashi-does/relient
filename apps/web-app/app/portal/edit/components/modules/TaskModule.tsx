@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Card, CardContent } from '@repo/ui/card';
-import { Plus, Calendar, Flag, CalendarIcon, Clock, Edit, Trash2 } from 'lucide-react';
+import { Plus, Calendar, Flag, CalendarIcon, Edit, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/select';
 import { Textarea } from '@repo/ui/text-area';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/popover';
-import { Calendar as CalendarComponent } from '@repo/ui/calender';
+import { Calendar as CalendarComponent } from '@repo/ui/calendar';
 import { format } from 'date-fns';
 import { Task } from '../dashboard';
 import { Button } from '@repo/ui/button';
@@ -31,7 +31,6 @@ const columns = [
 export const TasksModule: React.FC<TasksModuleProps> = ({
   tasks,
   setTasks,
-  onDragEnd,
 }) => {
   const [newTaskOpen, setNewTaskOpen] = useState(false);
   const [editTaskOpen, setEditTaskOpen] = useState(false);
@@ -47,11 +46,7 @@ export const TasksModule: React.FC<TasksModuleProps> = ({
 
   const handleAddTask = () => {
     if (!newTask.title.trim()) {
-      toast({
-        title: "Error",
-        description: "Task title is required",
-        variant: "destructive",
-      });
+      toast.error("Task title is required");
       return;
     }
 
@@ -75,10 +70,7 @@ export const TasksModule: React.FC<TasksModuleProps> = ({
     setSelectedDueDate(undefined);
     setNewTaskOpen(false);
 
-    toast({
-      title: "Task Created",
-      description: "New task has been added successfully",
-    });
+    toast.success("New task has been added successfully");
   };
 
   const handleEditTask = (task: Task) => {
@@ -98,11 +90,7 @@ export const TasksModule: React.FC<TasksModuleProps> = ({
 
   const handleUpdateTask = () => {
     if (!newTask.title.trim() || !editingTask) {
-      toast({
-        title: "Error",
-        description: "Task title is required",
-        variant: "destructive",
-      });
+      toast.error("Task title is required");
       return;
     }
 
@@ -128,18 +116,12 @@ export const TasksModule: React.FC<TasksModuleProps> = ({
     setEditTaskOpen(false);
     setEditingTask(null);
 
-    toast({
-      title: "Task Updated",
-      description: "Task has been updated successfully",
-    });
+    toast.success("Task has been updated successfully");
   };
 
   const handleClearAll = () => {
     setTasks([]);
-    toast({
-      title: "Tasks Cleared",
-      description: "All tasks have been cleared",
-    });
+    toast.success( "All tasks have been cleared");
   };
 
   const getPriorityColor = (priority: Task['priority']) => {

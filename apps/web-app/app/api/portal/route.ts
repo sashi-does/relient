@@ -1,59 +1,56 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb, mongoose } from "@repo/db/mongoose"
-import { PortalModel, PortalSchema } from "@repo/types/mongo-types";
+import { PortalModel } from "@repo/types/mongo-types";
 import options from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { prisma } from "@repo/db/prisma";
+import { Portal } from "@repo/types/interfaces";
 
-
-
-const Portal = mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
-
-export async function GET(req: NextRequest, { params }: { params: { portalId: string } }) {
-    try {
-      const session = await getServerSession(options);
-      if (!session) {
-        return NextResponse.json({
-          success: false,
-          message: "Unauthenticated user",
-        }, { status: 401 });
-      }
+// export async function GET(req: NextRequest, { params }: { params: { portalId: string } }) {
+//     try {
+//       const session = await getServerSession(options);
+//       if (!session) {
+//         return NextResponse.json({
+//           success: false,
+//           message: "Unauthenticated user",
+//         }, { status: 401 });
+//       }
   
-      const user = await prisma.user.findFirst({
-        where: {
-          email: session.user?.email as string,
-        },
-      });
+//       const user = await prisma.user.findFirst({
+//         where: {
+//           email: session.user?.email as string,
+//         },
+//       });
   
-      if (!user) {
-        return NextResponse.json({
-          success: false,
-          message: "Invalid user",
-        }, { status: 403 });
-      }
+//       if (!user) {
+//         return NextResponse.json({
+//           success: false,
+//           message: "Invalid user",
+//         }, { status: 403 });
+//       }
   
-      await connectDb();
+//       await connectDb();
   
-      const portal = await Portal.findOne({ _id: params.portalId, userId: user.id });
-      if (!portal) {
-        return NextResponse.json({
-          success: false,
-          message: "Portal not found or user not authorized",
-        }, { status: 404 });
-      }
+//       const portal = await Portal.findOne({ _id: params.portalId, userId: user.id });
+//       if (!portal) {
+//         return NextResponse.json({
+//           success: false,
+//           message: "Portal not found or user not authorized",
+//         }, { status: 404 });
+//       }
   
-      return NextResponse.json({
-        success: true,
-        portal,
-      }, { status: 200 });
-    } catch (error) {
-      console.error("Error fetching portal:", error);
-      return NextResponse.json({
-        success: false,
-        error: "Internal Server Error",
-      }, { status: 500 });
-    }
-  }
+//       return NextResponse.json({
+//         success: true,
+//         portal,
+//       }, { status: 200 });
+//     } catch (error) {
+//       console.error("Error fetching portal:", error);
+//       return NextResponse.json({
+//         success: false,
+//         error: "Internal Server Error",
+//       }, { status: 500 });
+//     }
+//   }
 
 export async function POST(req: NextRequest) {
     try {
@@ -68,9 +65,7 @@ export async function POST(req: NextRequest) {
         }
 
         const user = await prisma.user.findFirst({
-            where: {
-                email: session.user?.email as string
-            }
+            where: { email: (session.user as { email: string }).email },
         })
 
         if(!user) {
@@ -87,7 +82,7 @@ export async function POST(req: NextRequest) {
         await connectDb();
 
 
-        const portal = await (Portal as any).insertOne({
+        const portal = await PortalModel.insertOne({
             portalName,
             clientName: name,
             clientEmail: mail,
@@ -118,9 +113,7 @@ export async function PATCH(req: NextRequest) {
         }
 
         const user = await prisma.user.findFirst({
-            where: {
-                email: session.user?.email as string
-            }
+            where: { email: (session.user as { email: string }).email },
         });
 
         if (!user) {
@@ -142,7 +135,7 @@ export async function PATCH(req: NextRequest) {
         await connectDb();
 
         // Validate portal ownership
-        const portal = await Portal.findOne({ _id: portalId, userId: user.id });
+        const portal = await (PortalModel as mongoose.Model<Portal>).findOne({ _id: portalId, userId: user.id });
         if (!portal) {
             return NextResponse.json({
                 success: false,
@@ -151,7 +144,7 @@ export async function PATCH(req: NextRequest) {
         }
 
 
-        const modulesUpdate: any = {
+        const modulesUpdate: { [key: string]: any } = {
             overview: portal.modules?.overview || { title: "Overview", summary: `Portal overview for ${portal.portalName}` },
             tasks: portal.modules?.tasks || { tasks: [] },
             leads: portal.modules?.leads || { leads: [] }
@@ -166,14 +159,14 @@ export async function PATCH(req: NextRequest) {
                 };
             } else if (module.id === "tasks" && module.enabled) {
                 modulesUpdate.tasks = {
-                    tasks: data.tasks.map((task: any) => ({
+                    tasks: data.tasks.map((task: {title: string, status: string}) => ({
                         title: task.title,
                         completed: task.status === "completed"
                     }))
                 };
             } else if (module.id === "leads" && module.enabled) {
                 modulesUpdate.leads = {
-                    leads: data.leads.map((lead: any) => ({
+                    leads: data.leads.map((lead: {name: string, email: string}) => ({
                         name: lead.name,
                         email: lead.email
                     }))
@@ -186,7 +179,7 @@ export async function PATCH(req: NextRequest) {
             }
         });
 
-        const updatedPortal = await Portal.findByIdAndUpdate(
+        const updatedPortal = await (PortalModel as mongoose.Model<Portal>).findByIdAndUpdate(
             portalId,
             {
                 $set: {
