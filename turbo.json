@@ -24,6 +24,10 @@
       "outputs": [".next/**", "!.next/cache/**"],
       "cache": true
     },
+    "postinstall": {
+      "outputs": [],
+      "cache": false
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
