@@ -19,7 +19,7 @@ type PortalWithId = Portal & { _id: string };
 export function GlassTabs({ portals }: { portals: PortalWithId[] }) {
   return (
     <div>
-      <Tabs defaultValue="overview" className="">
+      <Tabs defaultValue="portals" className="">
         <div className="backdrop-blur-md  border-white/10 rounded-2xl p-1 shadow-xl">
           <TabsList className="bg-transparent p-0 gap-2">
             <TabsTrigger value="overview" className="glass-tab">
@@ -86,7 +86,7 @@ export function GlassTabs({ portals }: { portals: PortalWithId[] }) {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex bg-[#0F0F0F] items-center gap-2">
+                <Button variant="outline" className="flex cursor-pointer bg-[#0F0F0F] items-center gap-2">
                   <Filter className="w-4 h-4" />
                   Filter
                 </Button>

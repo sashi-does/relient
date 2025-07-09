@@ -22,12 +22,13 @@ export function Toast({ title, description, variant = "default", onClose }: Toas
 
   return (
     <div
-      className={cn(
-        "fixed top-4 right-4 z-50 w-96 rounded-lg border p-4 shadow-lg",
-        variant === "success" && "bg-green-900 border-green-700 text-green-100",
-        variant === "error" && "bg-red-900 border-red-700 text-red-100",
-        variant === "default" && "bg-gray-900 border-gray-700 text-gray-100",
-      )}
+    className={cn(
+      "fixed top-4 right-4 w-96 rounded-lg border p-4 shadow-lg z-50 transition-all duration-300",
+      "bg-gray-900 border-gray-700 text-gray-100",
+      variant === "success" && "bg-green-900 border-green-700 text-green-100",
+      variant === "error" && "bg-red-900 border-red-700 text-red-100"
+    )}
+    
     >
       <div className="flex justify-between items-start">
         <div>

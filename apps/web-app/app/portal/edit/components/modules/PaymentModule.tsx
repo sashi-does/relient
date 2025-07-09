@@ -17,6 +17,7 @@ import { Badge } from '@repo/ui/badge';
 import { toast } from 'sonner';
 import { cn } from '@repo/ui/utils';
 import { Label } from '@repo/ui/label';
+import { Toaster } from '@repo/ui/sonner';
 
 type PaymentRow = {
   [key: string]: string | number | undefined;
@@ -224,10 +225,12 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
 
   return (
     <div className="space-y-6">
+      <Toaster />
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Payments</h2>
-          <p className="text-muted-foreground">Track invoices and payment status</p>
+        <h1 className="text-[22px] font-bold mb-[0] p-0">Payments</h1>
+        <p className="mb-3 mt-[0px] text-[#D4D4D4] p-0 text-[14px]">Track invoices and payment status</p>
+
         </div>
         
         <div className="flex gap-2">
@@ -281,7 +284,7 @@ export const PaymentsModule: React.FC<PaymentsModuleProps> = ({
 
           <Dialog open={newPaymentOpen} onOpenChange={setNewPaymentOpen}>
             <DialogTrigger asChild>
-              <Button className="flex items-center gap-2">
+              <Button  className="flex items-center gap-2">
                 <Plus className="w-4 h-4" />
                 Add Payment
               </Button>

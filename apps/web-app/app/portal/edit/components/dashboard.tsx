@@ -1,31 +1,35 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import { Sidebar } from './sidebar';
-import { Overview } from './modules/OverviewModule';
-import { TasksModule } from './modules/TaskModule';
-import { LeadsModule } from './modules/LeadsModule';
-import { PaymentsModule } from './modules/PaymentModule';
-import { InvoiceModule } from './modules/InvoiceModule';
-import { Eye, Save, HelpCircle, Menu, RotateCcw } from 'lucide-react';
-
-import { Sheet, SheetContent, SheetTrigger } from '@repo/ui/sheet';
-
-import { TopNavbar } from './navbar';
-import { Button } from '@repo/ui/button';
-import { Switch } from '@repo/ui/switch';
-import { Label } from '@repo/ui/label';
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@repo/ui/tooltip';
-import { toast } from 'sonner';
-import { AppointmentsModule } from './modules/AppointmentsModule';
+import React, { useState, useEffect } from "react";
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { Sidebar } from "./sidebar";
+import { Overview } from "./modules/OverviewModule";
+import { TasksModule } from "./modules/TaskModule";
+import { LeadsModule } from "./modules/LeadsModule";
+import { PaymentsModule } from "./modules/PaymentModule";
+import { Eye, Save, HelpCircle, Menu, RotateCcw } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/sheet";
+import { TopNavbar } from "./navbar";
+import { Button } from "@repo/ui/button";
+import { Label } from "@repo/ui/label";
+import {
+  Tooltip,
+  TooltipProvider,
+  TooltipTrigger,
+  TooltipContent,
+} from "@repo/ui/tooltip";
+import { toast, Toaster } from "sonner";
+import { AppointmentsModule } from "./modules/AppointmentsModule";
+import { Switch } from "@repo/ui/switch";
+import axios from "axios";
+import { useParams } from "next/navigation";
 
 export interface Task {
   id: string;
   title: string;
   description?: string;
-  status: 'backlog' | 'in-progress' | 'completed';
-  priority: 'low' | 'medium' | 'high';
+  status: "backlog" | "in-progress" | "completed";
+  priority: "low" | "medium" | "high";
   dueDate?: string;
   assignedTo?: string;
 }
@@ -35,7 +39,7 @@ export interface Lead {
   name: string;
   email: string;
   phone?: string;
-  status: 'new' | 'contacted' | 'qualified' | 'converted';
+  status: "new" | "contacted" | "qualified" | "converted";
   value: number;
   source?: string;
 }
@@ -46,7 +50,7 @@ export interface Appointment {
   client: string;
   date: string;
   time: string;
-  status: 'scheduled' | 'completed' | 'cancelled';
+  status: "scheduled" | "completed" | "cancelled";
   notes?: string;
   meetingUrl?: string;
 }
@@ -55,7 +59,7 @@ export interface Payment {
   id: string;
   client: string;
   amount: number;
-  status: 'pending' | 'paid' | 'overdue';
+  status: "pending" | "paid" | "overdue";
   dueDate: string;
   invoiceNumber: string;
 }
@@ -68,7 +72,7 @@ export interface ModuleSettings {
 }
 
 export const Dashboard: React.FC = () => {
-  const [activeModule, setActiveModule] = useState('overview');
+  const [activeModule, setActiveModule] = useState("overview");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [feedbackEnabled, setFeedbackEnabled] = useState(false);
   const [moduleSettings, setModuleSettings] = useState<ModuleSettings>({
@@ -77,93 +81,50 @@ export const Dashboard: React.FC = () => {
     appointments: true,
     payments: true,
   });
+  const params = useParams();
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
 
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: '1',
-      title: 'Review client proposal',
-      description: 'Review and provide feedback on the new client proposal',
-      status: 'backlog',
-      priority: 'high',
-      dueDate: '2024-01-15',
-    },
-    {
-      id: '2',
-      title: 'Update website content',
-      description: 'Update the about page with new team information',
-      status: 'in-progress',
-      priority: 'medium',
-      dueDate: '2024-01-20',
-    },
-    {
-      id: '3',
-      title: 'Client meeting preparation',
-      description: 'Prepare materials for upcoming client presentation',
-      status: 'completed',
-      priority: 'high',
-      dueDate: '2024-01-10',
-    },
-  ]);
+  // Fetch portal details on mount
+  useEffect(() => {
+    const fetchPortalDetails = async () => {
+      try {
+        const portalId = params.slug;
+        if (!portalId) {
+          toast.error("Portal ID is missing.");
+          return;
+        }
 
-  const [leads, setLeads] = useState<Lead[]>([
-    {
-      id: '1',
-      name: 'John Smith',
-      email: 'john@example.com',
-      phone: '+1 234 567 8900',
-      status: 'new',
-      value: 5000,
-      source: 'Website',
-    },
-    {
-      id: '2',
-      name: 'Sarah Johnson',
-      email: 'sarah@example.com',
-      phone: '+1 234 567 8901',
-      status: 'qualified',
-      value: 8500,
-      source: 'Referral',
-    },
-  ]);
+        const response = await axios.get(`/api/portal?portalId=${portalId}`);
+        if (response.data.success) {
+          const portal = response.data.portal;
 
-  const [appointments, setAppointments] = useState<Appointment[]>([
-    {
-      id: '1',
-      title: 'Client Discovery Call',
-      client: 'John Smith',
-      date: '2024-01-15',
-      time: '10:00 AM',
-      status: 'scheduled',
-      meetingUrl: 'https://meet.google.com/abc-def-ghi',
-    },
-    {
-      id: '2',
-      title: 'Project Review',
-      client: 'Sarah Johnson',
-      date: '2024-01-16',
-      time: '2:00 PM',
-      status: 'scheduled',
-    },
-  ]);
+          // Update state with fetched data
+          setTasks(portal.modules?.tasks?.tasks || []);
+          setLeads(portal.modules?.leads?.leads || []);
+          setPayments(portal.modules?.payments?.payments || []);
+          setAppointments(portal.modules?.appointments?.appointments || []);
 
-  const [payments, setPayments] = useState<Payment[]>([
-    {
-      id: '1',
-      client: 'John Smith',
-      amount: 2500,
-      status: 'pending',
-      dueDate: '2024-01-20',
-      invoiceNumber: 'INV-001',
-    },
-    {
-      id: '2',
-      client: 'Sarah Johnson',
-      amount: 4250,
-      status: 'paid',
-      dueDate: '2024-01-15',
-      invoiceNumber: 'INV-002',
-    },
-  ]);
+          // Update module settings based on fetched data
+          setModuleSettings({
+            tasks: !!portal.modules?.tasks?.tasks?.length,
+            leads: !!portal.modules?.leads?.leads?.length,
+            appointments: !!portal.modules?.appointments?.appointments?.length,
+            payments: !!portal.modules?.payments?.payments?.length,
+          });
+        } else {
+          toast.error(response.data.message || "Failed to fetch portal details.");
+        }
+      } catch (error) {
+        console.error("Error fetching portal details:", error);
+        toast.error("An error occurred while fetching portal details.");
+      }
+    };
+
+    fetchPortalDetails();
+  }, [params.slug]);
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -172,29 +133,62 @@ export const Dashboard: React.FC = () => {
 
     if (source.droppableId === destination.droppableId) return;
 
-    const task = tasks.find(t => t.id === draggableId);
+    const task = tasks.find((t) => t.id === draggableId);
     if (!task) return;
 
-    const newStatus = destination.droppableId as Task['status'];
-    
-    setTasks(prevTasks =>
-      prevTasks.map(t =>
+    const newStatus = destination.droppableId as Task["status"];
+
+    setTasks((prevTasks) =>
+      prevTasks.map((t) =>
         t.id === draggableId ? { ...t, status: newStatus } : t
       )
     );
 
-    toast.success(`Task moved to ${newStatus.replace('-', ' ')}`);
+    toast.success(`Task moved to ${newStatus.replace("-", " ")}`);
   };
 
   const handleModuleToggle = (module: keyof ModuleSettings) => {
-    setModuleSettings(prev => ({
+    setModuleSettings((prev) => ({
       ...prev,
-      [module]: !prev[module]
+      [module]: !prev[module],
     }));
   };
 
-  const handleSave = () => {
-    toast.success("Your portal configuration has been saved successfully.");
+  const handleSave = async () => {
+    try {
+      const portalId = params.slug;
+      if (!portalId) {
+        toast.error("Portal ID is missing.");
+        return;
+      }
+
+      // Structure modules as an array of { id, enabled } objects
+      const modules = [
+        { id: "tasks", enabled: moduleSettings.tasks && tasks.length > 0 },
+        { id: "leads", enabled: moduleSettings.leads && leads.length > 0 },
+        { id: "payments", enabled: moduleSettings.payments && payments.length > 0 },
+        { id: "appointments", enabled: moduleSettings.appointments && appointments.length > 0 },
+      ];
+
+      // Structure data object with the actual module data
+      const data = {
+        tasks: tasks || [],
+        leads: leads || [],
+        payments: payments || [],
+        appointments: appointments || [],
+      };
+
+      const response = await axios.patch("/api/portal", { portalId, modules, data });
+
+      if (response.data.success) {
+        toast.success("Your portal configuration has been saved successfully.");
+      } else {
+        toast.error(response.data.message || "Failed to save portal configuration.");
+      }
+    } catch (error) {
+      console.error("Error saving portal:", error);
+      toast.error("An error occurred while saving the portal configuration.");
+    }
   };
 
   const handlePreview = () => {
@@ -207,22 +201,39 @@ export const Dashboard: React.FC = () => {
     setLeads([]);
     setAppointments([]);
     setPayments([]);
-    toast.success( "All tasks, leads, appointments, and payments have been cleared");
+    setModuleSettings({
+      tasks: false,
+      leads: false,
+      appointments: false,
+      payments: false,
+    });
+    toast.success("All tasks, leads, appointments, and payments have been cleared");
   };
 
   const renderActiveModule = () => {
     switch (activeModule) {
-      case 'overview':
-        return <Overview tasks={tasks} leads={leads} appointments={appointments} payments={payments} />;
-      case 'tasks':
+      case "overview":
+        return (
+          <Overview
+            tasks={tasks}
+            leads={leads}
+            appointments={appointments}
+            payments={payments}
+          />
+        );
+      case "tasks":
         return moduleSettings.tasks ? (
-          <TasksModule tasks={tasks} setTasks={setTasks} onDragEnd={handleDragEnd} />
+          <TasksModule
+            tasks={tasks}
+            setTasks={setTasks}
+            onDragEnd={handleDragEnd}
+          />
         ) : (
           <div className="flex items-center justify-center h-64 text-muted-foreground">
             Tasks module is disabled
           </div>
         );
-      case 'leads':
+      case "leads":
         return moduleSettings.leads ? (
           <LeadsModule leads={leads} setLeads={setLeads} />
         ) : (
@@ -230,15 +241,18 @@ export const Dashboard: React.FC = () => {
             Leads module is disabled
           </div>
         );
-      case 'appointments':
+      case "appointments":
         return moduleSettings.appointments ? (
-          <AppointmentsModule appointments={appointments} setAppointments={setAppointments} />
+          <AppointmentsModule
+            appointments={appointments}
+            setAppointments={setAppointments}
+          />
         ) : (
           <div className="flex items-center justify-center h-64 text-muted-foreground">
             Appointments module is disabled
           </div>
         );
-      case 'payments':
+      case "payments":
         return moduleSettings.payments ? (
           <PaymentsModule payments={payments} setPayments={setPayments} />
         ) : (
@@ -246,21 +260,31 @@ export const Dashboard: React.FC = () => {
             Payments module is disabled
           </div>
         );
-      case 'invoice':
-        return <InvoiceModule />;
       default:
-        return <Overview tasks={tasks} leads={leads} appointments={appointments} payments={payments} />;
+        return (
+          <Overview
+            tasks={tasks}
+            leads={leads}
+            appointments={appointments}
+            payments={payments}
+          />
+        );
     }
   };
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="min-h-screen bg-background flex">
+      <Toaster />
+      <div className="min-h-screen bg-[#0F0F0F] flex">
         {/* Mobile Sidebar */}
-        <div className="md:hidden">
+        <div className="bg-[#171717] md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="sm" className="fixed top-4 left-4 z-50">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="fixed top-4 left-4 z-50"
+              >
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
@@ -278,7 +302,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Desktop Sidebar */}
-        <div className="hidden md:block fixed left-0 top-0 h-full z-10">
+        <div className="bg-[#171717] hidden md:block fixed left-0 top-0 h-full z-10">
           <Sidebar
             collapsed={sidebarCollapsed}
             onToggle={setSidebarCollapsed}
@@ -288,63 +312,24 @@ export const Dashboard: React.FC = () => {
             onModuleToggle={handleModuleToggle}
           />
         </div>
-        
-        <div className={`flex-1 flex flex-col transition-all duration-300 ${
-          sidebarCollapsed ? 'md:ml-16' : 'md:ml-64'
-        }`}>
-          <TopNavbar />
-          
-          <div className="flex-1 p-3 md:p-6 overflow-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-4">
-              <h1 className="text-2xl md:text-3xl font-bold">
-                {activeModule.charAt(0).toUpperCase() + activeModule.slice(1)}
-              </h1>
-              
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full md:w-auto">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="feedback-toggle" className="text-sm">Client Feedback</Label>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center gap-1">
-                          <Switch
-                            id="feedback-toggle"
-                            checked={feedbackEnabled}
-                            onCheckedChange={setFeedbackEnabled}
-                          />
-                          <HelpCircle className="w-4 h-4 text-muted-foreground" />
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Feedbacks will be received in the inbox of your dashboard</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
 
-                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                  <Button onClick={handleResetAll} variant="outline" className="flex items-center gap-2 w-full sm:w-auto">
-                    <RotateCcw className="w-4 h-4" />
-                    <span className="hidden sm:inline">Reset All</span>
-                    <span className="sm:hidden">Reset</span>
-                  </Button>
-                  <Button onClick={handlePreview} variant="outline" className="flex items-center gap-2 w-full sm:w-auto">
-                    <Eye className="w-4 h-4" />
-                    <span className="hidden sm:inline">Live Preview</span>
-                    <span className="sm:hidden">Preview</span>
-                  </Button>
-                  <Button onClick={handleSave} className="flex items-center gap-2 w-full sm:w-auto">
-                    <Save className="w-4 h-4" />
-                    <span className="hidden sm:inline">Save Portal</span>
-                    <span className="sm:hidden">Save</span>
-                  </Button>
-                </div>
-              </div>
-            </div>
-            
-            <div className="animate-fade-in">
-              {renderActiveModule()}
-            </div>
+        <div
+          className={`flex-1 flex flex-col transition-all duration-300 ${
+            sidebarCollapsed ? "md:ml-16" : "md:ml-64"
+          }`}
+        >
+          <TopNavbar
+            feedbackEnabled={feedbackEnabled}
+            setFeedbackEnabled={setFeedbackEnabled}
+            handleResetAll={handleResetAll}
+            handlePreview={handlePreview}
+            handleSave={handleSave}
+          />
+
+          <div className="flex-1 p-3 md:p-6 overflow-auto">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-4"></div>
+
+            <div className="animate-fade-in">{renderActiveModule()}</div>
           </div>
         </div>
       </div>

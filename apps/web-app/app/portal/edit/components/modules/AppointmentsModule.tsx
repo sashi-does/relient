@@ -17,6 +17,7 @@ import { Badge } from '@repo/ui/badge';
 import { Label } from '@repo/ui/label';
 import { Textarea } from '@repo/ui/text-area';
 import { toast } from 'sonner';
+import { Toaster } from '@repo/ui/sonner';
 import { cn } from '@repo/ui/utils';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@repo/ui/select';
 
@@ -159,10 +160,11 @@ export const AppointmentsModule: React.FC<AppointmentsModuleProps> = ({
 
   return (
     <div className="space-y-6">
+      <Toaster />
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Appointments</h2>
-          <p className="text-muted-foreground">Schedule and manage client appointments</p>
+          <h1 className="text-[22px] font-bold mb-[0] p-0">Appointments</h1>
+          <p className="mb-3 mt-[0px] text-[#D4D4D4] p-0 text-[14px]">Schedule and manage client appointments</p>
         </div>
         
         <div className="flex gap-2">

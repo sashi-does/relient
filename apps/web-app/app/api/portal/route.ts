@@ -6,51 +6,67 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@repo/db/prisma";
 import { Portal } from "@repo/types/interfaces";
 
-// export async function GET(req: NextRequest, { params }: { params: { portalId: string } }) {
-//     try {
-//       const session = await getServerSession(options);
-//       if (!session) {
-//         return NextResponse.json({
-//           success: false,
-//           message: "Unauthenticated user",
-//         }, { status: 401 });
-//       }
+export async function GET(req: NextRequest) {
+    try {
+      const session = await getServerSession(options);
+      await connectDb()
+      if (!session) {
+        return NextResponse.json({
+          success: false,
+          message: "Unauthenticated user",
+        }, { status: 401 });
+      }
   
-//       const user = await prisma.user.findFirst({
-//         where: {
-//           email: session.user?.email as string,
-//         },
-//       });
+      const user = await prisma.user.findFirst({
+        where: {
+          email: (session.user as { email?: string })?.email,
+        },
+      });
   
-//       if (!user) {
-//         return NextResponse.json({
-//           success: false,
-//           message: "Invalid user",
-//         }, { status: 403 });
-//       }
+      if (!user) {
+        return NextResponse.json({
+          success: false,
+          message: "Invalid user",
+        }, { status: 403 });
+      }
   
-//       await connectDb();
+      // Extract portalId from query parameters
+      const portalId = req.nextUrl.searchParams.get('portalId');
+      if (!portalId) {
+        return NextResponse.json({
+          success: false,
+          message: "Missing portalId in query parameters",
+        }, { status: 400 });
+      }
   
-//       const portal = await Portal.findOne({ _id: params.portalId, userId: user.id });
-//       if (!portal) {
-//         return NextResponse.json({
-//           success: false,
-//           message: "Portal not found or user not authorized",
-//         }, { status: 404 });
-//       }
+      // Validate portalId format (optional, for security)
+      if (!mongoose.Types.ObjectId.isValid(portalId)) {
+        return NextResponse.json({
+          success: false,
+          message: "Invalid portalId format",
+        }, { status: 400 });
+      }
   
-//       return NextResponse.json({
-//         success: true,
-//         portal,
-//       }, { status: 200 });
-//     } catch (error) {
-//       console.error("Error fetching portal:", error);
-//       return NextResponse.json({
-//         success: false,
-//         error: "Internal Server Error",
-//       }, { status: 500 });
-//     }
-//   }
+      const portal = await (PortalModel as mongoose.Model<Portal>).findOne({ _id: portalId, userId: user.id });
+      if (!portal) {
+        return NextResponse.json({
+          success: false,
+          message: "Portal not found or user not authorized",
+        }, { status: 404 });
+      }
+  
+      return NextResponse.json({
+        success: true,
+        portal,
+      }, { status: 200 });
+    } catch (error) {
+      console.error("Error fetching portal:", error);
+      return NextResponse.json({
+        success: false,
+        error: "Internal Server Error",
+      }, { status: 500 });
+    }
+  }
 
 export async function POST(req: NextRequest) {
     try {
@@ -104,6 +120,7 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     try {
+        // Authenticate user
         const session = await getServerSession(options);
         if (!session) {
             return NextResponse.json({
@@ -112,6 +129,7 @@ export async function PATCH(req: NextRequest) {
             }, { status: 401 });
         }
 
+        // Verify user exists
         const user = await prisma.user.findFirst({
             where: { email: (session.user as { email: string }).email },
         });
@@ -123,8 +141,12 @@ export async function PATCH(req: NextRequest) {
             }, { status: 403 });
         }
 
+        // Parse request body
         const { portalId, modules, data } = await req.json();
+        console.log("Portal SASASASASAS ID:", portalId);
+        console.log("Modules:", JSON.stringify(modules));
 
+        // Validate required fields
         if (!portalId || !modules || !data) {
             return NextResponse.json({
                 success: false,
@@ -132,6 +154,7 @@ export async function PATCH(req: NextRequest) {
             }, { status: 400 });
         }
 
+        // Connect to MongoDB
         await connectDb();
 
         // Validate portal ownership
@@ -143,42 +166,77 @@ export async function PATCH(req: NextRequest) {
             }, { status: 404 });
         }
 
-
+        // Initialize modulesUpdate with all possible modules
         const modulesUpdate: { [key: string]: any } = {
             overview: portal.modules?.overview || { title: "Overview", summary: `Portal overview for ${portal.portalName}` },
             tasks: portal.modules?.tasks || { tasks: [] },
-            leads: portal.modules?.leads || { leads: [] }
+            leads: portal.modules?.leads || { leads: [] },
+            payments: portal.modules?.payments || { payments: [] },
+            appointments: portal.modules?.appointments || { appointments: [] }
         };
 
+        // Process each module
         modules.forEach((module: { id: string; enabled: boolean }) => {
             if (module.id === "overview") {
-
                 modulesUpdate.overview = {
                     title: "Overview",
                     summary: `Portal overview for ${portal.portalName}`
                 };
             } else if (module.id === "tasks" && module.enabled) {
                 modulesUpdate.tasks = {
-                    tasks: data.tasks.map((task: {title: string, status: string}) => ({
+                    tasks: data.tasks?.map((task: any) => ({
+                        id: task.id,
                         title: task.title,
-                        completed: task.status === "completed"
-                    }))
+                        description: task.description,
+                        status: task.status,
+                        priority: task.priority,
+                        dueDate: task.dueDate
+                    })) || []
                 };
             } else if (module.id === "leads" && module.enabled) {
                 modulesUpdate.leads = {
-                    leads: data.leads.map((lead: {name: string, email: string}) => ({
+                    leads: data.leads?.map((lead: any) => ({
+                        id: lead.id,
                         name: lead.name,
-                        email: lead.email
-                    }))
+                        email: lead.email,
+                        phone: lead.phone,
+                        status: lead.status,
+                        value: lead.value,
+                        source: lead.source
+                    })) || []
+                };
+            } else if (module.id === "payments" && module.enabled) {
+                modulesUpdate.payments = {
+                    payments: data.payments?.map((payment: any) => ({
+                        id: payment.id,
+                        client: payment.client,
+                        amount: payment.amount,
+                        status: payment.status,
+                        dueDate: payment.dueDate,
+                        invoiceNumber: payment.invoiceNumber
+                    })) || []
+                };
+            } else if (module.id === "appointments" && module.enabled) {
+                modulesUpdate.appointments = {
+                    appointments: data.appointments?.map((appointment: any) => ({
+                        id: appointment.id,
+                        title: appointment.title,
+                        client: appointment.client,
+                        date: appointment.date,
+                        time: appointment.time,
+                        status: appointment.status,
+                        meetingUrl: appointment.meetingUrl
+                    })) || []
                 };
             } else if (!module.enabled && module.id !== "overview") {
-                // Only set to null if explicitly disabled and no data provided
+                // Set to null if explicitly disabled and no data provided
                 if (!data[module.id] || data[module.id].length === 0) {
                     modulesUpdate[module.id] = null;
                 }
             }
         });
 
+        // Update portal in MongoDB
         const updatedPortal = await (PortalModel as mongoose.Model<Portal>).findByIdAndUpdate(
             portalId,
             {

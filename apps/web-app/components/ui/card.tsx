@@ -93,24 +93,24 @@ export default function Card({
                 </svg>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#2e2e2e]">
-              <DropdownMenuItem>
+            <DropdownMenuContent className="bg-[#1b1b1b]">
+              <DropdownMenuItem className="hover:bg-[#1e1e1e] hover:border-red py-[5px] mt-1">
                 <Eye className="mr-2 h-4 w-4" />
                 <span>View</span>
               </DropdownMenuItem>
               <Link target="_blank" href={`/portal/edit/${portalId}`}>
-                <DropdownMenuItem className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-white/70 hover:text-white focus:text-white">
+                <DropdownMenuItem className="hover:bg-[#1e1e1e] hover:border-red py-[5px] ">
                   <Pencil className="mr-2 h-4 w-4" />
                   <span>Edit</span>
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-white/70 hover:text-white focus:text-white">
+              <DropdownMenuItem className="hover:bg-[#1e1e1e] hover:border-red py-[5px] ">
                 <Share2 className="mr-2 h-4 w-4" />
                 <span>Share</span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => deletePortal((portalId as string))}
-                className="hover:bg-[#3b3b3b] focus:bg-[#3b3b3b] text-red-500 hover:text-red-400 focus:text-red-400"
+                className="hover:bg-[#6C1818] hover:text-white hover:border-red py-[5px] mb-1 text-red-500 focus:text-white"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 <span>Delete</span>

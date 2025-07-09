@@ -13,6 +13,7 @@ import { Button } from '@repo/ui/button';
 import Input from '@repo/ui/input';
 import { Badge } from '@repo/ui/badge';
 import { toast } from 'sonner';
+import { Toaster } from '@repo/ui/sonner';
 
 interface LeadsModuleProps {
   leads: Lead[];
@@ -182,10 +183,11 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
 
   return (
     <div className="space-y-6">
+      <Toaster />
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Lead Management</h2>
-          <p className="text-muted-foreground">Track and manage your potential clients</p>
+          <h1 className="text-[22px] font-bold mb-[0] p-0">Lead Management</h1>
+          <p className="mb-3 mt-[0px] text-[#D4D4D4] p-0 text-[14px]">Track and manage your potential clients</p>
         </div>
         
         <div className="flex flex-col sm:flex-row gap-2">
