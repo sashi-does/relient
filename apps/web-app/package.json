@@ -7,8 +7,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate --schema=packages/db/postgres/prisma/schema.prisma"
+    "lint": "next lint"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
