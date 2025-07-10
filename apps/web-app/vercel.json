@@ -1,0 +1,9 @@
+{
+    "buildCommand": "bun install && bun run build",
+    "installCommand": "bun install",
+    "outputDirectory": ".next",
+    "env": {
+      "DATABASE_URL": "@database_url"
+    }
+  }
+  
