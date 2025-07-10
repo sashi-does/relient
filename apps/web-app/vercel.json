@@ -3,7 +3,7 @@
     "installCommand": "bun install",
     "outputDirectory": ".next",
     "env": {
-      "DATABASE_URL": "@database_url"
+      "DATABASE_URL": "postgresql://neondb_owner:npg_fDZ9uSTit6bK@ep-still-queen-a126nf5v.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
     }
   }
   
