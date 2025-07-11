@@ -68,7 +68,6 @@ export default function Sidebar({
     const handleResize = () => {
       if (window.innerWidth < 768) {
         setIsCollapsed(true);
-        setIsOpen(false);
       } else {
         setIsCollapsed(false);
         setIsOpen(true);
@@ -253,7 +252,7 @@ export default function Sidebar({
                       {
                         "bg-[#404040]": isActive,
                         "text-white": isActive,
-                        // "hover:bg-[#40404090]": true,
+                        "hover:bg-[#262626]": true,
                         "justify-center": isCollapsed,
                       }
                     )}
@@ -293,7 +292,7 @@ export default function Sidebar({
         </div>
 
         {!isCollapsed && <SubscriptionCard />}
-
+        { window.innerWidth >= 768 &&
         <button
           className={clsx(
             "mb-4 p-2 rounded-md cursor-pointer hover:bg-[#40404080] transition self-end",
@@ -308,7 +307,7 @@ export default function Sidebar({
             width={20}
             alt="collapse"
           />
-        </button>
+        </button> }
       </div>
     </>
   );

@@ -7,7 +7,6 @@ import { Plus, Calendar, User, Link, Clock, Edit, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/popover';
 import { Calendar as CalendarComponent } from '@repo/ui/calendar';
-import { TimePicker } from '@repo/ui/time-picker';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Appointment } from '../dashboard';
@@ -241,10 +240,12 @@ export const AppointmentsModule: React.FC<AppointmentsModuleProps> = ({
                   
                   <div>
                     <Label htmlFor="time">Time</Label>
-                    <TimePicker
+                    <Input
+                      type="time"
+                      id="time"
                       value={newAppointment.time}
-                      onValueChange={(time) => setNewAppointment({ ...newAppointment, time })}
-                      placeholder="Select time"
+                      onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
+                      className="w-full"
                     />
                   </div>
                 </div>
@@ -359,10 +360,12 @@ export const AppointmentsModule: React.FC<AppointmentsModuleProps> = ({
               
               <div>
                 <Label htmlFor="edit-time">Time</Label>
-                <TimePicker
+                <Input
+                  type="time"
+                  id="edit-time"
                   value={newAppointment.time}
-                  onValueChange={(time) => setNewAppointment({ ...newAppointment, time })}
-                  placeholder="Select time"
+                  onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
+                  className="w-full"
                 />
               </div>
             </div>

@@ -1,19 +1,44 @@
-'use client'
+"use client";
 
-import React, { useState, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/card';
-import { Plus, Upload, Search, Mail, Phone, Edit, Trash2 } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/dialog';
-import { Label } from '@repo/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@repo/ui/table';
-import { Lead } from '../dashboard';
+import React, { useState, useRef } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/card";
+import { Plus, Upload, Search, Mail, Phone, Edit, Trash2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@repo/ui/dialog";
+import { Label } from "@repo/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@repo/ui/table";
+import { Lead } from "../dashboard";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@repo/ui/dropdown-menu";
 import * as XLSX from "xlsx";
-import { Button } from '@repo/ui/button';
-import Input from '@repo/ui/input';
-import { Badge } from '@repo/ui/badge';
-import { toast } from 'sonner';
-import { Toaster } from '@repo/ui/sonner';
+import { Button } from "@repo/ui/button";
+import Input from "@repo/ui/input";
+import { Badge } from "@repo/ui/badge";
+import { toast } from "sonner";
+import { Toaster } from "@repo/ui/sonner";
 
 interface LeadsModuleProps {
   leads: Lead[];
@@ -27,16 +52,16 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
   const [newLeadOpen, setNewLeadOpen] = useState(false);
   const [editLeadOpen, setEditLeadOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [newLead, setNewLead] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    status: 'new' as Lead['status'],
+    name: "",
+    email: "",
+    phone: "",
+    status: "new" as Lead["status"],
     value: 0,
-    source: '',
+    source: "",
   });
 
   const handleAddLead = () => {
@@ -55,14 +80,14 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
       source: newLead.source,
     };
 
-    setLeads(prev => [...prev, lead]);
+    setLeads((prev) => [...prev, lead]);
     setNewLead({
-      name: '',
-      email: '',
-      phone: '',
-      status: 'new',
+      name: "",
+      email: "",
+      phone: "",
+      status: "new",
       value: 0,
-      source: '',
+      source: "",
     });
     setNewLeadOpen(false);
 
@@ -74,10 +99,10 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
     setNewLead({
       name: lead.name,
       email: lead.email,
-      phone: lead.phone || '',
+      phone: lead.phone || "",
       status: lead.status,
       value: lead.value,
-      source: lead.source || '',
+      source: lead.source || "",
     });
     setEditLeadOpen(true);
   };
@@ -88,25 +113,29 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
       return;
     }
 
-    setLeads(prev => prev.map(lead =>
-      lead.id === editingLead.id ? {
-        ...lead,
-        name: newLead.name,
-        email: newLead.email,
-        phone: newLead.phone,
-        status: newLead.status,
-        value: newLead.value,
-        source: newLead.source,
-      } : lead
-    ));
+    setLeads((prev) =>
+      prev.map((lead) =>
+        lead.id === editingLead.id
+          ? {
+              ...lead,
+              name: newLead.name,
+              email: newLead.email,
+              phone: newLead.phone,
+              status: newLead.status,
+              value: newLead.value,
+              source: newLead.source,
+            }
+          : lead
+      )
+    );
 
     setNewLead({
-      name: '',
-      email: '',
-      phone: '',
-      status: 'new',
+      name: "",
+      email: "",
+      phone: "",
+      status: "new",
       value: 0,
-      source: '',
+      source: "",
     });
     setEditLeadOpen(false);
     setEditingLead(null);
@@ -127,7 +156,7 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
     reader.onload = (e) => {
       try {
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const workbook = XLSX.read(data, { type: "array" });
         const sheetName = workbook.SheetNames[0];
         if (!sheetName) {
           toast.error("No sheets found in the Excel file.");
@@ -140,45 +169,48 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
         }
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-        const newLeads: Lead[] = (jsonData as any[]).map((row, index) => ({
-          id: `imported-${Date.now()}-${index}`,
-          name: row.Name || row.name || '',
-          email: row.Email || row.email || '',
-          phone: row.Phone || row.phone || '',
-          status: 'new' as Lead['status'],
-          value: Number(row.Value || row.value || 0),
-          source: row.Source || row.source || 'Import',
-        })).filter((lead: Lead) => lead.name && lead.email);
+        const newLeads: Lead[] = (jsonData as any[])
+          .map((row, index) => ({
+            id: `imported-${Date.now()}-${index}`,
+            name: row.Name || row.name || "",
+            email: row.Email || row.email || "",
+            phone: row.Phone || row.phone || "",
+            status: "new" as Lead["status"],
+            value: Number(row.Value || row.value || 0),
+            source: row.Source || row.source || "Import",
+          }))
+          .filter((lead: Lead) => lead.name && lead.email);
 
-        setLeads(prev => [...prev, ...newLeads]);
-        
+        setLeads((prev) => [...prev, ...newLeads]);
+
         toast.success(`${newLeads.length} leads imported from Excel file`);
       } catch (error) {
         toast.error("Failed to read Excel file. Please check the format.");
-        console.log(error)
+        console.log(error);
       }
     };
     reader.readAsArrayBuffer(file);
   };
 
-  const getStatusColor = (status: Lead['status']) => {
+  const getStatusColor = (status: Lead["status"]) => {
     switch (status) {
-      case 'new':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
-      case 'contacted':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-      case 'qualified':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
-      case 'converted':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case "new":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
+      case "contacted":
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+      case "qualified":
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
+      case "converted":
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
     }
   };
 
-  const filteredLeads = leads.filter((lead: Lead) =>
-    lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lead.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredLeads = leads.filter(
+    (lead: Lead) =>
+      lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -187,9 +219,11 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-[22px] font-bold mb-[0] p-0">Lead Management</h1>
-          <p className="mb-3 mt-[0px] text-[#D4D4D4] p-0 text-[14px]">Track and manage your potential clients</p>
+          <p className="mb-3 mt-[0px] text-[#D4D4D4] p-0 text-[14px]">
+            Track and manage your potential clients
+          </p>
         </div>
-        
+
         <div className="flex flex-col sm:flex-row gap-2">
           <input
             ref={fileInputRef}
@@ -198,21 +232,25 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
             onChange={handleFileUpload}
             className="hidden"
           />
-          
-          <Button variant="outline" onClick={handleClearAll} className="flex items-center gap-2">
+
+          <Button
+            variant="outline"
+            onClick={handleClearAll}
+            className="flex items-center gap-2"
+          >
             <Trash2 className="w-4 h-4" />
             Clear All
           </Button>
-          
-          <Button 
-            variant="outline" 
+
+          <Button
+            variant="outline"
             onClick={() => fileInputRef.current?.click()}
             className="flex items-center gap-2"
           >
             <Upload className="w-4 h-4" />
             Import Excel
           </Button>
-          
+
           <Dialog open={newLeadOpen} onOpenChange={setNewLeadOpen}>
             <DialogTrigger asChild>
               <Button className="flex items-center gap-2">
@@ -230,77 +268,108 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
                   <Input
                     id="name"
                     value={newLead.name}
-                    onChange={(e) => setNewLead({ ...newLead, name: e.target.value })}
+                    onChange={(e) =>
+                      setNewLead({ ...newLead, name: e.target.value })
+                    }
                     placeholder="Enter lead name"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     value={newLead.email}
-                    onChange={(e) => setNewLead({ ...newLead, email: e.target.value })}
+                    onChange={(e) =>
+                      setNewLead({ ...newLead, email: e.target.value })
+                    }
                     placeholder="Enter email address"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="phone">Phone</Label>
                   <Input
                     id="phone"
                     value={newLead.phone}
-                    onChange={(e) => setNewLead({ ...newLead, phone: e.target.value })}
+                    onChange={(e) =>
+                      setNewLead({ ...newLead, phone: e.target.value })
+                    }
                     placeholder="Enter phone number"
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
+                  <div className="mt-[-2px]">
                     <Label htmlFor="status">Status</Label>
-                    <Select value={newLead.status} onValueChange={(value) => setNewLead({ ...newLead, status: value as Lead['status'] })}>
-                      <SelectTrigger className="bg-background">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-popover">
-                        <SelectItem value="new">New</SelectItem>
-                        <SelectItem value="contacted">Contacted</SelectItem>
-                        <SelectItem value="qualified">Qualified</SelectItem>
-                        <SelectItem value="converted">Converted</SelectItem>
-                      </SelectContent>
-                    </Select>
+
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full rounded-md justify-between bg-[#212121] text-white border border-input hover:bg-[#2d2d2d]"
+                        >
+                          {newLead.status
+                            ? newLead.status.charAt(0).toUpperCase() +
+                              newLead.status.slice(1)
+                            : "Select status"}
+                        </Button>
+                      </DropdownMenuTrigger>
+
+                      <DropdownMenuContent className="w-full bg-popover text-white border border-muted p-1">
+                        {["new", "contacted", "qualified", "converted"].map(
+                          (status) => (
+                            <DropdownMenuItem
+                              key={status}
+                              onClick={() => setNewLead({ ...newLead, status: status as Lead["status"] })}
+                              className="rounded-md px-3 py-2 hover:bg-[#2d2d2d] cursor-pointer"
+                            >
+                              {status.charAt(0).toUpperCase() + status.slice(1)}
+                            </DropdownMenuItem>
+                          )
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="value">Value ($)</Label>
                     <Input
                       id="value"
                       type="number"
                       value={newLead.value}
-                      onChange={(e) => setNewLead({ ...newLead, value: Number(e.target.value) })}
+                      onChange={(e) =>
+                        setNewLead({
+                          ...newLead,
+                          value: Number(e.target.value),
+                        })
+                      }
                       placeholder="0"
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="source">Source</Label>
                   <Input
                     id="source"
                     value={newLead.source}
-                    onChange={(e) => setNewLead({ ...newLead, source: e.target.value })}
+                    onChange={(e) =>
+                      setNewLead({ ...newLead, source: e.target.value })
+                    }
                     placeholder="e.g., Website, Referral, Social Media"
                   />
                 </div>
-                
+
                 <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setNewLeadOpen(false)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setNewLeadOpen(false)}
+                  >
                     Cancel
                   </Button>
-                  <Button onClick={handleAddLead}>
-                    Add Lead
-                  </Button>
+                  <Button onClick={handleAddLead}>Add Lead</Button>
                 </div>
               </div>
             </DialogContent>
@@ -319,36 +388,47 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
               <Input
                 id="edit-name"
                 value={newLead.name}
-                onChange={(e) => setNewLead({ ...newLead, name: e.target.value })}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, name: e.target.value })
+                }
                 placeholder="Enter lead name"
               />
             </div>
-            
+
             <div>
               <Label htmlFor="edit-email">Email</Label>
               <Input
                 id="edit-email"
                 type="email"
                 value={newLead.email}
-                onChange={(e) => setNewLead({ ...newLead, email: e.target.value })}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, email: e.target.value })
+                }
                 placeholder="Enter email address"
               />
             </div>
-            
+
             <div>
               <Label htmlFor="edit-phone">Phone</Label>
               <Input
                 id="edit-phone"
                 value={newLead.phone}
-                onChange={(e) => setNewLead({ ...newLead, phone: e.target.value })}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, phone: e.target.value })
+                }
                 placeholder="Enter phone number"
               />
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="edit-status">Status</Label>
-                <Select value={newLead.status} onValueChange={(value) => setNewLead({ ...newLead, status: value as Lead['status'] })}>
+                <Select
+                  value={newLead.status}
+                  onValueChange={(value) =>
+                    setNewLead({ ...newLead, status: value as Lead["status"] })
+                  }
+                >
                   <SelectTrigger className="bg-background">
                     <SelectValue />
                   </SelectTrigger>
@@ -360,36 +440,38 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label htmlFor="edit-value">Value ($)</Label>
                 <Input
                   id="edit-value"
                   type="number"
                   value={newLead.value}
-                  onChange={(e) => setNewLead({ ...newLead, value: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setNewLead({ ...newLead, value: Number(e.target.value) })
+                  }
                   placeholder="0"
                 />
               </div>
             </div>
-            
+
             <div>
               <Label htmlFor="edit-source">Source</Label>
               <Input
                 id="edit-source"
                 value={newLead.source}
-                onChange={(e) => setNewLead({ ...newLead, source: e.target.value })}
+                onChange={(e) =>
+                  setNewLead({ ...newLead, source: e.target.value })
+                }
                 placeholder="e.g., Website, Referral, Social Media"
               />
             </div>
-            
+
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setEditLeadOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleUpdateLead}>
-                Update Lead
-              </Button>
+              <Button onClick={handleUpdateLead}>Update Lead</Button>
             </div>
           </div>
         </DialogContent>
@@ -424,7 +506,7 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredLeads.map(lead => (
+                {filteredLeads.map((lead) => (
                   <TableRow key={lead.id} className="hover:bg-muted/50">
                     <TableCell className="font-medium">{lead.name}</TableCell>
                     <TableCell>
@@ -450,7 +532,7 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
                       ${lead.value.toLocaleString()}
                     </TableCell>
                     <TableCell className="text-muted-foreground">
-                      {lead.source || 'Unknown'}
+                      {lead.source || "Unknown"}
                     </TableCell>
                     <TableCell>
                       <Button
@@ -466,7 +548,10 @@ export const LeadsModule: React.FC<LeadsModuleProps> = ({
                 ))}
                 {filteredLeads.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                    <TableCell
+                      colSpan={6}
+                      className="text-center py-8 text-muted-foreground"
+                    >
                       No leads found
                     </TableCell>
                   </TableRow>

@@ -87,7 +87,6 @@ export const Dashboard: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
 
-  // Fetch portal details on mount
   useEffect(() => {
     const fetchPortalDetails = async () => {
       try {
@@ -101,13 +100,11 @@ export const Dashboard: React.FC = () => {
         if (response.data.success) {
           const portal = response.data.portal;
 
-          // Update state with fetched data
           setTasks(portal.modules?.tasks?.tasks || []);
           setLeads(portal.modules?.leads?.leads || []);
           setPayments(portal.modules?.payments?.payments || []);
           setAppointments(portal.modules?.appointments?.appointments || []);
 
-          // Update module settings based on fetched data
           setModuleSettings({
             tasks: !!portal.modules?.tasks?.tasks?.length,
             leads: !!portal.modules?.leads?.leads?.length,
@@ -162,7 +159,7 @@ export const Dashboard: React.FC = () => {
         return;
       }
 
-      // Structure modules as an array of { id, enabled } objects
+
       const modules = [
         { id: "tasks", enabled: moduleSettings.tasks && tasks.length > 0 },
         { id: "leads", enabled: moduleSettings.leads && leads.length > 0 },
@@ -170,7 +167,7 @@ export const Dashboard: React.FC = () => {
         { id: "appointments", enabled: moduleSettings.appointments && appointments.length > 0 },
       ];
 
-      // Structure data object with the actual module data
+
       const data = {
         tasks: tasks || [],
         leads: leads || [],
@@ -193,7 +190,7 @@ export const Dashboard: React.FC = () => {
 
   const handlePreview = () => {
     toast.success("Opening live preview in a new window...");
-    // In a real app, this would open a new window with the client portal
+
   };
 
   const handleResetAll = () => {
@@ -275,7 +272,7 @@ export const Dashboard: React.FC = () => {
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Toaster />
-      <div className="min-h-screen bg-[#0F0F0F] flex">
+      <div className="min-h-screen w-full bg-[#0F0F0F] flex">
         {/* Mobile Sidebar */}
         <div className="bg-[#171717] md:hidden">
           <Sheet>
@@ -288,7 +285,7 @@ export const Dashboard: React.FC = () => {
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-64">
+            <SheetContent side="left" className="p-0 w-0">
               <Sidebar
                 collapsed={false}
                 onToggle={() => {}}
@@ -315,7 +312,7 @@ export const Dashboard: React.FC = () => {
 
         <div
           className={`flex-1 flex flex-col transition-all duration-300 ${
-            sidebarCollapsed ? "md:ml-16" : "md:ml-64"
+            sidebarCollapsed ? "md:ml-16" : "md:ml-[246px]"
           }`}
         >
           <TopNavbar

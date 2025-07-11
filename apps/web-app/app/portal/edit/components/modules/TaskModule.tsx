@@ -23,9 +23,24 @@ interface TasksModuleProps {
 }
 
 const columns = [
-  { id: 'backlog', title: 'Backlog', color: 'bg-gray-100 dark:bg-gray-800' },
-  { id: 'in-progress', title: 'In Progress', color: 'bg-blue-100 dark:bg-blue-900' },
-  { id: 'completed', title: 'Completed', color: 'bg-green-100 dark:bg-green-900' },
+  { 
+    id: 'backlog', 
+    title: 'Backlog', 
+    color: 'bg-gradient-to-b from-gray-800 to-gray-900 dark:from-gray-900 dark:to-gray-950', // Subtle gradient
+    textColor: 'text-gray-200 dark:text-gray-300' // Light text for contrast
+  },
+  { 
+    id: 'in-progress', 
+    title: 'In Progress', 
+    color: 'bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 dark:from-gray-800 dark:via-gray-900 dark:to-black', // Horizontal shine
+    textColor: 'text-white dark:text-gray-200' // Bright text
+  },
+  { 
+    id: 'completed', 
+    title: 'Completed', 
+    color: 'bg-gradient-to-br from-black via-gray-900 to-gray-800 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800', // Diagonal gloss
+    textColor: 'text-gray-300 dark:text-gray-400' // Soft text
+  }
 ];
 
 export const TasksModule: React.FC<TasksModuleProps> = ({

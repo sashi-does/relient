@@ -1,3 +1,5 @@
+'use client'
+
 import GenericPlaceholder from "@/components/blocks/generic-placeholder"
 
  

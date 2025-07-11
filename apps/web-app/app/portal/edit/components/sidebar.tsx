@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   LayoutDashboard, 
   CheckSquare, 
@@ -9,12 +8,14 @@ import {
   FileText,
   ChevronLeft,
   ChevronRight,
+  Settings
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@repo/ui/tooltip';
 import { Separator } from '@repo/ui/seperator';
 import { ModuleSettings } from './dashboard';
 import { Button } from '@repo/ui/button';
 import { Switch } from '@repo/ui/switch';
+import Image from 'next/image';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -42,12 +43,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   moduleSettings,
   onModuleToggle,
 }) => {
+  const [showModuleSettings, setShowModuleSettings] = useState(false);
 
-  // Filter menu items to only show enabled modules
   const enabledMenuItems = menuItems.filter(item => {
-    // Always show overview
     if (item.id === 'overview') return true;
-    // Show other items only if they're enabled in moduleSettings
     return moduleSettings[item.id as keyof ModuleSettings];
   });
 
@@ -58,12 +57,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
     const button = (
       <Button
         variant={isActive ? "default" : "ghost"}
-        className={`w-full justify-start h-10 md:h-12 ${collapsed ? 'px-2 md:px-3' : 'px-3 md:px-4'} ${
-          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-accent hover:text-accent-foreground'
+        className={`w-full h-[36px] my-[2px] ${collapsed ? "justify-center" : "justify-start"} text-[#b9b9b9] ${
+          isActive ? 'bg-[#404040] text-[#ffffff]' : 'hover:bg-accent hover:cursor-pointer hover:text-accent-foreground'
         }`}
         onClick={() => onModuleChange(item.id)}
       >
-        <Icon className={`h-4 w-4 md:h-5 md:w-5 ${collapsed ? '' : 'mr-2 md:mr-3'}`} />
+        <Icon className={`!h-[16px] !w-[16px] ${collapsed ? '' : 'mr-2 md:mr-3'}`} />
         {!collapsed && <span className="text-xs md:text-sm font-medium">{item.label}</span>}
       </Button>
     );
@@ -87,60 +86,84 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const renderModuleSettings = () => {
-    if (collapsed) return null;
+    if (collapsed) {
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                className="w-full h-[36px] mt-[40px] my-[2px] justify-center text-[#b9b9b9] hover:bg-accent hover:cursor-pointer hover:text-accent-foreground"
+                onClick={() => setShowModuleSettings(!showModuleSettings)}
+              >
+                <Settings className="!h-[16px] !w-[16px]" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="ml-2">
+              <p className='text-[15px]'>Module Settings</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
 
     return (
       <div className="px-3 md:px-4 py-3 md:py-4">
-        <h3 className="text-xs md:text-sm font-medium mb-2 md:mb-3 text-muted-foreground">Module Settings</h3>
-        <div className="space-y-2 md:space-y-3">
-          {Object.entries(moduleSettings).map(([key, enabled]) => (
-            <div key={key} className="flex items-center justify-between">
-              <label className="text-xs md:text-sm capitalize">{key}</label>
-              <Switch
-                checked={enabled}
-                onCheckedChange={() => onModuleToggle(key as keyof ModuleSettings)}
-              />
-            </div>
-          ))}
+        <div 
+          className="flex items-center justify-between mb-2 md:mb-3 cursor-pointer"
+          onClick={() => setShowModuleSettings(!showModuleSettings)}
+        >
+          <h3 className="text-xs md:text-sm font-medium text-muted-foreground">Module Settings</h3>
+          <ChevronRight className={`h-4 w-4 transition-transform ${showModuleSettings ? 'rotate-90' : ''}`} />
         </div>
+        {showModuleSettings && (
+          <div className="space-y-2 md:space-y-3">
+            {Object.entries(moduleSettings).map(([key, enabled]) => (
+              <div key={key} className="flex items-center justify-between">
+                <label className="text-xs md:text-sm capitalize">{key}</label>
+                <Switch
+                  checked={enabled}
+                  onCheckedChange={() => onModuleToggle(key as keyof ModuleSettings)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   };
-
+  
   return (
     <div className={`bg-sidebar border-r border-sidebar-border transition-all duration-300 ${
-      collapsed ? 'w-12 md:w-16' : 'w-60 md:w-64'
+      collapsed ? 'w-[64px]' : 'w-[245px]'
     } flex flex-col h-full`}>
-      {/* Logo */}
-      <div className="p-3 md:p-4 border-b border-sidebar-border">
-        <div className="flex items-center">
-          <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-xs md:text-sm">R</span>
+      <div className="p-1 md:p-1 border-sidebar-border">
+        <div className="flex flex-col items-center">
+          <div className="flex items-center justify-center mt-4">
+            <Image
+              src="/relient.png"
+              alt="Relient Logo"
+              width={28}
+              height={28}
+              className="invert brightness-0 opacity-80"
+            />
+            {!collapsed && <span className="font-extrabold text-2xl ml-2 logo">Relient</span>}
           </div>
-          {!collapsed && (
-            <div className="ml-2 md:ml-3 min-w-0">
-              <h1 className="font-bold text-sm md:text-lg text-sidebar-foreground truncate">Relient</h1>
-              <p className="text-xs text-muted-foreground">Portal Builder</p>
-            </div>
-          )}
+          <span className="text-[10px] text-[#757474] flex justify-center items-center">
+            {!collapsed && "Portal Builder - beta"}
+          </span>
         </div>
       </div>
 
       {/* Navigation */}
       <div className="flex-1 py-3 md:py-4 overflow-y-auto">
-        <nav className="px-1 md:px-2 space-y-1">
+        <nav className="px-1 md:px-2">
           {enabledMenuItems.map(renderMenuItem)}
         </nav>
 
-        {!collapsed && (
-          <>
-            <Separator className="my-3 md:my-4" />
-            {renderModuleSettings()}
-          </>
-        )}
+        {renderModuleSettings()}
       </div>
 
-      {/* Settings Toggle - Only show on desktop */}
       <div className="hidden md:block p-2 border-t border-sidebar-border">
         <TooltipProvider>
           <Tooltip>

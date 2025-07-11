@@ -35,20 +35,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
 
   return (
-    <header className="bg-card border-b border-border px-6 py-4">
+    <header className="bg-card z-10 sticky top-0 border-b border-border px-6 py-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div>
-            <h2 className="text-lg font-semibold">Client Portal</h2>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary" className="text-xs">
-                Draft
-              </Badge>
-              <span className="text-sm text-muted-foreground">Last saved 2 minutes ago</span>
-            </div>
-          </div>
-        </div>
-
         <div className="flex items-center space-x-4">
           {/* Theme Toggle */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full md:w-auto">

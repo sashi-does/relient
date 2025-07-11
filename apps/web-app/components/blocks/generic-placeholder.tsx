@@ -1,13 +1,23 @@
-import Image from "next/image";
+'use client'
+
+import { useEffect, useState } from 'react'
+import Image from "next/image"
 
 type Placeholder = {
-    heading: string;
-    paragraph: string;
-    image: string;
+  heading: string
+  paragraph: string
+  image: string
 }
 
-
 export default function GenericPlaceholder({heading, paragraph, image}: Placeholder) {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) return null
+
   return (
     <div className="p-5 flex flex-col justify-center h-[70vh] gap-y-3">
       <Image
@@ -23,5 +33,5 @@ export default function GenericPlaceholder({heading, paragraph, image}: Placehol
         {paragraph}
       </p>
     </div>
-  );
+  )
 }
