@@ -39,7 +39,6 @@ export async function GET(req: NextRequest) {
         }, { status: 400 });
       }
   
-      // Validate portalId format (optional, for security)
       if (!mongoose.Types.ObjectId.isValid(portalId)) {
         return NextResponse.json({
           success: false,

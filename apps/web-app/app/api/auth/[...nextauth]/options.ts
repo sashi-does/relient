@@ -1,5 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
 import { prisma } from "@repo/db/prisma";
 
@@ -14,73 +14,92 @@ const options: NextAuthOptions = {
       async authorize(credentials) {
         const email = credentials?.email;
         const user = await prisma.user.findFirst({
-          where: {
-            email,
-          },
+          where: { email },
         });
-        if (user && user.password) { 
+        if (user && user.password) {
           return user;
-        } else {
-          return null;
         }
+        return null;
       },
     }),
-    Google({
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   pages: {
-    signIn: '/auth/signin', // Single page for both sign-in and sign-up
-    // No newUser page since /auth/signin handles new users
+    signIn: '/auth/signin',
+    error: '/auth/error', // optional: create a custom error page
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (account && account.provider === "google") {
-        console.log("Google Sign-In Attempt:", { user, account, profile });
+      if (account?.provider === "google") {
+        if (!user?.email) {
+          console.error("Google sign-in failed: No email returned");
+          return false;
+        }
+
         try {
-          let dbUser = await prisma.user.findUnique({
-            where: { email: user.email! },
+          let dbUser = await prisma.user.findFirst({
+            where: { email: user.email },
           });
-          console.log("Found User:", dbUser);
-    
+
+          const imageFromProfile =
+            user.image ||
+            (typeof profile === "object" &&
+            profile &&
+            "picture" in profile
+              ? (profile as { picture?: string }).picture
+              : null) ||
+            null;
+
           if (!dbUser) {
             dbUser = await prisma.user.create({
               data: {
-                email: user.email!,
+                email: user.email,
                 username: user.name || profile?.name || "",
-                image: user.image || (typeof profile === "object" && profile && "picture" in profile ? (profile as { picture?: string }).picture : null) || null,
-                password: null,
+                image: imageFromProfile,
+                password: null, // Make sure password is optional in your Prisma schema
               },
             });
-            console.log("Created User:", dbUser);
+            console.log("Created new user:", dbUser);
           } else {
             await prisma.user.update({
-              where: { email: user.email! },
+              where: { email: user.email },
               data: {
                 username: user.name || profile?.name || dbUser.username,
-                image: user.image || (typeof profile === "object" && profile && "picture" in profile ? (profile as { picture?: string }).picture : null) || dbUser.image,
+                image: imageFromProfile || dbUser.image,
               },
             });
-            console.log("Updated User:", dbUser);
+            console.log("Updated existing user:", dbUser);
           }
-        } catch (error) {
-          console.error("Error in Google sign-in:", error);
+        } catch (err) {
+          console.error("Error during Google sign-in:", err);
           return false;
         }
       }
+
       return true;
     },
+
     async session({ session }) {
-      if (session.user) {
-        const user = session.user as { email: string };
-        const dbUser = await prisma.user.findUnique({
-          where: { email: user.email },
-        });
-        session.user.id = dbUser?.id; // Add user ID to session
+      try {
+        if ((session.user as { email: string })?.email) {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: (session.user as { email: string })?.email },
+          });
+          if (dbUser) {
+            (session.user as { id: string }).id = dbUser.id;
+          } else {
+            console.warn("No DB user found in session callback");
+          }
+        }
+      } catch (e) {
+        console.error("Session callback error:", e);
       }
       return session;
-    },
+    }
+    
   },
 };
 
