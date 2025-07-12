@@ -14,16 +14,39 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  username    String    @default("")
-  email       String    @unique
-  password    String?
-  image       String?
-  onboarded   Boolean   @default(false)
+  id        String   @id @default(uuid())
+  username  String   @default("")
+  email     String   @unique
+  password  String?
+  image     String?
+  onboarded Boolean  @default(false)
+  agency    Agency?  // one-to-one relation
 }
 
+enum Industry {
+  REALESTATE
+  LAWYERS
+  B2B
+  AUTOMOTIVE
+  ECOM
+  MEDICAL
+  HOME_SERVICES
+  COACHING_CONSULTING
+  SOLAR
+  INSURANCE
+  FINANCE
+  STAFFING
+  OTHER
+}
+
+
 model Agency {
-  id          String    @id @default(uuid())
-  website     String?
-  logo        String?
+  id         String    @id @default(uuid())
+  agencyName String
+  website    String?
+  logo       String?
+  userId     String    @unique
+  user       User      @relation(fields: [userId], references: [id])
+  industry   Industry
+  teamSize   Int     
 }

@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@repo/ui/tabs";
 import { Portal } from "@repo/types/interfaces";
 import Card from "../ui/card";
 import Stats from "./stats";
