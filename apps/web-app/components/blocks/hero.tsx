@@ -202,7 +202,7 @@ function Hero() {
             </AnimatedGroup>
           </div>
         </section>
-        <section className="bg-background pb-16 pt-16 md:pb-32">
+        {/* <section className="bg-background pb-16 pt-16 md:pb-32">
           <div className="group relative m-auto max-w-5xl px-6">
             <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
               <Link
@@ -291,7 +291,7 @@ function Hero() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
     </>
   );

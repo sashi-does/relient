@@ -7,9 +7,9 @@ import { ReactNode } from 'react'
 export function Features() {
     return (
         <section className="bg-zinc-50 py-16 md:py-32 dark:bg-transparent">
-            
             <div className="mx-auto max-w-2xl px-6 lg:max-w-5xl">
-            <h1 className='text-center my-[40px] font-medium text-5xl'>Features</h1>
+                <h1 className="text-center my-[40px] font-medium text-5xl">Features</h1>
+
                 <div className="mx-auto grid gap-4 lg:grid-cols-2">
                     <FeatureCard>
                         <CardHeader className="pb-3">
@@ -21,7 +21,7 @@ export function Features() {
                         </CardHeader>
 
                         <div className="relative mb-6 border-t border-dashed sm:mb-0">
-                        <div className="absolute inset-0 rounded-xl [background:radial-gradient(100%_100%_at_50%_0%,#FFFFFF00_50%,#939e9e30_100%)]"></div>
+                            <div className="absolute inset-0 rounded-xl [background:radial-gradient(100%_100%_at_50%_0%,#FFFFFF00_50%,#939e9e30_100%)]"></div>
                             <div className="aspect-[76/59] p-1 px-6">
                                 <DualModeImage
                                     darkSrc="https://tailark.com/_next/image?url=%2Fpayments.png&w=3840&q=75"
@@ -60,28 +60,31 @@ export function Features() {
                     </FeatureCard>
 
                     <FeatureCard className="p-6 lg:col-span-2">
-                        <p className="mx-auto my-6 max-w-md text-balance text-center text-2xl font-semibold">Smart scheduling with automated reminders for maintenance.</p>
+                        <p className="mx-auto my-6 max-w-xl text-center text-2xl font-semibold">
+                            Other tools give you parts of the picture. <br />
+                            <span className="text-primary">Relient</span> brings it all together.
+                        </p>
 
-                        <div className="flex justify-center gap-6 overflow-hidden">
+                        <div className="flex justify-center gap-6 overflow-hidden flex-wrap">
                             <CircularUI
-                                label="Inclusion"
+                                label="Communication"
+                                circles={[{ pattern: 'primary' }, { pattern: 'primary' }]}
+                            />
+                            <CircularUI
+                                label="Project Tracking"
                                 circles={[{ pattern: 'border' }, { pattern: 'border' }]}
                             />
-
                             <CircularUI
-                                label="Inclusion"
-                                circles={[{ pattern: 'none' }, { pattern: 'primary' }]}
+                                label="Client Access"
+                                circles={[{ pattern: 'blue' }, { pattern: 'blue' }]}
                             />
-
                             <CircularUI
-                                label="Join"
-                                circles={[{ pattern: 'blue' }, { pattern: 'none' }]}
-                            />
-
-                            <CircularUI
-                                label="Exclusion"
-                                circles={[{ pattern: 'primary' }, { pattern: 'none' }]}
-                                className="hidden sm:block"
+                                label="Relient"
+                                circles={[
+                                    { pattern: 'primary' },
+                                    { pattern: 'border' },
+                                    { pattern: 'blue' },
+                                ]}
                             />
                         </div>
                     </FeatureCard>
