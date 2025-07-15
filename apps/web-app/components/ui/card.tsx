@@ -95,8 +95,10 @@ export default function Card({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#1b1b1b]">
               <DropdownMenuItem className="hover:bg-[#1e1e1e] hover:border-red py-[5px] mt-1">
-                <Eye className="mr-2 h-4 w-4" />
-                <span>View</span>
+                <Link className="flex items-center" href={`/portal/view/${portalId}`} target="_blank">
+                  <Eye className="mr-2 h-4 w-4" />
+                  <span>View</span>
+                </Link>
               </DropdownMenuItem>
               <Link target="_blank" href={`/portal/edit/${portalId}`}>
                 <DropdownMenuItem className="hover:bg-[#1e1e1e] hover:border-red py-[5px] ">

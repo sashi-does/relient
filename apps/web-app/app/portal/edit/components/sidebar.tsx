@@ -11,7 +11,6 @@ import {
   Settings
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@repo/ui/tooltip';
-import { Separator } from '@repo/ui/seperator';
 import { ModuleSettings } from './dashboard';
 import { Button } from '@repo/ui/button';
 import { Switch } from '@repo/ui/switch';

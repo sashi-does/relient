@@ -7,20 +7,14 @@ import { Overview } from "./modules/OverviewModule";
 import { TasksModule } from "./modules/TaskModule";
 import { LeadsModule } from "./modules/LeadsModule";
 import { PaymentsModule } from "./modules/PaymentModule";
-import { Eye, Save, HelpCircle, Menu, RotateCcw } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/sheet";
 import { TopNavbar } from "./navbar";
 import { Button } from "@repo/ui/button";
-import { Label } from "@repo/ui/label";
-import {
-  Tooltip,
-  TooltipProvider,
-  TooltipTrigger,
-  TooltipContent,
-} from "@repo/ui/tooltip";
+
 import { toast, Toaster } from "sonner";
 import { AppointmentsModule } from "./modules/AppointmentsModule";
-import { Switch } from "@repo/ui/switch";
+
 import axios from "axios";
 import { useParams } from "next/navigation";
 
@@ -97,6 +91,7 @@ export const Dashboard: React.FC = () => {
         }
 
         const response = await axios.get(`/api/portal?portalId=${portalId}`);
+        console.log(response.data.portal)
         if (response.data.success) {
           const portal = response.data.portal;
 
