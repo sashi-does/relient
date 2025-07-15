@@ -13,7 +13,7 @@ import { Button } from '@repo/ui/button';
 import { Badge } from '@repo/ui/badge';
 import { Label } from '@repo/ui/label';
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@repo/ui/tooltip';
-import { Switch } from '@repo/ui/switch';
+import { Switch } from './ui/switch';
 
 interface TopNavbarProps {
   feedbackEnabled: boolean;

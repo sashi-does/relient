@@ -13,7 +13,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@repo/ui/tooltip';
 import { ModuleSettings } from './dashboard';
 import { Button } from '@repo/ui/button';
-import { Switch } from '@repo/ui/switch';
+import { Switch } from './ui/switch';
 import Image from 'next/image';
 
 interface SidebarProps {
@@ -156,7 +156,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Navigation */}
       <div className="flex-1 py-3 md:py-4 overflow-y-auto">
-        <nav className="px-1 md:px-2">
+        <nav className="px-1 min-h-[200px] md:px-2">
           {enabledMenuItems.map(renderMenuItem)}
         </nav>
 
