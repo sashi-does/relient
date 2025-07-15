@@ -4,6 +4,7 @@ import Footer from "@/components/footer";
 import { Features } from "@/components/blocks/features";
 import { BentoGridDemo } from "@/components/blocks/bento-grid";
 import Slicers from '@repo/ui/slicers';
+import Faqs from "@/components/blocks/faqs";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       </div>
       <Features />
       <BentoGridDemo />
+      <Faqs />
       <Footer />
     </div>
   );

@@ -15,13 +15,8 @@ export default async function Dashboard() {
   return (
     <div className="space-y-4 p-4">
       <Greeting name={(user as {name: string}).name as string} />
-      <Card
-        type="update"
-        heading="Total Clients"
-        count="24"
-        growth="+12% from last month"
-        icon={<Users />}
-      />
+      
+
     </div>
   );
 }

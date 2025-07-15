@@ -45,7 +45,7 @@ export default async function Portals() {
 
   if (portals.length === 0) {
     return <div className="h-[95vh] flex justify-center items-center">
-      <PortalPlaceholder />;
+      <PortalPlaceholder />
     </div>
   }
 
