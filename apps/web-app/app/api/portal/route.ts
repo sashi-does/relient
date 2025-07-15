@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     try {
-        // Authenticate user
+        // authenticate user
         const session = await getServerSession(options);
         if (!session) {
             return NextResponse.json({
@@ -128,7 +128,7 @@ export async function PATCH(req: NextRequest) {
             }, { status: 401 });
         }
 
-        // Verify user exists
+
         const user = await prisma.user.findFirst({
             where: { email: (session.user as { email: string }).email },
         });
@@ -140,12 +140,12 @@ export async function PATCH(req: NextRequest) {
             }, { status: 403 });
         }
 
-        // Parse request body
-        const { portalId, modules, data } = await req.json();
-        console.log("Portal SASASASASAS ID:", portalId);
+        // parse request body
+        const { portalId, modules, data, feedback } = await req.json();
+        console.log("Portal SASASASASAS ID:", feedback);
         console.log("Modules:", JSON.stringify(modules));
 
-        // Validate required fields
+        // validate required fields
         if (!portalId || !modules || !data) {
             return NextResponse.json({
                 success: false,
@@ -153,10 +153,10 @@ export async function PATCH(req: NextRequest) {
             }, { status: 400 });
         }
 
-        // Connect to MongoDB
+        
         await connectDb();
 
-        // Validate portal ownership
+        // validate portal ownership
         const portal = await (PortalModel as mongoose.Model<Portal>).findOne({ _id: portalId, userId: user.id });
         if (!portal) {
             return NextResponse.json({
@@ -165,7 +165,7 @@ export async function PATCH(req: NextRequest) {
             }, { status: 404 });
         }
 
-        // Initialize modulesUpdate with all possible modules
+        // initialize modulesUpdate with all possible modules
         const modulesUpdate: { [key: string]: any } = {
             overview: portal.modules?.overview || { title: "Overview", summary: `Portal overview for ${portal.portalName}` },
             tasks: portal.modules?.tasks || { tasks: [] },
@@ -235,13 +235,14 @@ export async function PATCH(req: NextRequest) {
             }
         });
 
-        // Update portal in MongoDB
+        // update portal in MongoDB (may or may not)
         const updatedPortal = await (PortalModel as mongoose.Model<Portal>).findByIdAndUpdate(
             portalId,
             {
                 $set: {
                     modules: modulesUpdate,
                     lastVisited: new Date(),
+                    feedback: feedback,
                     status: Object.keys(modulesUpdate).some(key => modulesUpdate[key] && key !== "overview") ? "Active" : "Inactive"
                 }
             },

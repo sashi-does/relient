@@ -78,6 +78,7 @@ export const PortalSchema = new Schema<Portal>({
     status: { type: String, default: "Inactive" },
     createdAt: { type: Date, default: Date.now },
     lastVisited: { type: Date, default: null },
+    feedback: { type: Boolean, default: false },
     modules: {
         type: {
             overview: { type: OverviewModuleSchema, required: false },

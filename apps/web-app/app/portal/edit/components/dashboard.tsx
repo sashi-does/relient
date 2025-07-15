@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import Loader from "@repo/ui/loader";
 import { Sidebar } from "./sidebar";
 import { Overview } from "./modules/OverviewModule";
 import { TasksModule } from "./modules/TaskModule";
@@ -67,6 +68,7 @@ export interface ModuleSettings {
 
 export const Dashboard: React.FC = () => {
   const [activeModule, setActiveModule] = useState("overview");
+  const [loading, setLoading] = useState(true)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [feedbackEnabled, setFeedbackEnabled] = useState(false);
   const [moduleSettings, setModuleSettings] = useState<ModuleSettings>({
@@ -94,7 +96,7 @@ export const Dashboard: React.FC = () => {
         console.log(response.data.portal)
         if (response.data.success) {
           const portal = response.data.portal;
-
+          setFeedbackEnabled(portal.feedback)
           setTasks(portal.modules?.tasks?.tasks || []);
           setLeads(portal.modules?.leads?.leads || []);
           setPayments(portal.modules?.payments?.payments || []);
@@ -106,6 +108,7 @@ export const Dashboard: React.FC = () => {
             appointments: !!portal.modules?.appointments?.appointments?.length,
             payments: !!portal.modules?.payments?.payments?.length,
           });
+          setLoading(false);
         } else {
           toast.error(response.data.message || "Failed to fetch portal details.");
         }
@@ -170,7 +173,7 @@ export const Dashboard: React.FC = () => {
         appointments: appointments || [],
       };
 
-      const response = await axios.patch("/api/portal", { portalId, modules, data });
+      const response = await axios.patch("/api/portal", { portalId, modules, data, feedback: feedbackEnabled });
 
       if (response.data.success) {
         toast.success("Your portal configuration has been saved successfully.");
@@ -265,66 +268,68 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Toaster />
-      <div className="min-h-screen w-full bg-[#0F0F0F] flex">
-        {/* Mobile Sidebar */}
-        <div className="bg-[#171717] md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="fixed top-4 left-4 z-50"
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-0">
-              <Sidebar
-                collapsed={false}
-                onToggle={() => {}}
-                activeModule={activeModule}
-                onModuleChange={setActiveModule}
-                moduleSettings={moduleSettings}
-                onModuleToggle={handleModuleToggle}
-              />
-            </SheetContent>
-          </Sheet>
-        </div>
+    loading ? <Loader heightInVp={100}/> : (
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Toaster />
+        <div className="min-h-screen w-full bg-[#0F0F0F] flex">
+          {/* Mobile Sidebar */}
+          <div className="bg-[#171717] md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="fixed top-4 left-4 z-50"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0 w-0">
+                <Sidebar
+                  collapsed={false}
+                  onToggle={() => {}}
+                  activeModule={activeModule}
+                  onModuleChange={setActiveModule}
+                  moduleSettings={moduleSettings}
+                  onModuleToggle={handleModuleToggle}
+                />
+              </SheetContent>
+            </Sheet>
+          </div>
 
-        {/* Desktop Sidebar */}
-        <div className="bg-[#171717] hidden md:block fixed left-0 top-0 h-full z-10">
-          <Sidebar
-            collapsed={sidebarCollapsed}
-            onToggle={setSidebarCollapsed}
-            activeModule={activeModule}
-            onModuleChange={setActiveModule}
-            moduleSettings={moduleSettings}
-            onModuleToggle={handleModuleToggle}
-          />
-        </div>
+          {/* Desktop Sidebar */}
+          <div className="bg-[#171717] hidden md:block fixed left-0 top-0 h-full z-10">
+            <Sidebar
+              collapsed={sidebarCollapsed}
+              onToggle={setSidebarCollapsed}
+              activeModule={activeModule}
+              onModuleChange={setActiveModule}
+              moduleSettings={moduleSettings}
+              onModuleToggle={handleModuleToggle}
+            />
+          </div>
 
-        <div
-          className={`flex-1 flex flex-col transition-all duration-300 ${
-            sidebarCollapsed ? "md:ml-16" : "md:ml-[246px]"
-          }`}
-        >
-          <TopNavbar
-            feedbackEnabled={feedbackEnabled}
-            setFeedbackEnabled={setFeedbackEnabled}
-            handleResetAll={handleResetAll}
-            handlePreview={handlePreview}
-            handleSave={handleSave}
-          />
+          <div
+            className={`flex-1 flex flex-col transition-all duration-300 ${
+              sidebarCollapsed ? "md:ml-16" : "md:ml-[246px]"
+            }`}
+          >
+            <TopNavbar
+              feedbackEnabled={feedbackEnabled}
+              setFeedbackEnabled={setFeedbackEnabled}
+              handleResetAll={handleResetAll}
+              handlePreview={handlePreview}
+              handleSave={handleSave}
+            />
 
-          <div className="flex-1 p-3 md:p-6 overflow-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-4"></div>
+            <div className="flex-1 p-3 md:p-6 overflow-auto">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-4"></div>
 
-            <div className="animate-fade-in">{renderActiveModule()}</div>
+              <div className="animate-fade-in">{renderActiveModule()}</div>
+            </div>
           </div>
         </div>
-      </div>
-    </DragDropContext>
+      </DragDropContext>
+    )
   );
 };

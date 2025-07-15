@@ -71,6 +71,7 @@ export interface Portal {
   createdAt: Date;
   lastVisited: Date | null;
   userId: string;
+  feedback?: boolean;
   modules: {
     overview?: OverviewModule;
     tasks?: TaskModule;

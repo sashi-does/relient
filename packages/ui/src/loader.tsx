@@ -1,15 +1,7 @@
+const Loader = ({heightInVp}: {heightInVp: number}) => (
+  <div className={`flex bg-[#0F0F0F items-center justify-center h-[${heightInVp}vh]`}>
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+  </div>
+);
 
-const loader = () => (
-    <div className="animate-pulse">
-        <img
-          src="/relient.png"
-          alt="Relient Logo"
-          width={28}
-          height={28}
-          className="brightness-1"
-        />
-      </div>
-  );
-  
-  export default loader;
-  
+export default Loader
