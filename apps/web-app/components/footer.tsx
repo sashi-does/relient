@@ -8,7 +8,6 @@ export default function Footer() {
   return (
     <div className="h-screen w-full overflow-hidden">
       <div className="mx-auto mt-32 w-full max-w-2xl">
-        
       </div>
 
       <div className="relative -mt-32 h-96 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)]">
@@ -19,7 +18,7 @@ export default function Footer() {
           className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]"
           color={theme === "dark" ? "#ffffff" : "#000000"}
         />
-        <h1 className="text-[200px] text-gray-300 text-center">Relient</h1>
+        <h1 className="text-[200px] text-gray-00 text-center">Relient</h1>
       </div>
     </div>
   )
