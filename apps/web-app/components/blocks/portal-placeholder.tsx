@@ -123,7 +123,7 @@ export default function PortalPlaceholder() {
                 }
                 disabled={loading}
               >
-                {loading ? <Loader /> : "Create"}
+                {loading ? <Loader heightInVp={100}/> : "Create"}
               </Button>
             </div>
           </DialogContent>

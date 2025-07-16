@@ -233,7 +233,7 @@ export default function Sidebar({
                   }
                   disabled={loading}
                 >
-                  {loading ? <Loader /> : "Create"}
+                  {loading ? <Loader heightInVp={100}/> : "Create"}
                 </Button>
               </div>
             </DialogContent>

@@ -66,6 +66,16 @@ export const AppointmentModuleSchema = new Schema<AppointmentModule>({
     appointments: [AppointmentSchema],
 });
 
+// Message Schema
+export const FeedbackSchema = new mongoose.Schema({
+    portalId: { type: String, required: true },
+    clientEmail: { type: String, required: true },
+    clientName: { type: String, required: true },
+    message: { type: String, required: true },
+    isRead: { type: String, default: false },
+    createdAt: { type: Date, default: Date.now() }
+})
+
 // Portal Schema
 export const PortalSchema = new Schema<Portal>({
     portalName: String,
@@ -91,4 +101,7 @@ export const PortalSchema = new Schema<Portal>({
     },
 });
 
+// Portal Model
 export const PortalModel = mongoose.models.Portal || mongoose.model("Portal", PortalSchema);
+
+export const FeedbackModel = mongoose.models.Feedback ?? mongoose.model("Feedback", FeedbackSchema);
