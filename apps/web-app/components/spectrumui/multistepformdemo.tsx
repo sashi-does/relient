@@ -25,7 +25,6 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-
 const steps = [{ id: "agency", title: "Agency Profile" }];
 
 interface FormData {
@@ -50,7 +49,7 @@ const contentVariants = {
 
 const OnboardingForm = () => {
   const [currentStep] = useState(0);
-  const router = useRouter()
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     agencyName: "",
@@ -75,7 +74,7 @@ const OnboardingForm = () => {
           agencyName: formData.agencyName,
           industry: formData.industry,
           website: formData.agencyWebsite,
-          teamSize: formData.teamSize
+          teamSize: formData.teamSize,
         },
         {
           headers: {
@@ -119,165 +118,125 @@ const OnboardingForm = () => {
       </motion.div>
 
       {/* Form card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <Card className="border shadow-md rounded-3xl overflow-hidden">
-          <div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentStep}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                variants={contentVariants}
-              >
-                <CardHeader>
-                  <CardTitle>Agency Profile</CardTitle>
-                  <CardDescription>Tell us about your agency</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <motion.div variants={fadeInUp} className="space-y-2">
-                    <Label htmlFor="agencyName">Agency Name</Label>
-                    <Input
-                      id="agencyName"
-                      placeholder="e.g., Pixel & Co."
-                      value={formData.agencyName}
-                      onChange={(e) =>
-                        updateFormData("agencyName", e.target.value)
-                      }
-                      className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                    />
-                  </motion.div>
-                  <motion.div variants={fadeInUp} className="space-y-2">
-                    <Label htmlFor="agencyWebsite">Website (Optional)</Label>
-                    <Input
-                      id="agencyWebsite"
-                      placeholder="https://youragency.com"
-                      value={formData.agencyWebsite}
-                      onChange={(e) =>
-                        updateFormData("agencyWebsite", e.target.value)
-                      }
-                      className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                    />
-                  </motion.div>
-                  <motion.div variants={fadeInUp} className="space-y-2">
-                    <Label htmlFor="agencyLogo">Logo Upload</Label>
-                    <Input
-                      id="agencyLogo"
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          updateFormData(
-                            "agencyLogo",
-                            URL.createObjectURL(file)
-                          );
-                        }
-                      }}
-                      className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                    />
-                  </motion.div>
-                  <div className="flex justify-between">
-                    <motion.div variants={fadeInUp} className="space-y-2">
-                      <Label htmlFor="industry">Primary Industry / Focus</Label>
-                      <Select
-                        value={formData.industry}
-                        onValueChange={(value: string) =>
-                          updateFormData("industry", value)
-                        }
-                      >
-                        <SelectTrigger className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary">
-                          <SelectValue placeholder="Select your industry" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="REALESTATE">
-                            Real Estate
-                          </SelectItem>
-                          <SelectItem value="LAWYERS">Lawyers</SelectItem>
-                          <SelectItem value="B2B">B2B Services</SelectItem>
-                          <SelectItem value="AUTOMOTIVE">Automotive</SelectItem>
-                          <SelectItem value="ECOM">Ecommerce</SelectItem>
-                          <SelectItem value="MEDICAL">Medical</SelectItem>
-                          <SelectItem value="HOME_SERVICES">
-                            Home Services
-                          </SelectItem>
-                          <SelectItem value="COACHING_CONSULTING">
-                            Coaching & Consulting
-                          </SelectItem>
-                          <SelectItem value="SOLAR">Solar</SelectItem>
-                          <SelectItem value="INSURANCE">Insurance</SelectItem>
-                          <SelectItem value="FINANCE">Finance</SelectItem>
-                          <SelectItem value="STAFFING">
-                            Recruiting & Staffing
-                          </SelectItem>
-                          <SelectItem value="OTHER">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
-                    <motion.div variants={fadeInUp} className="space-y-2">
-                      <Label htmlFor="teamSize">Team Size</Label>
-                      <Select
-                        value={formData.teamSize}
-                        onValueChange={(value: string) =>
-                          updateFormData("teamSize", value)
-                        }
-                      >
-                        <SelectTrigger className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:border-primary">
-                          <SelectValue placeholder="Select team size" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1-5">1-5 employees</SelectItem>
-                          <SelectItem value="6-10">6-10 employees</SelectItem>
-                          <SelectItem value="11-20">11-20 employees</SelectItem>
-                          <SelectItem value="21-50">21-50 employees</SelectItem>
-                          <SelectItem value="50+">50+ employees</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
-                  </div>
-                </CardContent>
-              </motion.div>
-            </AnimatePresence>
-
-            <CardFooter className="flex justify-center pt-6 pb-4">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="cursor-pointer"
-              >
-                <Button
-                  type="button"
-                  onClick={handleSubmit}
-                  disabled={!isStepValid() || isSubmitting}
-                  className="flex items-center gap-1 transition-all duration-300 rounded-md"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" /> Submitting...
-                    </>
-                  ) : (
-                    <>
-                      Submit <Check className="h-4 w-4" />
-                    </>
-                  )}
-                </Button>
-              </motion.div>
-            </CardFooter>
+      <div className="w-full max-w-2xl mx-auto bg-[#0D0D0D] border border-[#1F1F1F] rounded-2xl p-6">
+        <div className="flex flex-col gap-y-5">
+          <div className="flex flex-col gap-y-3 w-full">
+            <span className="text-gray-400">Agency Name</span>
+            <Input
+              className="text-white py-2"
+              placeholder="e.g: Pixel & Co."
+              value={formData.agencyName}
+              onChange={(e) => updateFormData("agencyName", e.target.value)}
+            />
           </div>
-        </Card>
-      </motion.div>
 
-      <motion.div
-        className="mt-4 text-center text-sm text-muted-foreground"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        Step 1 of 1: Agency Profile
-      </motion.div>
+          <div className="flex flex-col gap-y-3 w-full">
+            <span className="text-gray-400">Agency Website</span>
+            <Input
+              className="text-white py-2"
+              placeholder="https://youragency.com"
+              value={formData.agencyWebsite}
+              onChange={(e) => updateFormData("agencyWebsite", e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-col gap-y-3 w-full">
+            <span className="text-gray-400">Upload Logo</span>
+            <Input
+              type="file"
+              className="text-white py-2"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  updateFormData("agencyLogo", URL.createObjectURL(file));
+                }
+              }}
+            />
+          </div>
+
+          <div className="flex items-center">
+            <div className="flex flex-col gap-y-3 w-full">
+              <span className="text-gray-400">Primary Industry</span>
+              <Select
+  value={formData.industry}
+  onValueChange={(value) => updateFormData("industry", value)}
+>
+  <SelectTrigger className="bg-background">
+    <SelectValue placeholder="Select industry" />
+  </SelectTrigger>
+  <SelectContent className="bg-popover">
+    <SelectItem
+      value="REALESTATE"
+      className="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
+    >
+      Real Estate
+    </SelectItem>
+    <SelectItem
+      value="LAWYERS"
+      className="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
+    >
+      Lawyers
+    </SelectItem>
+    <SelectItem
+      value="B2B"
+      className="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
+    >
+      B2B Services
+    </SelectItem>
+    <SelectItem
+      value="ECOM"
+      className="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
+    >
+      Ecommerce
+    </SelectItem>
+    <SelectItem
+      value="COACHING_CONSULTING"
+      className="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
+    >
+      Coaching & Consulting
+    </SelectItem>
+  </SelectContent>
+</Select>
+            </div>
+
+            <div className="flex flex-col gap-y-3 w-full">
+              <span className="text-gray-400">Team Size</span>
+              <Select
+                value={formData.teamSize}
+                onValueChange={(value) => updateFormData("teamSize", value)}
+              >
+                <SelectTrigger className="text-white py-2">
+                  <SelectValue placeholder="Select size" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1-5">1-5</SelectItem>
+                  <SelectItem value="6-10">6-10</SelectItem>
+                  <SelectItem value="11-20">11-20</SelectItem>
+                  <SelectItem value="21-50">21-50</SelectItem>
+                  <SelectItem value="50+">50+</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <Button
+            onClick={handleSubmit}
+            disabled={!isStepValid() || isSubmitting}
+            className="w-full py-2 bg-white text-black hover:bg-[#f4f4f4] rounded-md transition-all duration-200"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Submitting...
+              </>
+            ) : (
+              <>
+                Submit <Check className="h-4 w-4 ml-2" />
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
