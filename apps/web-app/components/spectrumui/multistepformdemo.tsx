@@ -66,7 +66,7 @@ const OnboardingForm = () => {
     setIsSubmitting(true);
 
     try {
-      const url = `${process.env.NEXTAUTH_URL}api/onboard/`;
+      const url = `${process.env.NEXTAUTH_URL}/api/onboard/`;
       const response = await axios.post(
         url,
         {
