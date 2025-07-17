@@ -75,7 +75,7 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Render main content if not loading
+
   return (
     <ContextProvider value={{ dialogOpen, setDialogOpen: (open: boolean) => { setDialogOpen(open); return open; } }}>
       <div className="flex h-screen">

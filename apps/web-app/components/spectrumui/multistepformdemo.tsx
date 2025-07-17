@@ -23,7 +23,8 @@ import {
 } from "@repo/ui/select";
 import { toast } from "sonner";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+
 
 const steps = [{ id: "agency", title: "Agency Profile" }];
 
