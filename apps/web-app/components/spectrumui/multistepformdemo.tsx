@@ -23,7 +23,7 @@ import {
 } from "@repo/ui/select";
 import { toast } from "sonner";
 import axios from "axios";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 const steps = [{ id: "agency", title: "Agency Profile" }];
 
@@ -49,6 +49,7 @@ const contentVariants = {
 
 const OnboardingForm = () => {
   const [currentStep] = useState(0);
+  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     agencyName: "",
@@ -66,7 +67,7 @@ const OnboardingForm = () => {
     setIsSubmitting(true);
 
     try {
-      const url = `${process.env.NEXTAUTH_URL}/api/onboard/`;
+      const url = `/api/onboard/`;
       const response = await axios.post(
         url,
         {
@@ -82,9 +83,9 @@ const OnboardingForm = () => {
         }
       );
       if (response.data.success) {
-        toast.success("Profile completed successfully!");
+        toast("Redirecting to dashboard");
         setIsSubmitting(false);
-        redirect("/dashboard");
+        router.push("/dashboard");
       }
     } catch (error) {
       toast(error instanceof Error);
