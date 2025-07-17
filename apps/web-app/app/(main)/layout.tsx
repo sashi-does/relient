@@ -9,6 +9,7 @@ import { Profile } from "@/components/ui/profile";
 import axios from "axios";
 import Loader from "@repo/ui/loader";
 
+
 const Sidebar = dynamic(() => import("@/components/ui/sidebar"), {
   ssr: false,
 });

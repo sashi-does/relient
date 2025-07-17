@@ -37,7 +37,6 @@ export default function PortalPlaceholder() {
       if (res.data.success) {
         setDialogOpen(false);
         toast("Portal Created Successfully");
-        location.reload();
         redirect("/portals");
       } else {
         throw new Error(res.data);

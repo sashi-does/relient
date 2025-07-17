@@ -6,7 +6,7 @@ import { useTheme } from "next-themes"
 export default function Footer() {
   const { theme } = useTheme()
   return (
-    <div className="h-screen w-full overflow-hidden">
+    <div className="h-[450px] w-full overflow-hidden">
       <div className="mx-auto mt-32 w-full max-w-2xl">
       </div>
 
@@ -18,7 +18,7 @@ export default function Footer() {
           className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]"
           color={theme === "dark" ? "#ffffff" : "#000000"}
         />
-        <h1 className="text-[200px] text-gray text-center">Relient</h1>
+        <h1 className="relative text-[100px] -bottom-24 sm:text-[150px] sm:-bottom-11 md:bottom-2 text-[#cbcbcb] md:text-[200px] text-gray text-center">Relient</h1>
       </div>
     </div>
   )
