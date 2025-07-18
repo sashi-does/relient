@@ -22,13 +22,13 @@ export function GlassTabs({ portals }: { portals: PortalWithId[] }) {
       <Tabs defaultValue="portals" className="">
         <div className="backdrop-blur-md  border-white/10 rounded-2xl p-1 shadow-xl">
           <TabsList className="bg-transparent p-0 gap-2">
-            <TabsTrigger value="overview" className="glass-tab">
+            <TabsTrigger value="overview" className="glass-tab data-[state=active]:bg-white/10 data-[state=active]:text-white">
               Overview
             </TabsTrigger>
-            <TabsTrigger value="portals" className="glass-tab">
+            <TabsTrigger value="portals" className="glass-tab data-[state=active]:bg-white/10 data-[state=active]:text-white">
               All Portals
             </TabsTrigger>
-            <TabsTrigger value="templates" className="glass-tab">
+            <TabsTrigger value="templates" className="glass-tab data-[state=active]:bg-white/10 data-[state=active]:text-white">
               Templates
             </TabsTrigger>
           </TabsList>
