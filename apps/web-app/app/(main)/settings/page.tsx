@@ -49,7 +49,9 @@ function Page() {
   useEffect(() => {
     (async function fetchDetails() {
       try {
-        const response = await axios.get("http://localhost:3000/api/onboard");
+        const url = `api/onboard`
+        const response = await axios.get(url);
+        console.log(url)
         if (response.data.success) {
           console.log("Agency:", response.data);
           setAgencyData(response.data.agency);
