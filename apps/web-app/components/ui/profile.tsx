@@ -31,8 +31,8 @@ export function Profile({ image, username }: ProfileProps) {
             height={30}
             aria-hidden="true"
           />
-          <span>{username}</span>
-          <ChevronDown size={16} strokeWidth={2} className="ms-2 opacity-60" aria-hidden="true" />
+          {/* <span>{username}</span> */}
+          <ChevronDown size={16} strokeWidth={2} className="opacity-60" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
 
