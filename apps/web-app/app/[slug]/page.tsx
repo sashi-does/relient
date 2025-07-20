@@ -21,7 +21,7 @@ export default function PortalView() {
           return;
         }
 
-        const response = await axios.get(`/api/portal/share`, { headers: { slug } });
+        const response = await axios.get(`${process.env.NEXTAUTH_URL}/api/portal/share`, { headers: { slug } });
         if (response.data.success) {
           setData(response.data.portal);
         } else {
