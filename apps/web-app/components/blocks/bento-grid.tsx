@@ -1,54 +1,70 @@
-// import { BentoGrid, type BentoItem } from "@/components/ui/bento-grid"
-import BentoGrid from "@repo/ui/bento"
+import { BentoGrid } from "@/components/ui/bento-grid"
 import { BentoItem } from "@repo/types/ui-types"
 import {
-    CheckCircle,
-    TrendingUp,
-    Video,
-    Globe,
+    FolderPlus,
+    Link,
+    Activity,Sparkle,LayoutDashboard,CreditCard
 } from "lucide-react";
 
 
 const itemsSample: BentoItem[] = [
     {
-        title: "Analytics Dashboard",
-        meta: "v2.4.1",
-        description:
-            "Real-time metrics with AI-powered insights and predictive analytics",
-        icon: <TrendingUp className="w-4 h-4 text-blue-500" />,
-        status: "Live",
-        tags: ["Statistics", "Reports", "AI"],
-        colSpan: 2,
-        hasPersistentHover: true,
+      title: "Client Portals in Seconds",
+      meta: "Custom-branded",
+      description:
+        "Set up beautiful portals for each client—no coding, no clutter. Just clean communication.",
+      icon: <FolderPlus className="w-4 h-4 text-blue-500" />,
+      status: "Live",
+      colSpan: 2,
+      hasPersistentHover: true,
     },
     {
-        title: "Task Manager",
-        meta: "84 completed",
-        description: "Automated workflow management with priority scheduling",
-        icon: <CheckCircle className="w-4 h-4 text-emerald-500" />,
-        status: "Updated",
-        tags: ["Productivity", "Automation"],
+      title: "Get Paid, Fast",
+      meta: "Payment integration",
+      description:
+        "Send invoices and collect payments directly from your client portal. No follow-ups needed.",
+      icon: <CreditCard className="w-4 h-4 text-green-500" />,
+      status: "Secure",
     },
     {
-        title: "Media Library",
-        meta: "12GB used",
-        description: "Cloud storage with intelligent content processing",
-        icon: <Video className="w-4 h-4 text-purple-500" />,
-        tags: ["Storage", "CDN"],
-        colSpan: 2,
+      title: "No-Login Sharing",
+      meta: "Just a link",
+      description:
+        "Clients can view updates, tasks, and progress without creating an account.",
+      icon: <Link className="w-4 h-4 text-cyan-400" />,
+      status: "Frictionless",
     },
     {
-        title: "Global Network",
-        meta: "6 regions",
-        description: "Multi-region deployment with edge computing",
-        icon: <Globe className="w-4 h-4 text-sky-500" />,
-        status: "Beta",
-        tags: ["Infrastructure", "Edge"],
+      title: "Progress Updates",
+      meta: "Always visible",
+      description:
+        "Stop sending endless emails. Keep clients updated with live timelines and statuses.",
+      icon: <Activity className="w-4 h-4 text-purple-500" />,
+      status: "Auto-synced",
     },
-];
+    {
+      title: "Modular Dashboard",
+      meta: "Pick what you need",
+      description:
+        "Enable only the modules you use—Leads, Tasks, Appointments, Payments, and more.",
+      icon: <LayoutDashboard className="w-4 h-4 text-orange-500" />,
+      status: "Flexible",
+    },
+    {
+      title: "Client-First Design",
+      meta: "Clean. Clear. Fast.",
+      description:
+        "Your clients get a premium, mobile-ready experience that reflects your agency's brand.",
+      icon: <Sparkle className="w-4 h-4 text-pink-500" />,
+      status: "Branding",
+    },
+  ];
+  
 
-function BentoGridDemo() {
-    return <BentoGrid items={itemsSample} />
+export default function Features() {
+    return <>
+        <h1 className="text-center my-[40px] font-medium text-5xl">Features</h1>
+        <BentoGrid items={itemsSample} />
+    </>
+
 }
-
-export { BentoGridDemo }

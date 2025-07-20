@@ -1,8 +1,7 @@
 import { HeroSection } from "@/components/blocks/hero";
 
 import Footer from "@/components/footer";
-import { Features } from "@/components/blocks/features";
-import { BentoGridDemo } from "@/components/blocks/bento-grid";
+import Features from "@/components/blocks/bento-grid";
 import Slicers from "@repo/ui/slicers";
 import Faqs from "@/components/blocks/faqs";
 import Link from "next/link";
@@ -24,7 +23,6 @@ export default function Home() {
         <HeroSection />
       </div>
       <Features />
-      <BentoGridDemo />
       <Faqs />
       <Footer />
       <footer className="w-full px-6 py-12 bg-transparent text-sm text-zinc-600 dark:text-[#F8F8F8]">

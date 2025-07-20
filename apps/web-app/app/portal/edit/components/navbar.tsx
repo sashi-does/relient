@@ -51,9 +51,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
   return (
     <header className="bg-card z-10 sticky top-0 border-b border-border px-6 py-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+        <div className="flex w-full justify-between items-center space-x-4">
           {/* Theme Toggle */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full md:w-auto">
+          <div className="flex md:flex-row justify-between sm:flex-col items-start sm:items-center gap-3 w-full">
             <div className="flex items-center gap-2">
               <Label htmlFor="feedback-toggle" className="text-sm">Client Feedback</Label>
               <TooltipProvider>
@@ -76,7 +76,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
               </TooltipProvider>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 w-fit sm:w-auto">
               <Button onClick={handleResetAll} variant="outline" className="flex items-center gap-2 w-full sm:w-auto">
                 <RotateCcw className="w-4 h-4" />
                 <span className="hidden sm:inline">Reset All</span>

@@ -184,8 +184,8 @@ function Hero() {
                 />
                 <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
                   <Image
-                    className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
-                    src={"https://tailark.com//_next/image?url=%2Fmail2.png&w=3840&q=75"}
+                    className="bg-background relative hidden rounded-2xl dark:block"
+                    src={"/dashboard.png"}
                     alt="app screen"
                     width="2700"
                     height="1440"
@@ -202,6 +202,7 @@ function Hero() {
             </AnimatedGroup>
           </div>
         </section>
+        {/* partners */}
         {/* <section className="bg-background pb-16 pt-16 md:pb-32">
           <div className="group relative m-auto max-w-5xl px-6">
             <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
