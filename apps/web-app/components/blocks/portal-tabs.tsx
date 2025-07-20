@@ -61,6 +61,7 @@ export function GlassTabs({ portals }: { portals: PortalWithId[] }) {
                   <Card
                     key={p._id}
                     portalId={p._id}
+                    slug={p.slug}
                     type="portal"
                     heading={p.portalName}
                     subheading={p.clientName}

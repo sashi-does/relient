@@ -1,16 +1,27 @@
 'use client'
 
-import { Share2, Pencil, Trash2, Eye, Users } from "lucide-react";
+import { useState } from "react";
+import { Share2, Pencil, Trash2, Eye, Users, Copy } from "lucide-react";
 import Link from "next/link";
 import Radar from "@repo/ui/radar";
+import { toast } from "sonner";
+import axios from "axios";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@repo/ui/dropdown-menu";
-import { toast } from "sonner";
-import axios from "axios";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@repo/ui/dialog";
+import { Button } from "@repo/ui/button";
+import Input from "@repo/ui/input";
 
 type CardProps = {
   type?: "portal" | "update";
@@ -23,19 +34,18 @@ type CardProps = {
   members?: number;
   portalId?: string;
   messages?: number;
+  slug?: string;
   icon?: React.ReactNode;
   growth?: string;
 };
 
 async function deletePortal(portalId: string) {
   try {
-
-    const response = await axios.delete('/api/portal', { data : { portalId } })
-    if(response.data.status == 204) {
-      toast("Portal removed successfully")
-    }
-    else {
-      toast(response.data.message)
+    const response = await axios.delete('/api/portal', { data: { portalId } });
+    if (response.data.status === 204) {
+      toast("Portal removed successfully");
+    } else {
+      toast(response.data.message);
     }
   } catch (error) {
     toast((error as Error).message);
@@ -47,15 +57,25 @@ export default function Card({
   heading,
   subheading,
   portalId,
+  slug,
   count,
   status,
-  progress,
   lastActivity,
   members,
   messages,
   icon,
   growth,
 }: CardProps) {
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const shareUrl = slug ? `https://relient.in/${slug}` : null;
+
+  const copyToClipboard = () => {
+    if (shareUrl) {
+      navigator.clipboard.writeText(shareUrl);
+      toast("Copied to clipboard");
+    }
+  };
+
   if (type === "portal") {
     return (
       <div className="rounded-2xl p-4 bg-[#17171750] text-white shadow hover:shadow-lg transition-all w-[400px] mb-5 max-w-md border border-[#2b2b2b]">
@@ -94,25 +114,28 @@ export default function Card({
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#1b1b1b]">
-              <DropdownMenuItem className="hover:bg-[#1e1e1e] hover:border-red py-[5px] mt-1">
+              <DropdownMenuItem className="hover:bg-[#1e1e1e] py-[5px] mt-1">
                 <Link className="flex items-center" href={`/portal/view/${portalId}`} target="_blank">
                   <Eye className="mr-2 h-4 w-4" />
                   <span>View</span>
                 </Link>
               </DropdownMenuItem>
               <Link target="_blank" href={`/portal/edit/${portalId}`}>
-                <DropdownMenuItem className="hover:bg-[#1e1e1e] hover:border-red py-[5px] ">
+                <DropdownMenuItem className="hover:bg-[#1e1e1e] py-[5px]">
                   <Pencil className="mr-2 h-4 w-4" />
                   <span>Edit</span>
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem className="hover:bg-[#1e1e1e] hover:border-red py-[5px] ">
+              <DropdownMenuItem
+                onClick={() => setShareDialogOpen(true)}
+                className="hover:bg-[#1e1e1e] py-[5px]"
+              >
                 <Share2 className="mr-2 h-4 w-4" />
                 <span>Share</span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => deletePortal((portalId as string))}
-                className="hover:bg-[#6C1818] hover:text-white hover:border-red py-[5px] mb-1 text-red-500 focus:text-white"
+                className="hover:bg-[#6C1818] hover:text-white py-[5px] mb-1 text-red-500 focus:text-white"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 <span>Delete</span>
@@ -138,7 +161,6 @@ export default function Card({
           </div>
         </div>
 
-      
         {/* Footer */}
         <div className="flex justify-between text-sm text-[#aaa] mt-4">
           <div className="flex items-center gap-1">
@@ -146,6 +168,32 @@ export default function Card({
           </div>
           <div>{messages ?? 0} messages</div>
         </div>
+
+        {/* Share Dialog */}
+        <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+          <DialogContent>
+            <DialogTitle>Share Portal</DialogTitle>
+            <DialogDescription>
+              Share this link with your client to view the portal.
+            </DialogDescription>
+
+            <div className="mt-4 flex items-center gap-2">
+              <Input readOnly value={shareUrl || "No slug available"} />
+              <Button
+                size="icon"
+                variant="outline"
+                onClick={copyToClipboard}
+                disabled={!shareUrl}
+              >
+                <Copy className="w-4 h-4" />
+              </Button>
+            </div>
+
+            <DialogFooter className="mt-4">
+              <Button onClick={() => setShareDialogOpen(false)}>Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
