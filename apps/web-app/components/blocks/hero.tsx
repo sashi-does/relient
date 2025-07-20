@@ -112,9 +112,10 @@ function Hero() {
                     </div>
                   </Link>
 
-                  <h1 className="mt-8 max-w-4xl mx-auto text-balance font-medium text-6xl md:text-7xl lg:mt-16 xl:text-[5.25rem]">
-                    Simplify Client Updates
-                  </h1>
+                  <h1 className="mt-8 py-1 max-w-4xl mx-auto text-balance font-medium text-6xl md:text-7xl lg:mt-16 xl:text-[5.25rem] bg-gradient-to-b from-white to-white/30 bg-clip-text text-transparent">
+  Simplify Client Updates
+</h1>
+
                   <p className="mx-auto mt-8 max-w-2xl text-balance text-lg">
                     A unified workspace to share progress, timelines, results,
                     and payments giving clients full visibility and trust
