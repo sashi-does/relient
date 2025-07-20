@@ -38,7 +38,6 @@ export function GlassTabs({ portals }: { portals: PortalWithId[] }) {
           <div className="flex flex-col md:flex-row justify-between space-x-[20px]">
             <Stats count={portals.length} type="portals" />
             <Stats
-              // count={portals.filter((p) => p.status === "Active").length}
               count={portals.length}
               type="activeStatus"
             />

@@ -86,6 +86,7 @@ export const PortalSchema = new Schema<Portal>({
     userId: String,
     inbox: { type: Number, default: 0 },
     status: { type: String, default: "Inactive" },
+    slug: { type: String, default: "" },
     createdAt: { type: Date, default: Date.now },
     lastVisited: { type: Date, default: null },
     feedback: { type: Boolean, default: false },

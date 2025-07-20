@@ -134,27 +134,11 @@ export default function Card({
             {status}
           </div>
           <div className="opacity-70">
-            Last activity:{" "}
             <span className="text-white/80">{lastActivity || "Never"}</span>
           </div>
         </div>
 
-        {/* Progress */}
-        {progress !== undefined && (
-          <div className="mt-2">
-            <div className="text-sm mb-1 text-[#b9b9b9]">Progress</div>
-            <div className="w-full h-2 bg-[#2e2e2e] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-blue-500 transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <div className="text-right text-xs text-[#999] mt-1">
-              {progress}%
-            </div>
-          </div>
-        )}
-
+      
         {/* Footer */}
         <div className="flex justify-between text-sm text-[#aaa] mt-4">
           <div className="flex items-center gap-1">

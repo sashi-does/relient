@@ -92,7 +92,7 @@ export const Dashboard: React.FC = () => {
           return;
         }
 
-        const response = await axios.get(`/api/portal?portalId=${portalId}`);
+        const response = await axios.get(`/api/portal?portalId=${portalId}`, { headers: { protected: 'true' } });
         console.log(response.data.portal)
         if (response.data.success) {
           const portal = response.data.portal;
@@ -149,14 +149,15 @@ export const Dashboard: React.FC = () => {
     }));
   };
 
-  const handleSave = async () => {
+  const handleSaveWithSlug = async (slug : string) => {
     try {
       const portalId = params.slug;
+      console.log(portalId)
+      console.log("$##$$ " + slug)
       if (!portalId) {
         toast.error("Portal ID is missing.");
         return;
       }
-
 
       const modules = [
         { id: "tasks", enabled: moduleSettings.tasks && tasks.length > 0 },
@@ -173,7 +174,7 @@ export const Dashboard: React.FC = () => {
         appointments: appointments || [],
       };
 
-      const response = await axios.patch("/api/portal", { portalId, modules, data, feedback: feedbackEnabled });
+      const response = await axios.patch("/api/portal", { portalId, modules, data, feedback: feedbackEnabled, slug });
 
       if (response.data.success) {
         toast.success("Your portal configuration has been saved successfully.");
@@ -319,7 +320,7 @@ export const Dashboard: React.FC = () => {
               setFeedbackEnabled={setFeedbackEnabled}
               handleResetAll={handleResetAll}
               handlePreview={handlePreview}
-              handleSave={handleSave}
+              handleSaveWithSlug={handleSaveWithSlug}
             />
 
             <div className="flex-1 p-3 md:p-6 overflow-auto">

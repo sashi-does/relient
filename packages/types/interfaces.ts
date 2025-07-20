@@ -68,6 +68,7 @@ export interface Portal {
   progress: number;
   inbox: number;
   status: string;
+  slug: string;
   createdAt: Date;
   lastVisited: Date | null;
   userId: string;

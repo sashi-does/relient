@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@repo/db/prisma";
 import { Portal } from "@repo/types/interfaces";
 
+
 export async function GET(req: NextRequest) {
     try {
       const session = await getServerSession(options);
@@ -29,7 +30,8 @@ export async function GET(req: NextRequest) {
           message: "Invalid user",
         }, { status: 403 });
       }
-  
+     
+
       // Extract portalId from query parameters
       const portalId = req.nextUrl.searchParams.get('portalId');
       if (!portalId) {
@@ -65,7 +67,7 @@ export async function GET(req: NextRequest) {
         error: "Internal Server Error",
       }, { status: 500 });
     }
-  }
+}
 
 export async function POST(req: NextRequest) {
     try {
@@ -104,6 +106,7 @@ export async function POST(req: NextRequest) {
             projectDescription: description,
             createdAt: Date.now(),
             userId: user.id,
+            slug: ""
         })
 
         console.log("Portal created:", portal);
@@ -114,8 +117,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
     }
 }
-
-
 
 export async function PATCH(req: NextRequest) {
     try {
@@ -141,7 +142,7 @@ export async function PATCH(req: NextRequest) {
         }
 
         // parse request body
-        const { portalId, modules, data, feedback } = await req.json();
+        const { portalId, modules, data, feedback, slug } = await req.json();
         console.log("Portal SASASASASAS ID:", feedback);
         console.log("Modules:", JSON.stringify(modules));
 
@@ -235,6 +236,8 @@ export async function PATCH(req: NextRequest) {
             }
         });
 
+        console.log("$$$$$"  + slug)
+
         // update portal in MongoDB (may or may not)
         const updatedPortal = await (PortalModel as mongoose.Model<Portal>).findByIdAndUpdate(
             portalId,
@@ -243,6 +246,7 @@ export async function PATCH(req: NextRequest) {
                     modules: modulesUpdate,
                     lastVisited: new Date(),
                     feedback: feedback,
+                    slug,
                     status: Object.keys(modulesUpdate).some(key => modulesUpdate[key] && key !== "overview") ? "Active" : "Inactive"
                 }
             },
