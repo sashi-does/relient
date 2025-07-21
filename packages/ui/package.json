@@ -36,6 +36,7 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "@number-flow/react": "^0.5.10",
     "@radix-ui/react-popover": "^1.1.14",
     "@radix-ui/react-separator": "^1.1.7",
     "@types/three": "^0.177.0",

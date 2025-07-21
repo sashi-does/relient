@@ -9,8 +9,8 @@ import {
 
 export default function Faqs() {
   return (
-    <div className="max-w-2xl my-[100px] mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-6 text-center">FAQs</h2>
+    <div className="max-w-2xl py-10 my-[100px] mx-auto p-6">
+      <h1 className="text-4xl text-center py-1 font-medium md:text-5xl bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">FAQs</h1>
       <Accordion type="single" collapsible className="w-full space-y-2">
 
         <AccordionItem value="who-is-relient-for">

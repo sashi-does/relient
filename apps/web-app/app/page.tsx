@@ -5,6 +5,7 @@ import Features from "@/components/blocks/bento-grid";
 import Slicers from "@repo/ui/slicers";
 import Faqs from "@/components/blocks/faqs";
 import Link from "next/link";
+import Plans from "@/components/subscription-plans";
 
 export default function Home() {
   return (
@@ -22,7 +23,9 @@ export default function Home() {
       <div className="relative z-10">
         <HeroSection />
       </div>
+
       <Features />
+      <Plans />
       <Faqs />
       <Footer />
       <footer className="w-full px-6 py-12 bg-transparent text-sm text-zinc-600 dark:text-[#F8F8F8]">

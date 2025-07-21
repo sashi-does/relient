@@ -63,7 +63,7 @@ const itemsSample: BentoItem[] = [
 
 export default function Features() {
     return <>
-        <h1 className="text-center my-[40px] font-medium text-5xl">Features</h1>
+        <h1 className="text-4xl py-1 text-center font-medium md:text-6xl bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">Features</h1>
         <BentoGrid items={itemsSample} />
     </>
 
