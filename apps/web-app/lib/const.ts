@@ -1,74 +1,59 @@
 export const PAYMENT_FREQUENCIES = ["monthly", "yearly"]
 
 export const TIERS = [
-  {
-    id: "individuals",
-    name: "Individuals",
-    price: {
-      monthly: "Free",
-      yearly: "Free",
+    {
+      id: "free",
+      name: "Free",
+      price: {
+        monthly: "Free",
+        yearly: "Free",
+      },
+      description: "For individuals or early-stage agencies exploring Relient.",
+      features: [
+        "Tasks & Leads modules",
+        "Email notifications",
+        "Up to 3 client portals",
+        "Up to 3 client seats",
+      ],
+      cta: "Start for Free",
     },
-    description: "For your hobby projects",
-    features: [
-      "Free email alerts",
-      "3-minute checks",
-      "Automatic data enrichment",
-      "10 monitors",
-      "Up to 3 seats",
-    ],
-    cta: "Get started",
-  },
-  {
-    id: "teams",
-    name: "Teams",
-    price: {
-      monthly: 90,
-      yearly: 75,
+    {
+      id: "pro",
+      name: "Pro",
+      price: {
+        monthly: 29,
+        yearly: 24,
+      },
+      description: "Designed for small agencies with growing client needs.",
+      features: [
+        "Tasks, Leads, Feedback & Payments modules",
+        "Email & in-app notifications",
+        "Up to 10 client portals",
+        "Client feedback collection",
+        "Custom branding",
+        "Up to 5 team seats",
+      ],
+      cta: "Upgrade to Pro",
+      popular: true,
     },
-    description: "Great for small businesses",
-    features: [
-      "Unlimited phone calls",
-      "30 second checks",
-      "Single-user account",
-      "20 monitors",
-      "Up to 6 seats",
-    ],
-    cta: "Get started",
-    popular: true,
-  },
-  {
-    id: "organizations",
-    name: "Organizations",
-    price: {
-      monthly: 120,
-      yearly: 100,
+    {
+      id: "scale",
+      name: "Scale",
+      price: {
+        monthly: 59,
+        yearly: 49,
+      },
+      description: "Best for scaling agencies that need unlimited flexibility.",
+      features: [
+        "Everything in Pro",
+        "Unlimited client portals",
+        "Fully customizable portal design",
+        "Advanced permissions & roles",
+        "White-label branding",
+        "Priority support",
+      ],
+      cta: "Get Scale",
+      highlighted: true,
     },
-    description: "Great for large businesses",
-    features: [
-      "Unlimited phone calls",
-      "15 second checks",
-      "Single-user account",
-      "50 monitors",
-      "Up to 10 seats",
-    ],
-    cta: "Get started",
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    price: {
-      monthly: "Custom",
-      yearly: "Custom",
-    },
-    description: "For multiple teams",
-    features: [
-      "Everything in Organizations",
-      "Up to 5 team members",
-      "100 monitors",
-      "15 status pages",
-      "200+ integrations",
-    ],
-    cta: "Contact Us",
-    highlighted: true,
-  },
-]
+  ]
+  

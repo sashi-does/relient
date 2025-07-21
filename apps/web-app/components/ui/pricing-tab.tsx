@@ -1,9 +1,10 @@
 "use client"
 
+import * as React from "react"
 import { motion } from "framer-motion"
 
-import { cn } from "./lib/utils"
-import { Badge } from "./badge"
+import { cn } from "@repo/ui/utils"
+import { Badge } from "@repo/ui/badge"
 
 interface TabProps {
   text: string

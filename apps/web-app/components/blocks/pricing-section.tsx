@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { PricingCard, type PricingTier } from "@repo/ui/pricing-card"
-import { Tab } from "@repo/ui/pricing-tab"
+import { PricingCard, type PricingTier } from "@/components/ui/pricing-card"
+import { Tab } from "../ui/pricing-tab"
 
 interface PricingSectionProps {
   title: string
@@ -23,7 +23,7 @@ export function PricingSection({
     <section className="flex flex-col items-center gap-10 py-10">
       <div className="space-y-7 text-center">
         <div className="space-y-4">
-          <h1 className="text-4xl py-1 font-medium md:text-6xl bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">{title}</h1>
+        <h1 className="text-4xl text-center py-1 font-medium md:text-5xl bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">{title}</h1>
           <p className="text-muted-foreground">{subtitle}</p>
         </div>
         <div className="mx-auto flex w-fit rounded-full bg-muted p-1">
@@ -39,7 +39,7 @@ export function PricingSection({
         </div>
       </div>
 
-      <div className="grid w-full max-w-6xl gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="flex justify-between gap-x-10">
         {tiers.map((tier) => (
           <PricingCard
             key={tier.name}
