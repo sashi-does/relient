@@ -39,7 +39,7 @@ export function PricingSection({
         </div>
       </div>
 
-      <div className="flex justify-between gap-x-10">
+      <div className="flex flex-wrap justify-center gap-10">
         {tiers.map((tier) => (
           <PricingCard
             key={tier.name}
