@@ -9,9 +9,9 @@ import {
   Plus,
   Command,
   Copyright,
+  X,
 } from "lucide-react";
-
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
@@ -49,56 +49,24 @@ const menuItems = [
 export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
+  isSidebarOpen,
+  setIsSidebarOpen,
+  createPortalTriggerRef,
 }: {
   isCollapsed: boolean;
   setIsCollapsed: (val: boolean) => void;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (val: boolean) => void;
+  createPortalTriggerRef: React.RefObject<HTMLDivElement>;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const portalNameRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const mailRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
-  const dialogTriggerRef = useRef<HTMLButtonElement>(null);
   const [loading, setLoading] = useState(false);
 
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setIsCollapsed(true);
-      } else {
-        setIsCollapsed(false);
-        setIsOpen(true);
-      }
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.metaKey) {
-        if (event.key === "b" || event.key === "B") {
-          event.preventDefault();
-          if (window.innerWidth < 768) {
-            setIsOpen((prev) => !prev);
-          } else {
-            setIsCollapsed(!isCollapsed);
-          }
-        } else if (event.key === "p" || event.key === "P") {
-          event.preventDefault();
-          setDialogOpen(true);
-        }
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [setIsCollapsed]);
 
   async function createPortal(
     portalName: string,
@@ -116,6 +84,7 @@ export default function Sidebar({
       });
       if (res.data.success) {
         setDialogOpen(false);
+        setIsSidebarOpen(false);
         toast("Portal Created Successfully");
         location.reload();
         redirect("/portals");
@@ -136,37 +105,51 @@ export default function Sidebar({
         className={clsx(
           "fixed top-0 left-0 h-[100vh] text-white bg-[#171717] border-r border-zinc-800 px-3 z-50 transition-all duration-300 ease-in-out flex flex-col justify-between overflow-y-auto",
           {
-            "w-[245px]": !isCollapsed,
-            "w-[64px]": isCollapsed,
-            "translate-x-0": isOpen || !isCollapsed,
-            "-translate-x-full md:translate-x-0": !isOpen,
+            "w-[280px] md:w-[245px]": !isCollapsed && isSidebarOpen,
+            "w-[64px]": isCollapsed && isSidebarOpen, 
+            "translate-x-0": isSidebarOpen, 
+            "-translate-x-full": !isSidebarOpen,
           }
         )}
       >
         <div>
-          <div className="flex items-center justify-center mt-4">
-            <Image
-              src="/relient.png"
-              alt="Relient Logo"
-              width={28}
-              height={28}
-              className="invert brightness-0 opacity-80"
-            />
-            {!isCollapsed && (
-              <span className="font-extrabold text-2xl ml-2 logo">Relient</span>
+          <div className="flex items-center justify-between mt-4 px-2">
+            <div className="flex items-center">
+              <Image
+                src="/relient.png"
+                alt="Relient Logo"
+                width={28}
+                height={28}
+                className="invert brightness-0 opacity-80"
+              />
+              {!isCollapsed && (
+                <span className="font-extrabold text-2xl ml-2 logo">Relient</span>
+              )}
+            </div>
+
+            {isSidebarOpen && window.innerWidth < 768 && (
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="p-2 rounded-md hover:bg-[#40404080] transition"
+                aria-label="Close sidebar"
+              >
+                <X className="h-6 w-6" />
+              </button>
             )}
           </div>
           {!isCollapsed && (
-            <span className="text-[10px] text-[#757474] flex justify-center items-center">
+            <span className="text-[10px] text-[#757474] flex justify-center items-center mt-2">
               <Copyright className="mr-1" height={10} width={10} /> 2025
               relient.in, Inc beta
             </span>
           )}
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <div className="hover:bg-[#4f4f4f23] transistion-all duration-200 rounded-4xl flex items-center justify-center w-full mb-6 mt-6">
+              <div
+                ref={createPortalTriggerRef}
+                className="hover:bg-[#4f4f4f23] transition-all duration-200 rounded-4xl flex items-center justify-center w-full mb-6 mt-6"
+              >
                 <LiquidButton
-                  ref={dialogTriggerRef}
                   variant="default"
                   className="w-full p-2 flex justify-center"
                 >
@@ -233,7 +216,7 @@ export default function Sidebar({
                   }
                   disabled={loading}
                 >
-                  {loading ? <Loader heightInVp={100}/> : "Create"}
+                  {loading ? <Loader heightInVp={100} /> : "Create"}
                 </Button>
               </div>
             </DialogContent>
@@ -247,6 +230,7 @@ export default function Sidebar({
                 <li key={idx}>
                   <Link
                     href={item.href}
+                    onClick={() => window.innerWidth < 768 && setIsSidebarOpen(false)} 
                     className={clsx(
                       "flex items-center gap-3 px-3 py-[6px] font-medium text-[#b9b9b9] text-[20px] rounded-md transition group relative",
                       {
@@ -292,23 +276,33 @@ export default function Sidebar({
         </div>
 
         {!isCollapsed && <SubscriptionCard />}
-        { window.innerWidth >= 768 &&
-        <button
-          className={clsx(
-            "mb-4 p-2 rounded-md cursor-pointer hover:bg-[#40404080] transition self-end",
-            3
-          )}
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          <Image
-            className={`invert brightness-[0.7] contrast-[2.85] ${isCollapsed ? "rotate-180" : "rotate-0"}`}
-            src="/collapse.png"
-            height={20}
-            width={20}
-            alt="collapse"
-          />
-        </button> }
+        {window.innerWidth >= 768 && (
+          <button
+            className={clsx(
+              "mb-4 p-2 rounded-md cursor-pointer hover:bg-[#40404080] transition self-end"
+            )}
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            aria-label="Toggle sidebar collapse"
+          >
+            <Image
+              className={`invert brightness-[0.7] contrast-[2.85] ${
+                isCollapsed ? "rotate-180" : "rotate-0"
+              }`}
+              src="/collapse.png"
+              height={20}
+              width={20}
+              alt="collapse"
+            />
+          </button>
+        )}
       </div>
+
+      {isSidebarOpen && window.innerWidth < 768 && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsSidebarOpen(false)} 
+        />
+      )}
     </>
   );
 }
