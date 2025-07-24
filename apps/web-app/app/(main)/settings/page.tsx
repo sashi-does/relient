@@ -113,7 +113,7 @@ function Page() {
                 <div className="mb-6">
                   <div className="flex items-center gap-4">
                     <Image
-                      src={profilePic}
+                      src={profilePic as string}
                       alt="Profile"
                       width={60}
                       height={60}
@@ -222,7 +222,7 @@ function Page() {
                 <div className="mb-6">
                   <div className="flex items-center gap-4">
                     <Image
-                      src={profilePic}
+                      src={profilePic as string}
                       alt="AgencyProfile"
                       width={60}
                       height={60}
