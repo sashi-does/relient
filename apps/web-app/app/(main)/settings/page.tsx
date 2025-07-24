@@ -13,8 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/select";
-import axios from "axios";
-import { Box, House, PanelsTopLeft, Trash2Icon, User } from "lucide-react";
+import { PanelsTopLeft, Trash2Icon, User } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -36,37 +35,25 @@ export default function Settings() {
 
 function Page() {
   const { data: session } = useSession();
-  const [isMounted, setIsMounted] = useState(false);
-  const [profilePic, setProfilePic] = useState("");
-  const { user } = useContext(DialogContext)
+  const [isMounted, setIsMounted] = useState(true);
+  const { user } = useContext(DialogContext);
+  const [profilePic, setProfilePic] = useState(user?.image);
 
-  console.log("####--->")
+  console.log("####--->");
   console.log("User from context:", user);
-  console.log("####--->")
-  const [username, setUsername] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [email, setEmail] = useState("");
+  console.log("####--->");
+  const [username, setUsername] = useState(user?.username);
+  const [industry, setIndustry] = useState(user?.agency.industry);
+  const [email, setEmail] = useState(user?.email);
   const [about, setAbout] = useState("");
-  const [agencyData, setAgencyData] = useState<{
-    agencyName?: string;
-    website?: string;
-    industry?: string;
-    teamSize?: number;
-  } | null>(null);
-
-  useEffect(() => {
-    const agency = (user as any)?.agency;
-    if (agency) {
-      setAgencyData(agency);
-      setIndustry(agency.industry || "");
-    } else {
-      setAgencyData(null);
-      setIndustry("");
-    }
-  }, [user]);
+  const agencyData = {
+    agencyName: user?.agency.agencyName as string,
+    website: user?.agency.website as string,
+    industry: user?.agency.industry as string,
+    teamSize: user?.agency.teamSize as number,
+  };
 
   function TabComponent() {
-    
     return (
       <Tabs
         defaultValue="tab-1"
@@ -92,7 +79,10 @@ function Page() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <span>
-                  <TabsTrigger value="tab-2" className="cursor-pointer group py-3">
+                  <TabsTrigger
+                    value="tab-2"
+                    className="cursor-pointer group py-3"
+                  >
                     <span className="relative">
                       <PanelsTopLeft
                         size={16}
@@ -163,7 +153,7 @@ function Page() {
                   <Input
                     type="text"
                     className="py-2"
-                    value={username}
+                    value={username as string}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="cal.com/ sashi-giffo"
                   />
@@ -181,7 +171,7 @@ function Page() {
                     <Input
                       className="py-2 cursor-not-allowed disabled"
                       type="email"
-                      value={email}
+                      value={email as string}
                       onChange={(e) => setEmail(e.target.value)}
                       disabled
                     />
@@ -332,18 +322,6 @@ function Page() {
   if (!session?.user) {
     // router.replace("/")
   }
-
-  useEffect(() => {
-    setIsMounted(true);
-    const user = session?.user as {
-      image?: string;
-      name?: string;
-      email?: string;
-    };
-    if (user?.image) setProfilePic(user.image);
-    if (user?.name) setUsername(user.name);
-    if (user?.email) setEmail(user.email);
-  }, [session]);
 
   const handleProfilePicUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -8,6 +8,7 @@ import { DialogContext } from "@/app/context/dialogContext";
 
 export default function ClientPortalPage() {
   const { portals } = useContext(DialogContext)
+  // console.log(JSON.stringify(portals) + "******")
   if (!portals || portals.length === 0) {
     return (
       <div className="h-[95vh] flex justify-center items-center">

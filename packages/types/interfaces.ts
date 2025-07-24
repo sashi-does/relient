@@ -9,17 +9,18 @@ export type User = {
   onboarded: Boolean;
   createdAt: Date;
   plan: String;
+  agency: Agency
 }
 
-// export interface Agency {
-//   id: String;
-//   agencyName: String;
-//   website: String | null;
-//   logo: String | null;
-//   userId: String;
-//   industry: String;
-//   teamSize: Number;
-// }
+interface Agency {
+  id: String;
+  agencyName: String;
+  website: String | null;
+  logo: String | null;
+  userId: String;
+  industry: String;
+  teamSize: Number;
+}
 
 export interface OverviewModule {
   title: string;
