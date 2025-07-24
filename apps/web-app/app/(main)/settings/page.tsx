@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState, useEffect, useContext } from "react";
 import Input from "@repo/ui/input";
-import { SessionProvider, useSession } from "next-auth/react";
 import { Textarea } from "@repo/ui/text-area";
 import { Button } from "@repo/ui/button";
 import {
@@ -22,36 +21,53 @@ import {
   TooltipTrigger,
 } from "@repo/ui/tooltip";
 import { DialogContext } from "@/app/context/dialogContext";
+import { useSession } from "next-auth/react";
 
 
 
 export default function Settings() {
-  return (
-    <SessionProvider>
-      <Page />
-    </SessionProvider>
-  );
-}
-
-function Page() {
   const { data: session } = useSession();
   const [isMounted, setIsMounted] = useState(true);
   const { user } = useContext(DialogContext);
-  const [profilePic, setProfilePic] = useState(user?.image);
 
-  console.log("####--->");
-  console.log("User from context:", user);
-  console.log("####--->");
-  const [username, setUsername] = useState(user?.username);
-  const [industry, setIndustry] = useState(user?.agency.industry);
-  const [email, setEmail] = useState(user?.email);
-  const [about, setAbout] = useState("");
-  const agencyData = {
-    agencyName: user?.agency.agencyName as string,
-    website: user?.agency.website as string,
-    industry: user?.agency.industry as string,
-    teamSize: user?.agency.teamSize as number,
-  };
+  // ✅ State variables (start as empty or undefined)
+  const [profilePic, setProfilePic] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [industry, setIndustry] = useState<string>("");
+  const [about, setAbout] = useState<string>("");
+  const [agencyData, setAgencyData] = useState({
+    agencyName: "",
+    website: "",
+    industry: "",
+    teamSize: 0,
+  });
+
+  // ✅ Load user data into local state when available
+  useEffect(() => {
+    if (user) {
+      setProfilePic(typeof user.image === "string" ? user.image : "");
+      setUsername(typeof user.username === "string" ? user.username : "");
+      setEmail(typeof user.email === "string" ? user.email : "");
+      setIndustry(typeof user.agency?.industry === "string" ? user.agency.industry : "");
+      setAgencyData({
+        agencyName: typeof user.agency?.agencyName === "string" ? user.agency.agencyName : "",
+        website: typeof user.agency?.website === "string" ? user.agency.website : "",
+        industry: typeof user.agency?.industry === "string" ? user.agency.industry : "",
+        teamSize: typeof user.agency?.teamSize === "number" ? user.agency.teamSize : 0,
+      });
+    }
+  }, [user]);
+
+
+  if (!isMounted || !session) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-gray-400">
+        <div className="w-6 h-6 border-2 border-gray-300 border-t-transparent rounded-full animate-spin"></div>
+        <span className="ml-3 text-sm">Loading profile...</span>
+      </div>
+    );
+  }
 
   function TabComponent() {
     return (
