@@ -2,7 +2,6 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import options from "../auth/[...nextauth]/options";
 import { prisma } from "@repo/db/prisma";
-import { fi } from "date-fns/locale";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,7 +13,7 @@ export async function POST(req: NextRequest) {
       );
     }
     const portal = await req.json()
-    const { agencyName, industry, website, teamSize } = portal; // will see the logo later 
+    const { agencyName, industry, website, teamSize } = portal; 
 
 
     if (!agencyName || !industry || !website || !teamSize) {
@@ -23,7 +22,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    console.log("SASASAS")
+    // console.log("SASASAS")
     console.log(JSON.stringify(portal))
 
     const dbUser = await prisma.user.findFirst({

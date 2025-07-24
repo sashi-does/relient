@@ -3,8 +3,11 @@
 import { Portal } from "@repo/types/interfaces";
 import PortalPlaceholder from "@/components/blocks/portal-placeholder";
 import { GlassTabs } from "@/components/blocks/portal-tabs";
+import { useContext } from "react";
+import { DialogContext } from "@/app/context/dialogContext";
 
-export default function ClientPortalPage({ portals }: { portals: Portal[] }) {
+export default function ClientPortalPage() {
+  const { portals } = useContext(DialogContext)
   if (!portals || portals.length === 0) {
     return (
       <div className="h-[95vh] flex justify-center items-center">

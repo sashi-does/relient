@@ -4,9 +4,10 @@ import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { SessionProvider, useSession } from "next-auth/react";
-import { ContextProvider } from "../context/dialogContext";
+import { DialogContext } from "@/app/context/dialogContext";
 import { Profile } from "@/components/ui/profile";
 import { Menu } from "lucide-react";
+import { DialogContextProps } from "@/app/context/dialogContext";
 import clsx from "clsx";
 import axios from "axios";
 import Loader from "@repo/ui/loader";
@@ -16,11 +17,13 @@ const Sidebar = dynamic(() => import("@/components/ui/sidebar"), {
 });
 
 function InnerLayout({ children }: { children: React.ReactNode }) {
-  const [isCollapsed, setIsCollapsed] = useState(false); 
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { data: session, status } = useSession();
   const createPortalTriggerRef = useRef<HTMLDivElement>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [user, setUser] = useState<DialogContextProps["user"]>(null);
+  const [portals, setPortals] = useState<DialogContextProps["portals"]>([])
+
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -36,7 +39,7 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
         if (window.innerWidth < 768) {
           setIsSidebarOpen((prev) => !prev);
           if (!isSidebarOpen) {
-            setIsCollapsed(false); 
+            setIsCollapsed(false);
           }
         } else {
           setIsCollapsed((prev) => !prev);
@@ -48,14 +51,13 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
   }, [isSidebarOpen]);
 
   useEffect(() => {
-
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setIsCollapsed(true); 
-        setIsSidebarOpen(false); 
+        setIsCollapsed(true);
+        setIsSidebarOpen(false);
       } else {
-        setIsCollapsed(false); 
-        setIsSidebarOpen(true); 
+        setIsCollapsed(false);
+        setIsSidebarOpen(true);
       }
     };
 
@@ -99,22 +101,51 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
     checkOnboarding();
   }, [status, router]);
 
+  // fetch user and agency
+  useEffect(() => {
+    const fetchUserAndAgency = async () => {
+      try {
+        if (!session?.user?.id) return;
+  
+        const response = await axios.get(`/api/user?userId=${session.user.id}`);
+        console.log(JSON.stringify(response.data))
+        if (response.data.success === true) {
+          setUser(response.data.user);
+        } else {
+          console.error("User fetch failed:", response.data.message);
+        }
+      } catch (e) {
+        console.error("API Error:", e);
+      }
+    };
+  
+    if (status === "authenticated") {
+      fetchUserAndAgency();
+    }
+  }, [status, session?.user?.id]);
+
+  useEffect(() => {
+    const getPortals = async () => {
+      
+      const response = await axios.get(`/api/portal/all?userId=${session?.user?.id}`)
+      console.log(response.data.portals)
+      if(response.data.success) {
+        setPortals(response.data.portals)
+      }
+    }
+    if(status === "authenticated") {
+      getPortals()
+    }
+  }, [status, session?.user?.id])
+  
+
   if (isLoading) {
     return <Loader heightInVp={100} />;
   }
 
   return (
-    <ContextProvider
-      value={{
-        dialogOpen,
-        setDialogOpen: (open: boolean) => {
-          setDialogOpen(open);
-          return open;
-        },
-      }}
-    >
+    <DialogContext.Provider value={{ user, portals }}>
       <div className="flex h-screen">
-
         <button
           className={clsx(
             "md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-[#171717] text-white transition-opacity",
@@ -124,7 +155,7 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
           )}
           onClick={() => {
             setIsSidebarOpen(true);
-            setIsCollapsed(false); 
+            setIsCollapsed(false);
           }}
           aria-label="Toggle sidebar"
         >
@@ -136,16 +167,18 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
           setIsCollapsed={setIsCollapsed}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
-          createPortalTriggerRef={createPortalTriggerRef as React.RefObject<HTMLDivElement>}
+          createPortalTriggerRef={
+            createPortalTriggerRef as React.RefObject<HTMLDivElement>
+          }
         />
 
         <div
           className={clsx(
             "flex-1 bg-[#0F0F0F] overflow-y-auto text-white pl-[40px] pt-[25px] pr-[20px] transition-all duration-300",
             {
-              "ml-0": window.innerWidth < 768, 
-              "ml-[64px]": window.innerWidth >= 768 && isCollapsed, 
-              "ml-[240px]": window.innerWidth >= 768 && !isCollapsed, 
+              "ml-0": window.innerWidth < 768,
+              "ml-[64px]": window.innerWidth >= 768 && isCollapsed,
+              "ml-[240px]": window.innerWidth >= 768 && !isCollapsed,
               "blur-sm": isSidebarOpen && window.innerWidth < 768,
             }
           )}
@@ -159,7 +192,7 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </div>
-    </ContextProvider>
+    </DialogContext.Provider>
   );
 }
 

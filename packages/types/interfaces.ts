@@ -1,5 +1,26 @@
 import { Date } from "mongoose";
 
+export type User = {
+  id: String;
+  username: String;
+  email: String;
+  password: String | null;
+  image: String | null;
+  onboarded: Boolean;
+  createdAt: Date;
+  plan: String;
+}
+
+// export interface Agency {
+//   id: String;
+//   agencyName: String;
+//   website: String | null;
+//   logo: String | null;
+//   userId: String;
+//   industry: String;
+//   teamSize: Number;
+// }
+
 export interface OverviewModule {
   title: string;
   summary: string;
@@ -9,8 +30,8 @@ export interface Task {
   id: string;
   title: string;
   description: string;
-  status: string; // e.g., "backlog", "in-progress", "completed"
-  priority: string; // e.g., "high", "medium", "low"
+  status: string; 
+  priority: string; 
   dueDate: string;
 }
 
@@ -23,9 +44,9 @@ export interface Lead {
   name: string;
   email: string;
   phone: string;
-  status: string; // e.g., "new", "qualified"
+  status: string; 
   value: number;
-  source: string; // e.g., "Website", "Referral"
+  source: string; 
 }
 
 export interface LeadModule {
@@ -36,7 +57,7 @@ export interface Payment {
   id: string;
   client: string;
   amount: number;
-  status: string; // e.g., "pending", "paid"
+  status: string;
   dueDate: string;
   invoiceNumber: string;
 }
@@ -51,7 +72,7 @@ export interface Appointment {
   client: string;
   date: string;
   time: string;
-  status: string; // e.g., "scheduled"
+  status: string;
   meetingUrl: string;
 }
 

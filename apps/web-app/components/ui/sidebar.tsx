@@ -123,7 +123,7 @@ export default function Sidebar({
                 className="invert brightness-0 opacity-80"
               />
               {!isCollapsed && (
-                <span className="font-extrabold text-2xl ml-2 logo">Relient</span>
+                <span className="font-extrabold text-center text-2xl ml-2 logo">Relient</span>
               )}
             </div>
 

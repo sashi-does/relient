@@ -32,5 +32,5 @@ export default async function Portals() {
 
   const portals = await getPortals(session.user.id);
 
-  return <ClientPortalPage portals={portals} />;
+  return <ClientPortalPage />;
 }

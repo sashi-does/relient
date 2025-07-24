@@ -1,12 +1,15 @@
-import mongoose from "mongoose";
-console.log(process.env.MONGODB_URI)
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://admin:admin123@relient-dev-cluster.oabwtaz.mongodb.net/test";
+import dotenv from "dotenv"
+import mongoose from "mongoose";
+
+dotenv.config()
+
+const url = process.env.MONGODB_URI as string
 
 async function connectDb() {
   try {
     if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(MONGODB_URI);
+      await mongoose.connect(url);
       console.log("MongoDB connected");
     } else {
       console.log("MongoDB already connected");

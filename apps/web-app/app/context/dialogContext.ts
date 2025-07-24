@@ -1,9 +1,18 @@
+// app/context/dialogContext.tsx
+"use client";
 
-import { createContext } from "react";
+import { createContext, useContext } from "react";
+import { Portal, User } from "@repo/types/interfaces";
 
-interface DialogContext {
-    dialogOpen?: boolean,
-    setDialogOpen?: ((args: boolean) => boolean) | undefined
+
+export interface DialogContextProps {
+  user: User | null;
+  portals: Portal[];
 }
 
-export const ContextProvider = createContext<DialogContext>({});
+export const DialogContext = createContext<DialogContextProps>({
+  user: null,
+  portals: [],
+});
+
+export const useDialogContext = () => useContext(DialogContext);

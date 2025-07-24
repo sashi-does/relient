@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, Profiler } from "react";
+import { useState, useEffect, useContext } from "react";
 import Input from "@repo/ui/input";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Textarea } from "@repo/ui/text-area";
@@ -22,6 +22,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@repo/ui/tooltip";
+import { DialogContext } from "@/app/context/dialogContext";
+
+
 
 export default function Settings() {
   return (
@@ -35,6 +38,11 @@ function Page() {
   const { data: session } = useSession();
   const [isMounted, setIsMounted] = useState(false);
   const [profilePic, setProfilePic] = useState("");
+  const { user } = useContext(DialogContext)
+
+  console.log("####--->")
+  console.log("User from context:", user);
+  console.log("####--->")
   const [username, setUsername] = useState("");
   const [industry, setIndustry] = useState("");
   const [email, setEmail] = useState("");
@@ -47,23 +55,18 @@ function Page() {
   } | null>(null);
 
   useEffect(() => {
-    (async function fetchDetails() {
-      try {
-        const url = `api/onboard`
-        const response = await axios.get(url);
-        console.log(url)
-        if (response.data.success) {
-          console.log("Agency:", response.data);
-          setAgencyData(response.data.agency);
-          setIndustry(response.data.agency.industry);
-        }
-      } catch (error) {
-        console.error("Error fetching agency:", error);
-      }
-    })();
-  }, []);
+    const agency = (user as any)?.agency;
+    if (agency) {
+      setAgencyData(agency);
+      setIndustry(agency.industry || "");
+    } else {
+      setAgencyData(null);
+      setIndustry("");
+    }
+  }, [user]);
 
   function TabComponent() {
+    
     return (
       <Tabs
         defaultValue="tab-1"
