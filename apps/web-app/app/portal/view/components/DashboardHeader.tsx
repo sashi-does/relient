@@ -83,7 +83,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ data }) => {
 
       {/* Notification and Feedback buttons in top right */}
       <div className="flex items-center gap-3">
-        {/* Notifications Popover */}
+
         <Popover open={notificationsOpen} onOpenChange={setNotificationsOpen}>
           <PopoverTrigger asChild>
             <Button variant="outline" size="icon" className="relative">
@@ -117,7 +117,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ data }) => {
         </Popover>
 
         {/* Feedback Button */}
-        {data.inbox && (
+        {data.feedback && (
           <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">

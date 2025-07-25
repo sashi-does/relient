@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import { Share2, Pencil, Trash2, Eye, Users, Copy } from "lucide-react";
@@ -41,7 +41,7 @@ type CardProps = {
 
 async function deletePortal(portalId: string) {
   try {
-    const response = await axios.delete('/api/portal', { data: { portalId } });
+    const response = await axios.delete("/api/portal", { data: { portalId } });
     if (response.data.status === 204) {
       toast("Portal removed successfully");
     } else {
@@ -115,7 +115,11 @@ export default function Card({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#1b1b1b]">
               <DropdownMenuItem className="hover:bg-[#1e1e1e] py-[5px] mt-1">
-                <Link className="flex items-center" href={`/portal/view/${portalId}`} target="_blank">
+                <Link
+                  className="flex items-center"
+                  href={`/portal/view/${portalId}`}
+                  target="_blank"
+                >
                   <Eye className="mr-2 h-4 w-4" />
                   <span>View</span>
                 </Link>
@@ -134,7 +138,7 @@ export default function Card({
                 <span>Share</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => deletePortal((portalId as string))}
+                onClick={() => deletePortal(portalId as string)}
                 className="hover:bg-[#6C1818] hover:text-white py-[5px] mb-1 text-red-500 focus:text-white"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
@@ -177,17 +181,18 @@ export default function Card({
               Share this link with your client to view the portal.
             </DialogDescription>
 
-            <div className="mt-4 flex items-center gap-2">
-              <Input readOnly value={shareUrl || "No slug available"} />
-              <Button
-                size="icon"
-                variant="outline"
-                onClick={copyToClipboard}
-                disabled={!shareUrl}
-              >
-                <Copy className="w-4 h-4" />
-              </Button>
-            </div>
+            {shareUrl ? (
+              <div className="mt-4 flex items-center gap-2">
+                <Input readOnly value={shareUrl} />
+                <Button size="icon" variant="outline" onClick={copyToClipboard}>
+                  <Copy className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="mt-4 text-sm text-red-400">
+                No shareable link available. Please create a portal first.
+              </div>
+            )}
 
             <DialogFooter className="mt-4">
               <Button onClick={() => setShareDialogOpen(false)}>Close</Button>

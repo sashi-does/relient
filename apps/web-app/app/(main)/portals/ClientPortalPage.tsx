@@ -1,6 +1,5 @@
 "use client";
 
-import { Portal } from "@repo/types/interfaces";
 import PortalPlaceholder from "@/components/blocks/portal-placeholder";
 import { GlassTabs } from "@/components/blocks/portal-tabs";
 import { useContext } from "react";

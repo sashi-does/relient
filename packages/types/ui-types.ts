@@ -19,7 +19,7 @@ export interface DashboardData {
     clientEmail: string;
     projectDescription: string;
     userId: string;
-    inbox: number;
+    feedback: number;
     status: string;
     createdAt: string;
     lastVisited: string;
