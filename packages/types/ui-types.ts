@@ -17,6 +17,7 @@ export interface DashboardData {
     portalName: string;
     clientName: string;
     clientEmail: string;
+    inbox: number;
     projectDescription: string;
     userId: string;
     feedback: number;

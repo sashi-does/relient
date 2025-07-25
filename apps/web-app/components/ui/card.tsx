@@ -53,20 +53,18 @@ async function deletePortal(portalId: string) {
 }
 
 export default function Card({
-  type = "update",
-  heading,
-  subheading,
   portalId,
   slug,
-  count,
+  type = "portal",
+  heading,
+  subheading,
   status,
   lastActivity,
   members,
   messages,
-  icon,
-  growth,
 }: CardProps) {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  console.log("SSSSS" + slug);
   const shareUrl = slug ? `https://relient.in/${slug}` : null;
 
   const copyToClipboard = () => {
@@ -203,18 +201,12 @@ export default function Card({
     );
   }
 
-  // fallback to "update" card
   return (
     <div className="rounded-xl p-4 bg-[#0c0c12] text-white shadow-md w-64">
       <div className="flex justify-between items-center">
         <div>
           <div className="text-sm opacity-60">{heading}</div>
-          <div className="text-2xl font-semibold">{count}</div>
-          {growth && (
-            <div className="text-green-400 text-xs mt-1">{growth}</div>
-          )}
-        </div>
-        {icon && <div className="text-blue-400">{icon}</div>}
+          </div>
       </div>
     </div>
   );

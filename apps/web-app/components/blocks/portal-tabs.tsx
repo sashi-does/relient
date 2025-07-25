@@ -47,6 +47,7 @@ export function GlassTabs({ portals }: { portals: PortalWithId[] }) {
           <div className="mt-8 text-left space-y-2">
             <h2 className="text-lg font-semibold text-white">
               Recently Active
+              <p className="w-[100px]">{JSON.stringify(portals[0]?.slug)}</p>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {portals
@@ -104,12 +105,12 @@ export function GlassTabs({ portals }: { portals: PortalWithId[] }) {
               <li key={p._id}>
                 <Card
                   key={p._id}
+                  slug={p.slug}
                   portalId={p._id}
                   type="portal"
                   heading={p.portalName}
                   subheading={p.clientName}
                   status={p.status}
-                  progress={0}
                   lastActivity={p.lastVisited ? `Last visited: ${p.lastVisited.toLocaleString()}` : "Never"}
                   members={0}
                   messages={p.inbox || 0}
