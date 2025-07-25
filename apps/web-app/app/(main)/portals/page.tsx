@@ -16,8 +16,8 @@ declare module "next-auth" {
 export default async function Portals() {
   const session = await getServerSession(options);
 
-  if (!session?.user?.id) {
-    redirect("/dashboard");
+  if(!session?.user) {
+    redirect("/")
   }
 
 

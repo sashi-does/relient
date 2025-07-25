@@ -85,7 +85,7 @@ const options: NextAuthOptions = {
     async session({ session }) {
       try {
         if ((session.user as { email: string })?.email) {
-          const dbUser = await prisma.user.findUnique({
+          const dbUser = await prisma.user.findFirst({
             where: { email: (session.user as { email: string })?.email },
           });
           if (dbUser) {

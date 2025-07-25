@@ -43,7 +43,6 @@ export default function Settings() {
     teamSize: 0,
   });
 
-  // ✅ Load user data into local state when available
   useEffect(() => {
     if (user) {
       setProfilePic(typeof user.image === "string" ? user.image : "");
@@ -129,7 +128,7 @@ export default function Settings() {
                 <div className="mb-6">
                   <div className="flex items-center gap-4">
                     <Image
-                      src={profilePic as string}
+                      src={profilePic || "/image.png"}
                       alt="Profile"
                       width={60}
                       height={60}
