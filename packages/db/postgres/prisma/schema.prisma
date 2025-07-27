@@ -13,22 +13,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Subscription {
+enum Plan {
   BASIC
   PRO
   SCALE
 }
 
 model User {
-  id        String       @id @default(uuid())
-  username  String       @default("")
-  email     String       @unique
-  password  String?
-  image     String?
-  onboarded Boolean      @default(false)
-  createdAt DateTime     @default(now())
-  plan      Subscription @default(BASIC)
-  agency    Agency?
+  id           String       @id @default(uuid())
+  username     String       @default("")
+  email        String       @unique
+  password     String?
+  image        String?
+  onboarded    Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  plan         Plan         @default(BASIC)
+  agency       Agency?
+  subscription Subscription[]
 }
 
 enum Industry {
@@ -56,4 +57,38 @@ model Agency {
   user       User     @relation(fields: [userId], references: [id])
   industry   Industry
   teamSize   Int
+}
+
+enum PAYMENT_TYPE {
+  CARD
+  UPI
+}
+
+model Billing {
+  id           String         @id @default(uuid())
+  city         String
+  country      String
+  state        String
+  street       String
+  zipcode      String
+  subscription Subscription[]
+}
+
+model Subscription {
+  id                 String       @id @default(uuid())
+  customerId         String
+  userId             String 
+  user               User     @relation(fields: [userId], references: [id])
+  paymentId          String
+  paymentType        PAYMENT_TYPE
+  paymentLink        String?
+  nextBillingDate    DateTime
+  status             String
+  createdAt          DateTime     @default(now())
+  cardIssuingCountry String?
+  cardNetwork        String?
+  billingId          String
+  billing            Billing      @relation(fields: [billingId], references: [id])
+  startDate          DateTime
+  cancelledAt        DateTime?
 }

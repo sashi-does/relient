@@ -16,7 +16,7 @@ export const TIERS = [
         "Up to 3 client seats",
       ],
       cta: "Start for Free",
-      redirect: `${process.env.NEXTAUTH_URL}/signup`,
+      redirect: '/auth/signin'
     },
     {
       id: "pro",
@@ -36,7 +36,7 @@ export const TIERS = [
       ],
       cta: "Upgrade to Pro",
       popular: true,
-      redirect: 'https://test.checkout.dodopayments.com/buy/pdt_0gs459yHsoatjXdY2OEB8?quantity=1&redirect_url=https://relient.in%2Fdashboard'
+      redirect: '/auth/signin'
     },
     {
       id: "scale",
@@ -56,7 +56,7 @@ export const TIERS = [
       ],
       cta: "Get Scale",
       highlighted: true,
-      redirect: 'https://test.checkout.dodopayments.com/buy/pdt_0gs459yHsoatjXdY2OEB8?quantity=1&redirect_url=https://relient.in%2Fdashboard'
+      redirect: '/auth/signin'
     },
   ]
   

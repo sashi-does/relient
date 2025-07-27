@@ -102,7 +102,7 @@ export function PricingCard({ tier, paymentFrequency, isMiddleCard }: PricingCar
         </ul>
       </div>
 
-      <Link href={tier.redirect}>
+      <Link href={tier.redirect as string}>
         <Button
           variant={'default'}
           className="w-full"
