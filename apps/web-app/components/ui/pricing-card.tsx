@@ -7,6 +7,7 @@ import { Badge } from '@repo/ui/badge';
 import { Button } from '@repo/ui/button';
 import { Card } from '@repo/ui/card';
 import { enUS } from 'date-fns/locale';
+import Link from 'next/link';
 
 export interface PricingTier {
   name: string;
@@ -16,6 +17,7 @@ export interface PricingTier {
   cta: string;
   highlighted?: boolean;
   popular?: boolean;
+  redirect: string;
 }
 
 interface PricingCardProps {
@@ -100,13 +102,15 @@ export function PricingCard({ tier, paymentFrequency, isMiddleCard }: PricingCar
         </ul>
       </div>
 
-      <Button
-        variant={'default'}
-        className="w-full"
-      >
-        {tier.cta}
-        <ArrowRight className="ml-2 h-4 w-4" />
-      </Button>
+      <Link href={tier.redirect}>
+        <Button
+          variant={'default'}
+          className="w-full"
+        >
+          
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </Link>
     </Card>
   );
 }
