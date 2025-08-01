@@ -2,7 +2,7 @@
   "name": "@repo/db",
   "version": "1.0.0",
   "scripts": {
-    "prisma:generate": "prisma generate --schema=postgres/prisma/schema.prisma",
+    "prisma:generate": "prisma generate --schema=./packagespostgres/prisma/schema.prisma",
     "postinstall": "prisma generate --schema=./postgres/prisma/schema.prisma",
     "build": "prisma generate --schema=postgres/prisma/schema.prisma"
   },
