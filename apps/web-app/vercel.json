@@ -1,8 +1,5 @@
 {
   "buildCommand": "bun install && bun prisma:generate && bun run build",
   "installCommand": "bun install",
-  "outputDirectory": ".next",
-  "prisma": {
-    "schema": "./packages/db/postgres/schema.prisma"
-  }
+  "outputDirectory": ".next"
 }
