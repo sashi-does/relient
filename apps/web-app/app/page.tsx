@@ -24,7 +24,7 @@ export default function Home() {
       </div>
 
       <Features />
-      <Plans />
+      <Plans at={"landing"} />
       <Faqs />
       <Footer />
       <footer className="w-full px-6 py-12 bg-transparent text-sm text-zinc-600 dark:text-[#F8F8F8]">

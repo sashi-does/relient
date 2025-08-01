@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { BadgeCheck, ArrowRight } from 'lucide-react';
-import NumberFlow from '@number-flow/react';
-import { cn } from '@repo/ui/utils';
-import { Badge } from '@repo/ui/badge';
-import { Button } from '@repo/ui/button';
-import { Card } from '@repo/ui/card';
-import { enUS } from 'date-fns/locale';
-import Link from 'next/link';
+import { BadgeCheck, ArrowRight } from "lucide-react";
+import NumberFlow from "@number-flow/react";
+import { cn } from "@repo/ui/utils";
+import { Badge } from "@repo/ui/badge";
+import { Button } from "@repo/ui/button";
+import { Card } from "@repo/ui/card";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export interface PricingTier {
   name: string;
@@ -23,27 +23,42 @@ export interface PricingTier {
 interface PricingCardProps {
   tier: PricingTier;
   paymentFrequency: string;
-  isMiddleCard?: boolean; 
+  isMiddleCard?: boolean;
+  at: "landing" | "onboarding";
 }
 
-export function PricingCard({ tier, paymentFrequency, isMiddleCard }: PricingCardProps) {
+export function PricingCard({
+  tier,
+  paymentFrequency,
+  isMiddleCard,
+  at,
+}: PricingCardProps) {
   const price = tier.price[paymentFrequency];
-  const isHighlighted = tier.highlighted;
+  const router = useRouter();
   const isPopular = tier.popular;
 
-
-  let backgroundClass = '';
+  let backgroundClass = "";
   if (isMiddleCard) {
-    backgroundClass = 'bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:45px_45px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]';
-  } else if (tier.name.toLowerCase() !== 'pro') {
-    backgroundClass = '';
+    backgroundClass =
+      "bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:45px_45px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]";
+  } else if (tier.name.toLowerCase() !== "pro") {
+    backgroundClass = "";
+  }
+
+  function navigateTo(at: "landing" | "onboarding") {
+    console.log("SASASS")
+    toast.success("Hehe");
+    if (at === "onboarding") {
+      return router.push(tier?.redirect as string);
+    }
+    return router.push("/auth/signin");
   }
 
   return (
     <Card
       className={cn(
-        'relative flex flex-col w-[300px] gap-8 overflow-hidden p-6 rounded-lg shadow-lg bg-background text-foreground',
-        isPopular && 'ring-2 ring-primary',
+        "relative flex flex-col w-[300px] gap-8 overflow-hidden p-6 rounded-lg shadow-lg bg-background text-foreground",
+        isPopular && "ring-2 ring-primary",
         backgroundClass
       )}
     >
@@ -61,28 +76,29 @@ export function PricingCard({ tier, paymentFrequency, isMiddleCard }: PricingCar
       </h2>
 
       <div className="relative h-12">
-  {typeof price === 'number' ? (
-    <>
-      <div className="flex items-baseline gap-1">
-        <NumberFlow
-          format={{
-            style: 'currency',
-            currency: 'USD',
-            currencyDisplay: 'narrowSymbol',
-            trailingZeroDisplay: 'stripIfInteger',
-          }}
-          value={price}
-          className="text-4xl font-medium"
-        />
-        <span className="text-muted-foreground text-sm mt-1">USD</span>
+        {typeof price === "number" ? (
+          <>
+            <div className="flex items-baseline gap-1">
+              <NumberFlow
+                format={{
+                  style: "currency",
+                  currency: "USD",
+                  currencyDisplay: "narrowSymbol",
+                  trailingZeroDisplay: "stripIfInteger",
+                }}
+                value={price}
+                className="text-4xl font-medium"
+              />
+              <span className="text-muted-foreground text-sm mt-1">USD</span>
+            </div>
+            <p className="-mt-2 text-xs text-muted-foreground">
+              Per month/user
+            </p>
+          </>
+        ) : (
+          <h1 className="text-4xl font-medium">{price}</h1>
+        )}
       </div>
-      <p className="-mt-2 text-xs text-muted-foreground">Per month/user</p>
-    </>
-  ) : (
-    <h1 className="text-4xl font-medium">{price}</h1>
-  )}
-</div>
-
 
       <div className="flex-1 space-y-2">
         <h3 className="text-sm font-medium">{tier.description}</h3>
@@ -91,8 +107,8 @@ export function PricingCard({ tier, paymentFrequency, isMiddleCard }: PricingCar
             <li
               key={index}
               className={cn(
-                'flex items-center gap-2 text-sm font-medium',
-                'text-muted-background'
+                "flex items-center gap-2 text-sm font-medium",
+                "text-muted-background"
               )}
             >
               <BadgeCheck className="h-4 w-4" />
@@ -102,16 +118,9 @@ export function PricingCard({ tier, paymentFrequency, isMiddleCard }: PricingCar
         </ul>
       </div>
 
-      <Link href={tier.redirect as string}>
-        <Button
-          variant={'default'}
-          className="w-full"
-        >
-          
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </Link>
+      <Button onClick={() => navigateTo(at)} variant={"default"} className="w-full">
+        <ArrowRight className="ml-2 h-4 w-4" />
+      </Button>
     </Card>
   );
 }
-

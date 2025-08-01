@@ -1,7 +1,4 @@
-// app/api/webhook/subscription/route.ts
 import { NextResponse } from 'next/server'
-import { hash } from 'bcryptjs'
-import { randomUUID } from 'crypto'
 import { prisma } from '@repo/db/prisma'
 
 export async function POST(req: Request) {
@@ -18,11 +15,11 @@ export async function POST(req: Request) {
             const subscription = body.data
             const { email, name } = subscription.customer
 
-            // Check if user exists
+
             let user = await prisma.user.findFirst({ where: { email } })
 
             if (!user) {
-                // Create user with random password (since no auth flow)
+
                 user = await prisma.user.create({
                     data: {
                         email,
@@ -33,7 +30,7 @@ export async function POST(req: Request) {
                 })
             }
 
-            // Create billing
+
             const billing = await prisma.billing.create({
                 data: {
                     city: subscription.billing.city,
@@ -44,13 +41,13 @@ export async function POST(req: Request) {
                 },
             })
 
-            // Create subscription
+
             await prisma.subscription.create({
                 data: {
                     customerId: subscription.customer.customer_id,
                     userId: user.id,
                     paymentId: subscription.subscription_id,
-                    paymentType: 'CARD', // Assuming only card for now, else use metadata or pass it
+                    paymentType: 'CARD',
                     nextBillingDate: new Date(subscription.next_billing_date),
                     status: subscription.status,
                     cardIssuingCountry: null,

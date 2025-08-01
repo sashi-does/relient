@@ -4,11 +4,14 @@ import * as React from "react"
 import { PricingCard, type PricingTier } from "@/components/ui/pricing-card"
 import { Tab } from "../ui/pricing-tab"
 
+type Onboard = 'onboarding' | 'landing'
+
 interface PricingSectionProps {
   title: string
   subtitle: string
   tiers: PricingTier[]
-  frequencies: string[]
+  frequencies: string[],
+  at: Onboard
 }
 
 export function PricingSection({
@@ -16,6 +19,7 @@ export function PricingSection({
   subtitle,
   tiers,
   frequencies,
+  at
 }: PricingSectionProps) {
   const [selectedFrequency, setSelectedFrequency] = React.useState(frequencies[0])
 
@@ -45,6 +49,7 @@ export function PricingSection({
             key={tier.name}
             tier={tier}
             paymentFrequency={selectedFrequency ?? ""}
+            at={at}
           />
         ))}
       </div>

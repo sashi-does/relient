@@ -1,7 +1,7 @@
 import { PricingSection } from "./blocks/pricing-section";
 import { PAYMENT_FREQUENCIES, TIERS } from "@/lib/const";
 
-export default function Plans() {
+export default function Plans({at}: {at: 'landing' | 'onboarding'}) {
   return (
     <div className="relative flex justify-center items-center w-full mt-20 scale-90">
       <div className="absolute inset-0 -z-10">
@@ -12,6 +12,7 @@ export default function Plans() {
           subtitle="Choose the best plan for your needs"
           frequencies={PAYMENT_FREQUENCIES}
           tiers={TIERS}
+          at={at}
         />
     </div>
   );

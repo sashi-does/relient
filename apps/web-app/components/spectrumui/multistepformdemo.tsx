@@ -64,6 +64,7 @@ const OnboardingForm = () => {
 
   const handleNext = () => {
     if (currentStep === 0 && isStepValid()) {
+      handleSubmit()
       setCurrentStep(1);
     } else if (currentStep === 0) {
       toast("Please fill in all required fields (Agency Name and Industry).");
@@ -106,9 +107,7 @@ const OnboardingForm = () => {
         }
       );
       if (response.data.success) {
-        toast("Redirecting to dashboard");
-        setIsSubmitting(false);
-        router.push("/dashboard");
+        toast("One more step to go");
       }
     } catch (error) {
       toast(error instanceof Error ? error.message : "An error occurred");
@@ -149,7 +148,7 @@ const OnboardingForm = () => {
         </div>
       </motion.div>
 
-      {/* Form content */}
+      {/* Onboarding Form */}
       <AnimatePresence mode="wait">
         {currentStep === 0 && (
           <motion.div
@@ -266,8 +265,9 @@ const OnboardingForm = () => {
                 redirect: tier.redirect ?? undefined,
               }))}
               frequencies={frequencies}
+              at={'onboarding'}
             />
-            <div className="flex justify-between gap-4 mt-6">
+            {/* <div className="flex justify-between gap-4 mt-6">
               <Button
                 onClick={handleBack}
                 className="py-2 bg-gray-600 text-white hover:bg-gray-700 rounded-md transition-all duration-200"
@@ -290,7 +290,7 @@ const OnboardingForm = () => {
                   </>
                 )}
               </Button>
-            </div>
+            </div> */}
           </motion.div>
         )}
       </AnimatePresence>
