@@ -12,13 +12,6 @@ export async function POST(req: Request) {
         }
 
         const subscription = body.data
-        const { email, name } = subscription.customer
-
-        let user = await prisma.user.findFirst({ where: { email } })
-
-        if (!user) {
-            return NextResponse.json({ message: "Invalid User" }, { status: 400 })
-        }
 
         const billing = await prisma.billing.create({
             data: {
@@ -33,7 +26,7 @@ export async function POST(req: Request) {
         await prisma.subscription.create({
             data: {
                 customerId: subscription.customer.customer_id,
-                userId: user.id,
+                userId: subscription.customer.user_id,
                 paymentId: subscription.subscription_id,
                 paymentType: 'CARD',
                 nextBillingDate: new Date(subscription.next_billing_date),
