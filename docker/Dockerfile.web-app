@@ -1,0 +1,21 @@
+FROM oven/bun:alpine
+
+#-> let the working directory in the docker container
+WORKDIR /app
+
+#-> (apps/, packages/, bun.lock, turbo.json, */everything)
+COPY . .
+
+#-> Install dependencies
+RUN bun install
+
+#-> Generate Prisma client from the root project of the package.json 
+#-> [ NOT FROM THE apps/web-app]
+RUN bun run prisma:generate
+
+#-> Build the web-app
+WORKDIR /app/apps/web-app
+RUN bun run build
+
+#-> Start the web-app container
+CMD ["bun", "run", "start"]
