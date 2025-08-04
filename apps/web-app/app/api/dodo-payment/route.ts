@@ -4,7 +4,7 @@ import { prisma } from '@repo/db/prisma'
 export async function POST(req: Request) {
     try {
         const body = await req.json()
-
+        console.log("HERE DAMNNN")
         console.log(body)
 
         if (body.type !== 'subscription.active') {
